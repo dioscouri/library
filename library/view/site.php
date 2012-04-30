@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.filter.filteroutput' );
 jimport( 'joomla.application.component.view' );
 
-class DSCViewSite extends JView
+class DSCViewSite extends DSCView
 {
     /**
      * The valid task set by the controller
@@ -49,7 +49,7 @@ class DSCViewSite extends JView
         $config = $app::getInstance();
         if ($config->get('include_site_css', '1'))
         {
-            JHTML::_('stylesheet', 'site.css', 'media/com_sample/css/');
+            JHTML::_('stylesheet', 'site.css', 'media/'.$this->_option.'/css/');
         }
 
         parent::display($tpl);
@@ -137,7 +137,7 @@ class DSCViewSite extends JView
             $validate = JUtility::getToken();
             $form = array();
             $view = strtolower( JRequest::getVar('view') );
-            $form['action'] = "index.php?option=com_sample&controller={$view}&view={$view}";
+            $form['action'] = "index.php?option={$this->_option}&controller={$view}&view={$view}";
             $form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
             $this->assign( 'form', $form );
     }
@@ -161,8 +161,8 @@ class DSCViewSite extends JView
             $controller = strtolower( $this->get( '_controller', JRequest::getVar('controller', JRequest::getVar('view') ) ) );
             $view = strtolower( $this->get( '_view', JRequest::getVar('view') ) );
             $task = strtolower( $this->get( '_task', 'edit' ) );
-            $form['action'] = $this->get( '_action', "index.php?option=com_sample&controller={$controller}&view={$view}&task={$task}&id=".$model->getId() );
-            $form['validation'] = $this->get( '_validation', "index.php?option=com_sample&controller={$controller}&view={$view}&task=validate&format=raw" );
+            $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task={$task}&id=".$model->getId() );
+            $form['validation'] = $this->get( '_validation', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task=validate&format=raw" );
             $form['validate'] = "<input type='hidden' name='".JUtility::getToken()."' value='1' />";
             $form['id'] = $model->getId();
             $this->assign( 'form', $form );
@@ -171,7 +171,7 @@ class DSCViewSite extends JView
         // TODO Fix this
             $required = new stdClass();
             $required->text = JText::_( 'Required' );
-            $required->image = "<img src='".JURI::root()."/media/com_sample/images/required_16.png' alt='{$required->text}'>";
+            $required->image = "<img src='".JURI::root()."/media/{$this->_option}/images/required_16.png' alt='{$required->text}'>";
             $this->assign('required', $required );
     }
 
