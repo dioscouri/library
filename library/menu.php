@@ -150,12 +150,22 @@ class DSCMenu extends JObject
 	    // TODO This should be passed as an argument
 		$hide = JRequest::getInt('hidemainmenu');
         		
-		// Load the named template, if there are links to display.				
-		if (!empty($this->_menu->_bar)) 
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+			// Joomla! 1.6+ code here
+			$items = $this->_menu->getItems();
+			$name = $this->_name;
+		} else {
+			// Joomla! 1.5 code here
+			$items = $this->_menu->_bar;
+			$name = $this->_name;
+		}
+		
+		// Load the named template, if there are links to display.
+		if (!empty($items)) 
 		{
 		    $view = new JView(array('name'=>'dashboard'));
-		    $view->set('items', $this->_menu->_bar);
-		    $view->set('name', $this->_name);
+		    $view->set('items', $items);
+		    $view->set('name', $name);
 		    $view->set('hide', $hide);
     		$view->setLayout($layout);
     		$view->display();		    
