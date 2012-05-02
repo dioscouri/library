@@ -83,16 +83,16 @@ class DSCController extends JController
 		// this sets the default view
 		JRequest::setVar( 'view', JRequest::getVar( 'view', $this->get('default_view') ) );
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$viewType	= $document->getType();
 		$viewName	= JRequest::getCmd( 'view', $this->getName() );
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
 
-		$view = & $this->getView( $viewName, $viewType, '', array( 'base_path'=>$this->_basePath));
+		$view = $this->getView( $viewName, $viewType, '', array( 'base_path'=>$this->_basePath));
 
 		// Get/Create the model
-		if ($model = & $this->getModel($viewName))
+		if ($model = $this->getModel($viewName))
 		{
 			// controller sets the model's state - this is why we override parent::display()
 			$this->_setModelState();
@@ -185,19 +185,19 @@ class DSCController extends JController
 		$fullname = strtolower( $prefix.$name );
 		if (empty($this->_models[$fullname]))
 		{
-			if ( $model = & $this->_createModel( $name, $prefix, $config ) )
+			if ( $model = $this->_createModel( $name, $prefix, $config ) )
 			{
 				// task is a reserved state
 				$model->setState( 'task', @$this->_task );
 
 				// Lets get the application object and set menu information if its available
-				$app	= &JFactory::getApplication();
-				$menu	= &$app->getMenu();
+				$app	= JFactory::getApplication();
+				$menu	= $app->getMenu();
 				if (is_object( $menu ))
 				{
 					if ($item = $menu->getActive())
 					{
-						$params	=& $menu->getParams($item->id);
+						$params	= $menu->getParams($item->id);
 						// Set Default State Data
 						$model->setState( 'parameters.menu', $params );
 					}
@@ -230,7 +230,7 @@ class DSCController extends JController
 		$modelName		= preg_replace('/[^A-Z0-9_]/i', '', $name);
 		$classPrefix	= preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 
-		$result = &JModel::getInstance($modelName, $classPrefix, $config);
+		$result = JModel::getInstance($modelName, $classPrefix, $config);
 		return $result;
 	}
 
@@ -800,7 +800,7 @@ class DSCController extends JController
 		$model	= $this->getModel( 'dashboard' );
 		$view	= $this->getView( 'dashboard', 'html' );
 
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$results = $dispatcher->trigger( 'onAfterFooter', array() );
 
 		$html = implode('<br />', $results);
