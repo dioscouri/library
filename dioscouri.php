@@ -117,6 +117,64 @@ class DSC extends JObject
 	}
 
 	/**
+	* Get the URL to the folder containing all media assets
+	*
+	* @param string	$type	The type of URL to return, default 'media'
+	* @return 	string	URL
+	*/
+	public static function getURL( $type = 'media' )
+	{
+	    $url = '';
+	
+	    switch ( $type )
+	    {
+	        case 'media':
+	            $url = JURI::root( true ) . '/libraries/dioscouri/media/';
+	            break;
+	        case 'css':
+	            $url = JURI::root( true ) . '/libraries/dioscouri/media/css/';
+	            break;
+	        case 'images':
+	            $url = JURI::root( true ) . '/libraries/dioscouri/media/images/';
+	            break;
+	        case 'js':
+	            $url = JURI::root( true ) . '/libraries/dioscouri/media/js/';
+	            break;
+	    }
+	
+	    return $url;
+	}
+	
+	/**
+	 * Get the path to the folder containing all media assets
+	 *
+	 * @param 	string	$type	The type of path to return, default 'media'
+	 * @return 	string	Path
+	 */
+	public static function getPath( $type = 'media' )
+	{
+	    $path = '';
+	
+	    switch ( $type )
+	    {
+	        case 'media':
+	            $path = JPATH_SITE . '/libraries/dioscouri/media';
+	            break;
+	        case 'css':
+	            $path = JPATH_SITE . '/libraries/dioscouri/media/css';
+	            break;
+	        case 'images':
+	            $path = JPATH_SITE . '/libraries/dioscouri/media/images';
+	            break;
+	        case 'js':
+	            $path = JPATH_SITE . '/libraries/dioscouri/media/js';
+	            break;
+	    }
+	
+	    return $path;
+	}
+	
+	/**
 	 * 
 	 * Enter description here ...
 	 */
@@ -133,6 +191,13 @@ class DSC extends JObject
 		$parentPath = JPATH_SITE . '/libraries/dioscouri/library';
 		DSCLoader::discover('DSC', $parentPath, true);
 		
+		JHTML::_('script', 'common.js', DSC::getURL('js') );
+		
+		$doc = JFactory::getDocument( );
+		$uri = JURI::getInstance( );
+		$js .= "Dsc.jbase = '" . $uri->root( ) . "';\n";
+		$doc->addScriptDeclaration( $js );
+				
 		return true;
 	}
 }

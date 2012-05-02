@@ -24,18 +24,16 @@ class DSCGrid extends JHTMLGrid
 	 */
 	public static function sort( $title, $order, $direction = 'asc', $selected = 0, $form='document.adminForm', $task = null, $new_direction = 'asc')
 	{
-		JHTML::_('script', 'sample.js', 'media/com_sample/js/');
-		
 		$direction	= strtolower( $direction );
 		$images		= array( 'sort_asc.png', 'sort_desc.png' );
 		$alts       = array( '&#9650;', '&#9660;' );
 		$index		= intval( $direction == 'desc' );
 		$direction	= ($direction == 'desc') ? 'asc' : 'desc';
 
-		$html = '<a href="javascript:sampleGridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
+		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
 		$html .= JText::_( $title );
 		if ($order == $selected ) {
-		    $html .= '<img src="'. DSC::getURL('images'). $images[$index] .'" border="0" alt="'. $alts[$index] .'" />';
+		    $html .= '<img src="'. DSC::getURL('images') . $images[$index] .'" border="0" alt="'. $alts[$index] .'" />';
 		}
 		$html .= '</a>';
 		return $html;
@@ -64,18 +62,16 @@ class DSCGrid extends JHTMLGrid
 	 * @param $id
 	 * @return unknown_type
 	 */
-	public static function order($id, $image = 'filesave.png', $task = 'saveorder')
+	public static function order($id, $image = 'filesave.png', $task = 'saveorder', $form='document.adminForm')
 	{
-		JHTML::_('script', DSC::getName().'.js', 'media/com_'.DSC::getName().'/js/');
-		
 		$up   = 'uparrow.png'; $up_title = JText::_("Move Up");
 		$down = 'downarrow.png'; $down_title = JText::_("Move Down");
 
 		$result =
-			'<a href="javascript:sampleGridOrder('.$id.', -1)" >'
+			'<a href="javascript:Dsc.gridOrder('.$id.', -1, '.$form.')" >'
 			.'<img src="'. DSC::getURL('images'). $up .'" border="0" alt="'. $up_title .'" />'
 			.'</a>'
-			.'<a href="javascript:sampleGridOrder('.$id.', 1)" >'
+			.'<a href="javascript:Dsc.gridOrder('.$id.', 1, '.$form.')" >'
 			.'<img src="'. DSC::getURL('images'). $down .'" border="0" alt="'. $down_title .'" />'
 			.'</a>';
 			
