@@ -23,11 +23,11 @@ class DSCArticle
 	function fromString( $text )
 	{
         $mainframe = JFactory::getApplication();
-        $params       =& $mainframe->getParams('com_content');
+        $params       = $mainframe->getParams('com_content');
         
-        $dispatcher    =& JDispatcher::getInstance();
+        $dispatcher    = JDispatcher::getInstance();
         
-		$article =& JTable::getInstance('content');
+		$article = JTable::getInstance('content');
 		$article->text = $text;
 		
 		$limitstart = 0;
