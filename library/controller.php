@@ -30,6 +30,11 @@ class DSCController extends JController
 	 */
 	protected $redirect;
 
+	var $_option = NULL;
+	var $_name = NULL;
+	var $_Pluginname = NULL;
+	
+
 	/**
 	 * constructor
 	 */
@@ -37,19 +42,19 @@ class DSCController extends JController
 	{
 		parent::__construct($config);
 		
-		// Set a base path for use by the controller
-		if (array_key_exists('base_path', $config)) {
-			$this->_basePath	= $config['base_path'];
-		} else {
-			$this->_basePath	= JPATH_COMPONENT_ADMINISTRATOR;
-		}
 		
 		$com = JRequest::getCmd('option');
 		if (!empty($config['com'])) {
 			$com = $config['com'];
 		}
-		$this->set('com', $com);
+		$this->_option = $app = DSC::getApp();;
+		//do we really need to get the whole app to get the name or should we strip it from the option??
+		$app = DSC::getApp();
+		$this -> _name = $app -> getName();
+		$this -> _Pluginname = ucfirst($this -> _name);
 		
+		
+		$this->set('com', $com);
 		$this->set('suffix', $this->get('default_view') );
 
 		// Register Extra tasks
@@ -104,7 +109,7 @@ class DSCController extends JController
 		$view->setLayout($viewLayout);
 
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeDisplayAdminComponentSample', array() );
+		$dispatcher->trigger('onBeforeDisplayAdminComponent'.$this -> _Pluginname, array() );
 
 		// Display the view
 		if ($cachable && $viewType != 'feed') {
@@ -116,7 +121,7 @@ class DSCController extends JController
 		}
 
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterDisplayAdminComponentSample', array() );
+		$dispatcher->trigger('onAfterDisplayAdminComponent'.$this -> _Pluginname, array() );
 
 		$this->footer();
 	}
@@ -374,8 +379,11 @@ class DSCController extends JController
 		$elements = json_decode( preg_replace('/[\n\r]+/', '\n', JRequest::getVar( 'elements', '', 'post', 'string' ) ) );
 
 		// convert elements to array that can be binded
-		Sample::load( 'SampleHelperBase', 'helpers._base' );
-		$helper = new SampleHelperBase(); 			
+		$helpername = $this -> _Pluginname .'HelperBase';
+		
+		DSC::load( $helpername, 'helpers._base' );
+		
+		$helper = new $helpername(); 			
         $values = $helper->elementsToArray( $elements );
 
 		// get table object
@@ -834,7 +842,7 @@ class DSCController extends JController
 		// $msg->message = "element: $element, elementTask: $elementTask";
 
 		// gets the plugin named $element
-		$import 	= JPluginHelper::importPlugin( 'sample', $element );
+		$import 	= JPluginHelper::importPlugin( $this ->_name, $element );
 		$dispatcher	=& JDispatcher::getInstance();
 		// executes the event $elementTask for the $element plugin
 		// returns the html from the plugin
@@ -877,7 +885,7 @@ class DSCController extends JController
 		// $msg->message = "element: $element, elementTask: $elementTask";
 
 		// gets the plugin named $element
-		$import 	= JPluginHelper::importPlugin( 'sample', $element );
+		$import 	= JPluginHelper::importPlugin( $this -> _name, $element );
 		$dispatcher	=& JDispatcher::getInstance();
 
 		// executes the event $elementTask for the $element plugin
