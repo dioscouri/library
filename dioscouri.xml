@@ -15,7 +15,6 @@
 		<file>dioscouri.php</file>
         <file>loader.php</file>
         <folder>library</folder>
-        <folder>media</folder>
         <folder>tools</folder>
         <folder>component</folder>
 	</files>
@@ -23,5 +22,13 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.lib_dioscouri.ini</language>
 	</languages>
+    
+    <!-- Media -->
+    <media destination="dioscouri" folder="media">
+        <folder>css</folder>
+        <folder>images</folder>
+        <folder>js</folder>
+        <file>index.html</file>
+    </media>
     
 </extension>

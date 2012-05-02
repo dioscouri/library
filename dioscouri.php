@@ -129,16 +129,16 @@ class DSC extends JObject
 	    switch ( $type )
 	    {
 	        case 'media':
-	            $url = JURI::root( true ) . '/libraries/dioscouri/media/';
+	            $url = JURI::root( true ) . '/media/dioscouri/';
 	            break;
 	        case 'css':
-	            $url = JURI::root( true ) . '/libraries/dioscouri/media/css/';
+	            $url = JURI::root( true ) . '/media/dioscouri/css/';
 	            break;
 	        case 'images':
-	            $url = JURI::root( true ) . '/libraries/dioscouri/media/images/';
+	            $url = JURI::root( true ) . '/media/dioscouri/images/';
 	            break;
 	        case 'js':
-	            $url = JURI::root( true ) . '/libraries/dioscouri/media/js/';
+	            $url = JURI::root( true ) . '/media/dioscouri/js/';
 	            break;
 	    }
 	
@@ -158,16 +158,16 @@ class DSC extends JObject
 	    switch ( $type )
 	    {
 	        case 'media':
-	            $path = JPATH_SITE . '/libraries/dioscouri/media';
+	            $path = JPATH_SITE . '/media/dioscouri';
 	            break;
 	        case 'css':
-	            $path = JPATH_SITE . '/libraries/dioscouri/media/css';
+	            $path = JPATH_SITE . '/media/dioscouri/css';
 	            break;
 	        case 'images':
-	            $path = JPATH_SITE . '/libraries/dioscouri/media/images';
+	            $path = JPATH_SITE . '/media/dioscouri/images';
 	            break;
 	        case 'js':
-	            $path = JPATH_SITE . '/libraries/dioscouri/media/js';
+	            $path = JPATH_SITE . '/media/dioscouri/js';
 	            break;
 	    }
 	
@@ -191,11 +191,10 @@ class DSC extends JObject
 		$parentPath = JPATH_SITE . '/libraries/dioscouri/library';
 		DSCLoader::discover('DSC', $parentPath, true);
 		
-		JHTML::_('script', 'common.js', DSC::getURL('js') );
-		
 		$doc = JFactory::getDocument( );
 		$uri = JURI::getInstance( );
 		$js .= "Dsc.jbase = '" . $uri->root( ) . "';\n";
+		$doc->addScript( DSC::getURL('js') . 'common.js' );
 		$doc->addScriptDeclaration( $js );
 				
 		return true;
