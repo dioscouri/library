@@ -230,7 +230,7 @@ class DSCTable extends JTable
 	 * @access	public
 	 * @returns TRUE if completely successful, FALSE if partially or not successful
 	 */
-	function save($src, $orderingFilter = '', $ignore = '')
+	function save($src='', $orderingFilter = '', $ignore = '')
 	{
 	    $this->_isNew = false;
 	    $key = $this->getKeyName();
