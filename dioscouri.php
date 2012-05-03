@@ -193,7 +193,7 @@ class DSC extends JObject
 		
 		$doc = JFactory::getDocument( );
 		$uri = JURI::getInstance( );
-		$js .= "Dsc.jbase = '" . $uri->root( ) . "';\n";
+		$js = "Dsc.jbase = '" . $uri->root( ) . "';\n";
 		$doc->addScript( DSC::getURL('js') . 'common.js' );
 		$doc->addScriptDeclaration( $js );
 				
