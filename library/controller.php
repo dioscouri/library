@@ -30,7 +30,7 @@ class DSCController extends JController
 	 */
 	protected $redirect;
 
-	var $_option = NULL;
+
 	var $_name = NULL;
 	var $_Pluginname = NULL;
 	
@@ -47,7 +47,6 @@ class DSCController extends JController
 		if (!empty($config['com'])) {
 			$com = $config['com'];
 		}
-		$this->_option = $app = DSC::getApp();;
 		//do we really need to get the whole app to get the name or should we strip it from the option??
 		$app = DSC::getApp();
 		$this -> _name = $app -> getName();
