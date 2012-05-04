@@ -200,5 +200,26 @@ class DSC extends JObject
 				
 		return true;
 	}
+
+	/**
+	 * Adds the Highcharts library files to the autoloader
+	 * and adds the highcharts js file to the stack
+	 * 
+	 */
+	public static function loadHighcharts()
+	{
+	    jimport('dioscouri.highroller.highroller.highroller');
+	    jimport('dioscouri.highroller.highroller.highrollerareachart');
+	    jimport('dioscouri.highroller.highroller.highrollerareasplinechart');
+	    jimport('dioscouri.highroller.highroller.highrollerbarchart');
+	    jimport('dioscouri.highroller.highroller.highrollercolumnchart');
+	    jimport('dioscouri.highroller.highroller.highrollerlinechart');
+	    jimport('dioscouri.highroller.highroller.highrollerpiechart');
+	    jimport('dioscouri.highroller.highroller.highrollerscatterchart');
+	    jimport('dioscouri.highroller.highroller.highrollerseriesdata');
+	    jimport('dioscouri.highroller.highroller.highrollersplinechart');
+	    
+	    JHTML::_( 'script', 'highcharts.js', 'libraries/dioscouri/highroller/highcharts/' );
+	}
 }
 ?>
