@@ -14,9 +14,10 @@
 	<files>
 		<file>dioscouri.php</file>
         <file>loader.php</file>
+        <folder>component</folder>
+        <folder>highroller</folder>
         <folder>library</folder>
         <folder>tools</folder>
-        <folder>component</folder>
 	</files>
     
 	<languages folder="language">
