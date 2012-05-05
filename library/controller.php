@@ -278,12 +278,21 @@ class DSCController extends JController
 		$userid = JFactory::getUser()->id;
 
 		// Checks if item is checkedout, and if so, redirects to view
-		if (!empty($row->id) && !JTable::isCheckedOut($userid, $row->checked_out))
+		if (empty($row->id)) 
+		{
+		    JRequest::setVar( 'hidemainmenu', '1' );
+		    $view->setLayout( 'form' );		    
+		}
+		elseif (!JTable::isCheckedOut($userid, $row->checked_out))
 		{
 			if ($row->checkout( $userid ))
 			{
 				JRequest::setVar( 'hidemainmenu', '1' );
 				$view->setLayout( 'form' );
+			} 
+			    else 
+			{
+			    $view->setLayout( 'view' );
 			}
 		}
 		else
