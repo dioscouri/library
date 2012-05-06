@@ -69,7 +69,7 @@ class DSCViewSite extends DSCView
             require_once( JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php' );
             $view = strtolower( JRequest::getVar('view') );
 
-            $menu =& DSCMenu::getInstance();
+            $menu = DSCMenu::getInstance();
         }
     }
 

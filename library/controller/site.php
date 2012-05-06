@@ -10,9 +10,7 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
-class DSCControllerSite extends JController 
+class DSCControllerSite extends DSCController 
 {   
     var $_models = array();
     var $message = "";
@@ -131,22 +129,22 @@ class DSCControllerSite extends JController
     /**
     *   display the view
     */
-    function display($cachable=false)
+    function display($cachable=false, $urlparams = false)
     {
         $this->setDoTask( JRequest::getCmd( 'task', 'display' ) );
         // this sets the default view
         JRequest::setVar( 'view', JRequest::getVar( 'view', 'items' ) );
         
-        $document =& JFactory::getDocument();
+        $document = JFactory::getDocument();
 
         $viewType   = $document->getType();
         $viewName   = JRequest::getCmd( 'view', $this->getName() );
         $viewLayout = JRequest::getCmd( 'layout', 'default' );
 
-        $view = & $this->getView( $viewName, $viewType, '', array( 'base_path'=>$this->_basePath));
+        $view = $this->getView( $viewName, $viewType, '', array( 'base_path'=>$this->_basePath));
 
         // Get/Create the model
-        if ($model = & $this->getModel($viewName)) 
+        if ($model = $this->getModel($viewName)) 
         {
             // controller sets the model's state - this is why we override parent::display()
             $this->_setModelState();
