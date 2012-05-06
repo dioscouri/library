@@ -345,7 +345,7 @@ if (!class_exists( 'DSCInstaller' )) {
 	
 			// Cleanup the install files
 			if (!is_file($package['packagefile'])) {
-				$config =& JFactory::getConfig();
+				$config = JFactory::getConfig();
 				$package['packagefile'] = $config->getValue('config.tmp_path').DS.$package['packagefile'];
 			}
 	
@@ -564,7 +564,7 @@ if (!class_exists( 'DSCInstaller' )) {
 		 */
 		function getManifestInformation($installer, $element=null) {
 			// Get the extension manifest object
-			$manifest =& $installer->getManifest();
+			$manifest = $installer->getManifest();
 			$manifestFile = $this->getManifestFile( $manifest );
 
 			//final information that we need about the extension
