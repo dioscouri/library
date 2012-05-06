@@ -17,11 +17,11 @@ class DSCHelperRoute extends DSCHelper
     /**
      *
      */
-    function getItems( $option='com_sample' )
+    public static function getItems( $option='com_sample' )
     {
         static $items;
         
-        $menus      = &JApplication::getMenu('site', array());
+        $menus = JApplication::getMenu('site', array());
         if (empty($menus))
         {
             return array();
@@ -34,7 +34,7 @@ class DSCHelperRoute extends DSCHelper
         
         if (empty($items[$option]))
         {
-            $component  = &JComponentHelper::getComponent($option);
+            $component  = JComponentHelper::getComponent($option);
             foreach ($menus->getItems('component', $option) as $item)
             {
                 if ( !is_object($item) )
@@ -149,20 +149,20 @@ class DSCHelperRoute extends DSCHelper
      * @param   array   An array of URL arguments
      * @return  array   The URL arguments to use to assemble the URL
      */
-    function build( &$query )
+    public static function build( &$query )
     {
         $segments = array();
     
         // get a menu item based on the Itemid or the currently active item
-        $menu = &JSite::getMenu();
+        $menu = JFactory::getApplication()->getMenu();
     
         if (empty($query['Itemid'])) 
         {
-            $item = &$menu->getActive();
+            $item = $menu->getActive();
         }
             else 
         {
-            $item = &$menu->getItem( $query['Itemid'] );
+            $item = $menu->getItem( $query['Itemid'] );
         }
         
         $menuView = (empty($item->query['view'])) ? null : $item->query['view'];
@@ -208,7 +208,7 @@ class DSCHelperRoute extends DSCHelper
      * @param   array   The segments of the URL to parse
      * @return  array   The URL attributes
      */
-    function parse( $segments )
+    public static function parse( $segments )
     {
         //echo "segments:<br /><pre>";
         //print_r($segments);
