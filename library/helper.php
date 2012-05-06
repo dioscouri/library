@@ -168,10 +168,9 @@ class DSCHelper extends JObject
      * @param unknown_type $currency
      * @return unknown_type
      */
-    function currency($amount, $currency='', $options='')
+    public static function currency($amount, $currency='', $options='')
     {
-        Sample::load('SampleHelperCurrency', 'helpers.currency');
-        $amount = SampleHelperCurrency::_($amount, $currency, $options);
+        $amount = DSCHelperCurrency::_($amount, $currency, $options);
         return $amount;
     }
 	
@@ -180,11 +179,11 @@ class DSCHelper extends JObject
 	 * @param float $amount
 	 * @param string $type could be dimension or weight
 	 */
-	function measure($amount, $type='dimension')
+	public static function measure($amount, $type='dimension')
 	{
         // default to whatever is in config
             
-        $config = SampleConfig::getInstance();
+        $config = DSC::getApp();
         $dim_unit = $config->get('dimensions_unit', 'cm');
         $weight_unit = $config->get('weight_unit', 'kg');
             
@@ -202,7 +201,7 @@ class DSCHelper extends JObject
 	 * @param $number
 	 * @return unknown_type
 	 */
-    function number($number, $options='' )
+    public static function number($number, $options='' )
 	{
 		$config = SampleConfig::getInstance();
         $options = (array) $options;
@@ -417,7 +416,7 @@ class DSCHelper extends JObject
 	 *
 	 * @return unknown_type
 	 */
-	function getToday()
+	public static function getToday()
 	{
 		static $today;
 
@@ -645,9 +644,9 @@ class DSCHelper extends JObject
      * @param unknown_type $value
      * @return void
      */
-    function setSessionVariable($key, $value)
+    public static function setSessionVariable($key, $value)
     {
-        $session =& JFactory::getSession();
+        $session = JFactory::getSession();
         $session->set($key, json_encode($value));
     }
     
@@ -657,9 +656,9 @@ class DSCHelper extends JObject
      * @param str $key
      * @return mixed
      */
-    function getSessionVariable($key, $default=null)
+    public static function getSessionVariable($key, $default=null)
     {
-        $session =& JFactory::getSession();
+        $session = JFactory::getSession();
         $sessionvalue = $default;
         if ($session->has($key))
         {

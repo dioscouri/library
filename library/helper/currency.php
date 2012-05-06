@@ -19,10 +19,10 @@ class DSCHelperCurrency extends DSCHelper
      * @param unknown_type $currency
      * @return unknown_type
      */
-    function _($amount, $currency='', $options='')
+    public static function _($amount, $currency='', $options='')
     {
         // default to whatever is in config
-        $config = DSCConfig::getInstance();
+        $config = DSC::getApp();
         $options = (array) $options;
 
         $default_currencyid = $config->get('default_currencyid', '1');

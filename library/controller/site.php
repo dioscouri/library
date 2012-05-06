@@ -255,7 +255,8 @@ class DSCControllerSite extends DSCController
     function footer()
     {
         // show a generous linkback, TIA
-        $show_linkback = SampleConfig::getInstance()->get('show_linkback', '1');
+        $app = DSC::getApp();
+        $show_linkback = $app->get('show_linkback', '1');
         $format = JRequest::getVar('format');
         if ($show_linkback == '1' && $format != 'raw') 
         {

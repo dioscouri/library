@@ -11,7 +11,7 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-class DSCArticle 
+class DSCArticle extends JObject
 {
 	/**
 	 * Takes a simple product description an formats it like an article
@@ -20,7 +20,7 @@ class DSCArticle
 	 * @param string $text
 	 * @return string HTML
 	 */
-	function fromString( $text )
+	public static function fromString( $text )
 	{
         $mainframe = JFactory::getApplication();
         $params       = $mainframe->getParams('com_content');
@@ -35,23 +35,23 @@ class DSCArticle
         /*
          * Process the prepare content plugins
          */
-            JPluginHelper::importPlugin('content');
-            $results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
+        JPluginHelper::importPlugin('content');
+        $results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
 
         /*
          * Handle display events
          */
-            $article->event = new stdClass();
-            
-            // TODO Since there is no title, do we include this event?
-            $results = $dispatcher->trigger('onAfterDisplayTitle', array ($article, &$params, $limitstart));
-            $article->event->afterDisplayTitle = trim(implode("\n", $results));
-    
-            $results = $dispatcher->trigger('onBeforeDisplayContent', array (& $article, & $params, $limitstart));
-            $article->event->beforeDisplayContent = trim(implode("\n", $results));
-    
-            $results = $dispatcher->trigger('onAfterDisplayContent', array (& $article, & $params, $limitstart));
-            $article->event->afterDisplayContent = trim(implode("\n", $results));
+        $article->event = new stdClass();
+        
+        // TODO Since there is no title, do we include this event?
+        $results = $dispatcher->trigger('onAfterDisplayTitle', array ($article, &$params, $limitstart));
+        $article->event->afterDisplayTitle = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onBeforeDisplayContent', array (& $article, & $params, $limitstart));
+        $article->event->beforeDisplayContent = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onAfterDisplayContent', array (& $article, & $params, $limitstart));
+        $article->event->afterDisplayContent = trim(implode("\n", $results));
 
         // collect $html
         $html = '';
@@ -68,15 +68,15 @@ class DSCArticle
 	 * 
 	 * @return unknown_type
 	 */
-	function display( $articleid )
+	public static function display( $articleid )
 	{
 		$html = '';
 		
 		$mainframe = JFactory::getApplication();
 		
-		$dispatcher	   =& JDispatcher::getInstance();
+		$dispatcher	   = JDispatcher::getInstance();
 			
-		$article =& JTable::getInstance('content');
+		$article = JTable::getInstance('content');
 		$article->load( $articleid );
 		// Return html if the load fails
 		if (!$article->id)
@@ -86,8 +86,8 @@ class DSCArticle
 		$article->text = $article->introtext . chr(13).chr(13) . $article->fulltext;
 
 		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
-		$params		=& $mainframe->getParams('com_content');
-		$aparams	=& $article->attribs;
+		$params		= $mainframe->getParams('com_content');
+		$aparams	= $article->attribs;
 		$params->merge($aparams);
 		// merge isn't overwriting the global component params, so using this
 		jimport('joomla.html.parameter');
@@ -97,32 +97,32 @@ class DSCArticle
 		/*
 		 * Process the prepare content plugins
 		 */
-			JPluginHelper::importPlugin('content');
-			$results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
+		JPluginHelper::importPlugin('content');
+		$results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
 
 		/*
 		 * Handle display events
 		 */
-			$article->event = new stdClass();
-			$results = $dispatcher->trigger('onAfterDisplayTitle', array ($article, &$params, $limitstart));
-			$article->event->afterDisplayTitle = trim(implode("\n", $results));
-	
-			$results = $dispatcher->trigger('onBeforeDisplayContent', array (& $article, & $params, $limitstart));
-			$article->event->beforeDisplayContent = trim(implode("\n", $results));
-	
-			$results = $dispatcher->trigger('onAfterDisplayContent', array (& $article, & $params, $limitstart));
-			$article->event->afterDisplayContent = trim(implode("\n", $results));
+		$article->event = new stdClass();
+		$results = $dispatcher->trigger('onAfterDisplayTitle', array ($article, &$params, $limitstart));
+		$article->event->afterDisplayTitle = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onBeforeDisplayContent', array (& $article, & $params, $limitstart));
+		$article->event->beforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onAfterDisplayContent', array (& $article, & $params, $limitstart));
+		$article->event->afterDisplayContent = trim(implode("\n", $results));
 
 		// Use param for displaying article title
-			$show_title = $article_params->get('show_title', $params->get('show_title') );
-			if ($show_title)
-			{
-				$html .= "<h3>{$article->title}</h3>";	
-			}
-			$html .= $article->event->afterDisplayTitle;
-			$html .= $article->event->beforeDisplayContent;
-			$html .= $article->text;
-			$html .= $article->event->afterDisplayContent;
+		$show_title = $article_params->get('show_title', $params->get('show_title') );
+		if ($show_title)
+		{
+			$html .= "<h3>{$article->title}</h3>";	
+		}
+		$html .= $article->event->afterDisplayTitle;
+		$html .= $article->event->beforeDisplayContent;
+		$html .= $article->text;
+		$html .= $article->event->afterDisplayContent;
 		
 		return $html;
 	}
