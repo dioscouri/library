@@ -106,9 +106,22 @@ class DSCController extends JController
 
 		// Set the layout
 		$view->setLayout($viewLayout);
+		
+		// Set the task in the view, so the view knows it is a valid task
+		if (in_array($this->getTask(), array_keys($this->getTaskMap()) ))
+		{
+		    $view->setTask($this->getDoTask());
+		}
 
+		$app = JFactory::getApplication();
+		$site = '';
+		if ($app->isAdmin())
+		{
+		    $site = 'Admin';
+		}
+		
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onBeforeDisplayAdminComponent'.$this -> _Pluginname, array() );
+		$dispatcher->trigger('onBeforeDisplay'.$site.'Component'.$this -> _Pluginname, array() );
 
 		// Display the view
 		if ($cachable && $viewType != 'feed') {
@@ -120,7 +133,7 @@ class DSCController extends JController
 		}
 
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterDisplayAdminComponent'.$this -> _Pluginname, array() );
+		$dispatcher->trigger('onAfterDisplay'.$site.'Component'.$this -> _Pluginname, array() );
 
 		$this->footer();
 	}
@@ -215,6 +228,55 @@ class DSCController extends JController
 		}
 
 		return $this->_models[$fullname];
+	}
+	
+	/**
+	* Gets the available tasks in the controller.
+	*
+	* @return  array  Array[i] of task names.
+	* @since   11.1
+	*/
+	public function getTaskMap()
+	{
+	    if(version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+	        return $this->taskMap;
+	    } else {
+	        // Joomla! 1.5 code here
+	        return $this->_taskMap;
+	    }
+	}
+	
+	/**
+	 * Gets the available tasks in the controller.
+	 *
+	 * @return  array  Array[i] of task names.
+	 * @since   11.1
+	 */
+	public function getDoTask()
+	{
+	    if(version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+	        return $this->doTask;
+	    } else {
+	        // Joomla! 1.5 code here
+	        return $this->_doTask;
+	    }
+	}
+	
+	/**
+	 * Sets the tasks in the controller.
+	 *
+	 */
+	public function setDoTask( $task )
+	{
+	    if(version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+	        $this->doTask = $task;
+	    } else {
+	        // Joomla! 1.5 code here
+	        $this->_doTask = $task;
+	    }
 	}
 	
 	/**
@@ -387,11 +449,7 @@ class DSCController extends JController
 		$elements = json_decode( preg_replace('/[\n\r]+/', '\n', JRequest::getVar( 'elements', '', 'post', 'string' ) ) );
 
 		// convert elements to array that can be binded
-		$helpername = $this -> _Pluginname .'HelperBase';
-		
-		DSC::load( $helpername, 'helpers._base' );
-		
-		$helper = new $helpername(); 			
+		$helper = new DSCHelper(); 			
         $values = $helper->elementsToArray( $elements );
 
 		// get table object
@@ -940,31 +998,6 @@ class DSCController extends JController
 		$view->setModel( $model, true );
 		$view->display();
 	}
-
-	/**
-	 * For displaying a searchable list of products in a lightbox
-	 * Usage:
-	 */
-	function elementProduct()
-	{
-		$model 	= $this->getModel( 'elementproduct' );
-		$view	= $this->getView( 'elementproduct' );
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
-	/**
-	 * For displaying a searchable list of images in a lightbox
-	 * Usage:
-	 */
-	function elementImage()
-	{
-		$model 	= $this->getModel( 'elementimage' );
-		$view	= $this->getView( 'elementimage' );
-		$view->setModel( $model, true );
-		$view->display();
-	}
-
 }
 
 ?>
