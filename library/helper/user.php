@@ -14,81 +14,11 @@ defined('_JEXEC') or die('Restricted access');
 class DSCHelperUser extends DSCHelper
 {
     /**
-     * Gets a users basic information
-     * 
-     * @param int $userid
-     * @return obj DSCAddresses if found, false otherwise
-     */
-    function getBasicInfo( $userid )
-    {
-        JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
-        $row = JTable::getInstance('UserInfo', 'DSCTable');
-        $row->load( array( 'user_id' => $userid ) );
-        return $row;
-    }
-    
-    /**
-     * Gets a users primary address, if possible
-     * 
-     * @param int $userid
-     * @return obj DSCAddresses if found, false otherwise
-     */
-    function getPrimaryAddress( $userid, $type='billing' )
-    {
-        $return = false;
-        JModel::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'models' );
-        $model = JModel::getInstance( 'Addresses', 'DSCModel' );
-        switch($type)
-        {
-            case "shipping":
-                $model->setState('filter_isdefaultshipping', '1');
-                break;
-            default:
-                $model->setState('filter_isdefaultbilling', '1');
-                break;
-        }
-        $model->setState('filter_userid', (int) $userid);
-        $items = $model->getList();
-        if (empty($items))
-        {
-            $model = JModel::getInstance( 'Addresses', 'DSCModel' );
-            $model->setState('filter_userid', (int) $userid);
-            $items = $model->getList();
-        }
-        
-        if (!empty($items))
-        {
-            $return = $items[0];
-        }       
-        
-        return $return;
-    }
-    
-    /**
-     * Gets a user's geozone
-     * @param int $userid
-     * @return unknown_type
-     */
-    function getGeoZones( $userid )
-    {
-        DSC::load( 'DSCHelperShipping', 'helpers.shipping' );
-        
-        $address = DSCHelperUser::getPrimaryAddress( $userid, 'billing' );
-        if (empty($address->zone_id))
-        {
-            return array();
-        }
-        
-        $geozones = DSCHelperShipping::getGeoZones( $address->zone_id, '1', $address->postal_code );
-        return $geozones;
-    }
-    
-    /**
      * 
      * @param $string
      * @return unknown_type
      */
-    function usernameExists( $string ) 
+    public static function usernameExists( $string ) 
     {
         // TODO Make this use ->load()
         
@@ -108,7 +38,7 @@ class DSCHelperUser extends DSCHelper
         $database->setQuery($query);
         $result = $database->loadObject();
         if ($result) {
-            $success = true;
+            $success = $result;
         }
         return $success;    
     }
@@ -118,13 +48,10 @@ class DSCHelperUser extends DSCHelper
      * @param $string
      * @return unknown_type
      */
-    function emailExists( $string, $table='users'  ) {
+    public static function emailExists( $string, $table='users'  ) 
+    {
         switch($table)
         {
-            case 'accounts' :
-                $table = '#__sample_accounts';
-                break;
-
             case  'users':
             default     :
                 $table = '#__users';
@@ -158,15 +85,15 @@ class DSCHelperUser extends DSCHelper
      * @param mixed Boolean
      * @return array
      */
-    function createNewUser( $details, $guest=false ) 
+    public static function createNewUser( $details, $guest=false ) 
     {
         $success = false;
         // Get required system objects
         $user       = clone(JFactory::getUser());
-        $config     =& JFactory::getConfig();
-        $authorize  =& JFactory::getACL();
+        $config     = JFactory::getConfig();
+        $authorize  = JFactory::getACL();
 
-        $usersConfig = &JComponentHelper::getParams( 'com_users' );
+        $usersConfig = JComponentHelper::getParams( 'com_users' );
 
         // Initialize new usertype setting
         $newUsertype = $usersConfig->get( 'new_usertype' );
@@ -190,7 +117,7 @@ class DSCHelperUser extends DSCHelper
         $user->set('usertype', '');
         $user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 
-        $date =& JFactory::getDate();
+        $date = JFactory::getDate();
         $user->set('registerDate', $date->toMySQL());
     
         // we disable useractivation for auto-created users
@@ -207,11 +134,12 @@ class DSCHelperUser extends DSCHelper
             return $success;
         }
 
-	if(!DSCConfig::getInstance()->get('disable_guest_signup_email'))
-	{
-        	// Send registration confirmation mail
-        	DSCHelperUser::_sendMail( $user, $details, $useractivation, $guest );
-	}
+        $app = DSC::getApp();
+    	if(!$app->get('disable_guest_signup_email'))
+    	{
+            // Send registration confirmation mail
+            self::sendMail( $user, $details, $useractivation, $guest );
+    	}
 
         return $user;
     }
@@ -223,8 +151,9 @@ class DSCHelperUser extends DSCHelper
      * 
      * @return array
      */ 
-    function login( $credentials, $remember='', $return='' ) {
-        global $mainframe;
+    public static function login( $credentials, $remember='', $return='' ) 
+    {
+        $mainframe = JFactory::getApplication();
 
         if (strpos( $return, 'http' ) !== false && strpos( $return, JURI::base() ) !== 0) {
             $return = '';
@@ -253,8 +182,9 @@ class DSCHelperUser extends DSCHelper
      * @param mixed Boolean
      * @return array
      */
-    function logout( $return='' ) {
-        global $mainframe;
+    public static function logout( $return='' ) 
+    {
+        $mainframe = JFactory::getApplication();
 
         //preform the logout action//check to see if user has a joomla account
         //if so register with joomla userid
@@ -279,9 +209,9 @@ class DSCHelperUser extends DSCHelper
      * @param int $unblock
      * @return boolean
      */
-    function unblockUser($user_id, $unblock = 1)
+    public static function unblockUser($user_id, $unblock = 1)
     {
-        $user =& JFactory::getUser( (int)$user_id );
+        $user = JFactory::getUser( (int)$user_id );
         
         if ($user->get('id')) {
             $user->set('block', !$unblock);
@@ -303,14 +233,14 @@ class DSCHelperUser extends DSCHelper
      * @param mixed Boolean
      * @return array
      */
-    function _sendMail( &$user, $details, $useractivation, $guest=false ) 
+    private static function sendMail( &$user, $details, $useractivation, $guest=false ) 
     {
-        $lang = &JFactory::getLanguage();
+        $lang = JFactory::getLanguage();
         $lang->load('com_sample', JPATH_ADMINISTRATOR);
         
         $mainframe = JFactory::getApplication();
 
-        $db     =& JFactory::getDBO();
+        $db     = JFactory::getDBO();
 
         $name       = $user->get('name');
         $email      = $user->get('email');
@@ -318,7 +248,7 @@ class DSCHelperUser extends DSCHelper
         $activation = $user->get('activation');
         $password   = $details['password2']; // using the original generated pword for the email
         
-        $usersConfig    = &JComponentHelper::getParams( 'com_users' );
+        $usersConfig    = JComponentHelper::getParams( 'com_users' );
         // $useractivation = $usersConfig->get( 'useractivation' );
         $sitename       = $mainframe->getCfg( 'sitename' );
         $mailfrom       = $mainframe->getCfg( 'mailfrom' );
@@ -357,7 +287,7 @@ class DSCHelperUser extends DSCHelper
             $mailfrom = $rows[0]->email;
         }
 
-        $success = DSCHelperUser::_doMail($mailfrom, $fromname, $email, $subject, $message);
+        $success = self::doMail($mailfrom, $fromname, $email, $subject, $message);
         
         return $success;
     }
@@ -366,11 +296,11 @@ class DSCHelperUser extends DSCHelper
      * 
      * @return unknown_type
      */
-    function _doMail( $from, $fromname, $recipient, $subject, $body, $actions=NULL, $mode=NULL, $cc=NULL, $bcc=NULL, $attachment=NULL, $replyto=NULL, $replytoname=NULL ) 
+    private static function doMail( $from, $fromname, $recipient, $subject, $body, $actions=NULL, $mode=NULL, $cc=NULL, $bcc=NULL, $attachment=NULL, $replyto=NULL, $replytoname=NULL ) 
     {
         $success = false;
 
-        $message =& JFactory::getMailer();
+        $message = JFactory::getMailer();
         $message->addRecipient( $recipient );
         $message->setSubject( $subject );
         
@@ -394,9 +324,9 @@ class DSCHelperUser extends DSCHelper
      * Updates the core __users table
      * setting the email address = $email 
      */
-    function updateUserEmail( $userid, $email )
+    public static function updateUserEmail( $userid, $email )
     {
-        $user =& JFactory::getUser( $userid );
+        $user = JFactory::getUser( $userid );
         $user->set('email', $email);
         
         if ( !$user->save() ) 
@@ -410,9 +340,9 @@ class DSCHelperUser extends DSCHelper
     /**
      * Gets the next auto-inc id in the __users table
      */
-    function getLastUserId()
+    public static function getLastUserId()
     {
-        $database = &JFactory::getDBO();
+        $database = JFactory::getDBO();
         $query = "
             SELECT 
                 MAX(id) as id
@@ -425,7 +355,14 @@ class DSCHelperUser extends DSCHelper
         return $result->id;
     }
     
-    function getACLSelectList( $default='', $fieldname='core_user_new_gid' )
+    /**
+     * 
+     * Enter description here ...
+     * @param unknown_type $default
+     * @param unknown_type $fieldname
+     * @return Ambigous <mixed, boolean>
+     */
+    public static function getACLSelectList( $default='', $fieldname='core_user_new_gid' )
     {
         $object = new JObject();
         $object->value = '';
@@ -441,61 +378,82 @@ class DSCHelperUser extends DSCHelper
         array_unshift($gtree, $object );
         return JHTML::_('select.genericlist', $gtree, $fieldname, 'size="1"', 'value', 'text', $default );
     }
-    
+
     /**
-     * Processes a new order
-     * 
-     * @param $order_id
-     * @return unknown_type
-     */
-    function processOrder( $order_id ) 
+    * Verifies that the string is in a proper e-mail address format.
+    *
+    * @static
+    * @param string $email String to be verified.
+    * @return boolean True if string has the correct format; false otherwise.
+    * @since 1.5
+    */
+    public static function isEmailAddress($email)
     {
-        // get the order
-        $model = JModel::getInstance( 'Orders', 'DSCModel' );
-        $model->setId( $order_id );
-        $order = $model->getItem();
-        
-        // find the products in the order that are integrated 
-        foreach ($order->orderitems as $orderitem)
-        {
-            $model = JModel::getInstance( 'Products', 'DSCModel' );
-            $model->setId( $orderitem->product_id );
-            $product = $model->getItem();
-            
-            $core_user_change_gid = $product->product_parameters->get('core_user_change_gid');
-            $core_user_new_gid = $product->product_parameters->get('core_user_new_gid');
-            if (!empty($core_user_change_gid))
-            {
-                $user = new JUser();
-                $user->load( $order->user_id );
-                $user->gid = $core_user_new_gid;
-                $user->save();
-            }
+        // Split the email into a local and domain
+        $atIndex    = strrpos($email, "@");
+        $domain     = substr($email, $atIndex+1);
+        $local      = substr($email, 0, $atIndex);
+    
+        // Check Length of domain
+        $domainLen  = strlen($domain);
+        if ($domainLen < 1 || $domainLen > 255) {
+            return false;
         }
-    }
     
-    /**
-     * Gets a user's user group used for pricing
-     * 
-     * @param $user_id
-     * @return unknown_type
-     */
-    function getUserGroup( $user_id='' )
-    {
-        $user_id = (int) $user_id;
-        
-    	if (!empty($user_id))
-    	{
-	    	// get the usergroup
-	    	JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
-	        $table = JTable::getInstance( 'UserGroups', 'DSCTable' );
-	        $table->load( array( 'user_id'=>$user_id ) );
-	        if (!empty($table->group_id))
-	        {
-	        	return $table->group_id;
-	        }
-    	}
-    	
-		return DSCConfig::getInstance()->get('default_user_group', '1');
+        // Check the local address
+        // We're a bit more conservative about what constitutes a "legal" address, that is, A-Za-z0-9!#$%&\'*+/=?^_`{|}~-
+        $allowed    = 'A-Za-z0-9!#&*+=?_-';
+        $regex      = "/^[$allowed][\.$allowed]{0,63}$/";
+        if ( ! preg_match($regex, $local) ) {
+            return false;
+        }
+    
+        // No problem if the domain looks like an IP address, ish
+        $regex      = '/^[0-9\.]+$/';
+        if ( preg_match($regex, $domain)) {
+        return true;
+        }
+
+        // Check Lengths
+        $localLen   = strlen($local);
+        if ($localLen < 1 || $localLen > 64) {
+        return false;
+        }
+
+        // Check the domain
+        $domain_array   = explode(".", rtrim( $domain, '.' ));
+        if (count($domain_array) == 1)
+        {
+            return false;
+        }
+
+        $regex      = '/^[A-Za-z0-9-]{0,63}$/';
+        foreach ($domain_array as $domain ) 
+        {
+
+            // Must be something
+            if ( ! $domain ) {
+                return false;
+            }
+
+            // Check for invalid characters
+            if ( ! preg_match($regex, $domain) ) {
+                return false;
+            }
+
+            // Check for a dash at the beginning of the domain
+            if ( strpos($domain, '-' ) === 0 ) {
+                return false;
+            }
+
+            // Check for a dash at the end of the domain
+            $length = strlen($domain) -1;
+            if ( strpos($domain, '-', $length ) === $length ) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 }
