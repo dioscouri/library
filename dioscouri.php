@@ -234,6 +234,78 @@ class DSC extends JObject
 	}
 	
 	/**
+	 * 
+	 * Enter description here ...
+	 * @param unknown_type $data
+	 */
+    private static function _dump( $var, $ignore_underscore = true, $public_only=true ) 
+    {
+    	$data = @print_r( $var, true );
+    	//return $data;
+    	
+    	$lines = explode("\n", $data);
+    	$key = 0;
+    	
+    	//foreach ($lines as $key=>$line)
+    	while (isset($lines[$key])) 
+    	{
+    	    $line = $lines[$key];
+    	    $is_protected = false;
+    	    if (strpos($line, ':protected]') !== false) 
+    	    {
+    	        $is_protected = true;
+    	    }
+    
+    	    if ($is_protected && $public_only)
+    	    {
+    	        // unset this one
+    	        unset($lines[$key]);
+    	        
+    	        // is this an array or object?  
+    	        // if so, unset all the next lines until the array/object is done
+    	         
+    	        $nextkey = $key + 1;
+    	        if (trim($lines[$nextkey]) == '(') 
+    	        {
+    	            // count the spaces at the beginning of the line
+    	            $count = substr_count(rtrim($lines[$nextkey]), ' ');
+    	            
+    	            unset($lines[$nextkey]);
+    	            $key = $nextkey;
+    	            
+    	            $next_line_key = $nextkey + 1;
+    	            $next_line_space_count = substr_count(rtrim($lines[$next_line_key]), ' ');
+                    
+                    while (trim($lines[$next_line_key]) != ')' || $next_line_space_count != $count)
+                    {
+                        unset($lines[$next_line_key]);
+                        $next_line_key = $next_line_key + 1;
+                        $next_line_space_count = substr_count(rtrim($lines[$next_line_key]), ' ');
+                    }
+                    
+                    if (trim($lines[$next_line_key]) == ')' && $next_line_space_count == $count) 
+                    {
+                        unset($lines[$next_line_key]);
+                        $key = $next_line_key;
+                    }
+    	        }
+    	    }
+    	    
+    	    $key++;
+    	}
+    
+    	foreach ($lines as $key=>$line)
+    	{
+    	    if (empty($lines[$key])) {
+    	        unset($lines[$key]);
+    	    }
+    	}
+    	
+    	$out = implode("\n", $lines) . "\n";    	
+    	return $out;
+    }
+	
+	/**
 	* Method to dump the structure of a variable for debugging purposes
 	*
 	* @param	mixed	A variable
@@ -242,28 +314,27 @@ class DSC extends JObject
 	* @since	1.5
 	* @static
 	*/
-	public static function dump( $var, $ignore_underscore = true, $htmlSafe = true )
+	public static function dump( $var, $ignore_underscore = true, $htmlSafe = true, $public_only=true )
 	{
 	    if (!$ignore_underscore)
 	    {
-	        $result = print_r( $var, true );
+	        $result = self::_dump( $var, $ignore_underscore, $public_only );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
 	     
 	    if (!is_object($var) && !is_array($var))
 	    {
-	        $result = print_r( $var, true );
+	        $result = self::_dump( $var, $ignore_underscore, $public_only );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
-	     
-	    // TODO do a recursive remove of underscored keys
-	     
+	    	     
+	    // TODO do a recursive remove of underscored keys, rather than only two levels
 	    if (is_object($var))
 	    {
 	        $keys = get_object_vars($var);
 	        foreach ($keys as $key=>$value)
 	        {
-	            if (substr($key, 0, 1) == '_')
+	            if (substr($key, 0, 1) == '_' )
 	            {
 	                unset($var->$key);
 	            }
@@ -294,7 +365,7 @@ class DSC extends JObject
 	             
 	             
 	        }
-	        $result = @print_r( $var, true );
+	        $result = self::_dump( $var, $ignore_underscore, $public_only );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
 	     
@@ -331,7 +402,7 @@ class DSC extends JObject
 	                }
 	            }
 	        }
-	        $result = @print_r( $var, true );
+	        $result = self::_dump( $var, $ignore_underscore, $public_only );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
 	}
