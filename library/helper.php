@@ -30,7 +30,7 @@ class DSCHelper extends JObject
 
 		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		
-		// The Base helper is in _base.php, but it's named SampleHelperBase
+		// The Base helper is in _base.php, but it's named self
 		if(strtolower($type) == 'Base'){
 			$helperClass = $prefix.ucfirst($type);
 			$type = '_Base';
@@ -44,7 +44,7 @@ class DSCHelper extends JObject
 			if (!class_exists( $helperClass ))
 			{
 				jimport('joomla.filesystem.path');
-				if($path = JPath::find(SampleHelperBase::addIncludePath(), strtolower($type).'.php'))
+				if($path = JPath::find(self::addIncludePath(), strtolower($type).'.php'))
 				{
 					require_once $path;
 	
@@ -83,13 +83,13 @@ class DSCHelper extends JObject
 			{
 			    if (!$return = &JFolder::create( $dir ))
 			    {
-			        $this->setError( "Attempted to Create Dir But Failed" );
+			        self::setError( "Attempted to Create Dir But Failed" );
 			    }
 			}
                 else
 			{
 			    $return = false;
-			    $this->setError( "Dir Does Not Exist and Did Not Attempt to Create" );
+			    self::setError( "Dir Does Not Exist and Did Not Attempt to Create" );
 			}
 		}
 		
@@ -97,7 +97,7 @@ class DSCHelper extends JObject
         {
             if (!$change = &JPath::setPermissions( $dir ))
             {
-                $this->setError( "Changing Permissions on Dir Failed" );
+                self::setError( "Changing Permissions on Dir Failed" );
             }
         }
         
@@ -544,16 +544,16 @@ class DSCHelper extends JObject
 			while ($curdate <= $enddate)
 			{
 				// set working variables
-					$variables = SampleHelperBase::setDateVariables( $curdate, $enddate, $period );
+					$variables = self::setDateVariables( $curdate, $enddate, $period );
 					$thisdate = $variables->thisdate;
 					$nextdate = $variables->nextdate;
 
 				// grab all records
 				// TODO Set the query here
-					$query = new SampleQuery();
+					$query = new DSCQuery();
 					$query->select( $select );
-					$rows = $this->selectPeriodData( $thisdate, $nextdate, $select, $type );
-					$total = $this->selectPeriodData( $thisdate, $nextdate, "COUNT(*)", "result" );
+					$rows = self::selectPeriodData( $thisdate, $nextdate, $select, $type );
+					$total = self::selectPeriodData( $thisdate, $nextdate, "COUNT(*)", "result" );
 
 				//store the value in an array
 				$result[$num]['rows']		= $rows;
