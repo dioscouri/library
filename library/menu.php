@@ -143,7 +143,7 @@ class DSCMenu extends JObject
 	 * 
 	 * @return unknown_type
 	 */
-	function display($layout='submenu', $hidemainmenu='')
+	public function display($layout='submenu', $hidemainmenu='')
 	{
 	    jimport( 'joomla.application.component.view' );
 	    
@@ -163,11 +163,22 @@ class DSCMenu extends JObject
 		// Load the named template, if there are links to display.
 		if (!empty($items)) 
 		{
-		    $view = new JView(array('name'=>'dashboard'));
+		    $base = JFactory::getApplication()->isAdmin() ? JPATH_ADMINISTRATOR : JPATH_SITE;
+		    $app = DSC::getApp();
+		    $template = JFactory::getApplication()->getTemplate();
+		    
+		    $lib_path = JPATH_SITE . '/libraries/dioscouri/component/view/dashboard';		    
+		    $com_template_path = $base . '/components/com_' . $app->getName() . '/views/dashboard/tmpl';
+		    $template_path = $base . '/templates/'.$template.'/html/com_' . $app->getName() . '/dashboard';
+		    
+		    $view = new JView(array('name'=>'dashboard', 'template_path'=>$lib_path ));
 		    $view->set('items', $items);
-		    $view->set('name', $name);
+		    $view->set('name', 'dashboard');
+		    $view->set('layout', $layout);
 		    $view->set('hide', $hide);
     		$view->setLayout($layout);
+    		$view->addTemplatePath($com_template_path);
+    		$view->addTemplatePath($template_path);
     		$view->display();		    
 		}
 	}
