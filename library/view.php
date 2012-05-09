@@ -18,14 +18,40 @@ class DSCView extends JView {
 
 	var $_option = NULL;
 	var $_name = NULL;
+	protected $_doTask = null;
 
-	function __construct() {
-		//TODO the app should have a function that returns the com_sample'
+	function __construct() 
+	{
 		$app = DSC::getApp();
 		/*$this->_option = 'com_'.$app->getName();*/
 		$this -> _option = JRequest::getCmd('option');
 		$this -> _name = $app -> getName();
 		parent::__construct();
+	}
+	
+	/**
+	* Sets the task to something valid
+	*
+	* @access   public
+	* @param    string $task The task name.
+	* @return   string Previous value
+	* @since    1.5
+	*/
+	public function setTask($task)
+	{
+	    $previous = $this->_doTask;
+	    $this->_doTask  = $task;
+	    return $previous;
+	}
+	
+	/**
+	 * 
+	 * Enter description here ...
+	 * @return string
+	 */
+	public function getTask()
+	{
+	    return $this->_doTask;
 	}
 
 	/**
@@ -34,8 +60,15 @@ class DSCView extends JView {
 	 * @param unknown_type $tpl
 	 * @return unknown_type
 	 */
-	function display($tpl = null) {
-
+	function display($tpl = null) 
+	{
+	    // display() will return null if 'doTask' is not set by the controller
+	    // This prevents unauthorized access by bypassing the controllers
+	    if (empty($this->getTask()))
+	    {
+	        return null;
+	    }
+	    
 		$this -> getLayoutVars($tpl);
 
 		$this -> displayTitle($this -> get('title'));
