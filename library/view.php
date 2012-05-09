@@ -24,8 +24,8 @@ class DSCView extends JView {
 	{
 		$app = DSC::getApp();
 		/*$this->_option = 'com_'.$app->getName();*/
-		$this -> _option = JRequest::getCmd('option');
-		$this -> _name = $app -> getName();
+		$this->_option = JRequest::getCmd('option');
+		$this->_name = $app->getName();
 		parent::__construct();
 	}
 	
@@ -69,18 +69,18 @@ class DSCView extends JView {
 	        return null;
 	    }
 	    
-		$this -> getLayoutVars($tpl);
+		$this->getLayoutVars($tpl);
 
-		$this -> displayTitle($this -> get('title'));
+		$this->displayTitle($this->get('title'));
 
-		if (!JRequest::getInt('hidemainmenu') && empty($this -> hidemenu)) {
+		if (!JRequest::getInt('hidemainmenu') && empty($this->hidemenu)) {
 			$menu = DSCMenu::getInstance();
 		}
 
 		jimport('joomla.application.module.helper');
-		$modules = JModuleHelper::getModules($this -> _name . "_left");
-		if ($modules && !JRequest::getInt('hidemainmenu') || !empty($this -> leftMenu)) {
-			$this -> displayWithLeftMenu($tpl = null, $this -> leftMenu);
+		$modules = JModuleHelper::getModules($this->_name . "_left");
+		if ($modules && !JRequest::getInt('hidemainmenu') || !empty($this->leftMenu)) {
+			$this->displayWithLeftMenu($tpl = null, $this->leftMenu);
 		} else {
 			parent::display($tpl);
 		}
@@ -95,7 +95,7 @@ class DSCView extends JView {
 	function displayTitle($text = '') {
 		$app = DSC::getApp();
 		$title = $text ? JText::_($text) : JText::_(ucfirst(JRequest::getVar('view')));
-		JToolBarHelper::title($title, $app -> getName());
+		JToolBarHelper::title($title, $app->getName());
 	}
 
 	/**
@@ -111,16 +111,16 @@ class DSCView extends JView {
 
 		DSC::load('DSCMenu', 'library.menu');
 		if ($menu = &DSCMenu::getInstance($menuname)) {
-			$menu -> display('leftmenu');
+			$menu->display('leftmenu');
 		}
 
-		$modules = JModuleHelper::getModules($this -> _name . "_left");
+		$modules = JModuleHelper::getModules($this->_name . "_left");
 		$document = &JFactory::getDocument();
-		$renderer = $document -> loadRenderer('module');
+		$renderer = $document->loadRenderer('module');
 		$attribs = array();
 		$attribs['style'] = 'xhtml';
 		foreach (@$modules as $mod) {
-			echo $renderer -> render($mod, $attribs);
+			echo $renderer->render($mod, $attribs);
 		}
 
 		echo "</td>";
@@ -137,18 +137,18 @@ class DSCView extends JView {
 	 * @return unknown_type
 	 */
 	function getLayoutVars($tpl = null) {
-		$layout = $this -> getLayout();
+		$layout = $this->getLayout();
 		switch(strtolower($layout)) {
 			case "view" :
-				$this -> _form($tpl);
+				$this->_form($tpl);
 				break;
 			case "form" :
 				JRequest::setVar('hidemainmenu', '1');
-				$this -> _form($tpl);
+				$this->_form($tpl);
 				break;
 			case "default" :
 			default :
-				$this -> _default($tpl);
+				$this->_default($tpl);
 				break;
 		}
 	}
@@ -160,33 +160,33 @@ class DSCView extends JView {
 	 * @return unknown_type
 	 */
 	function _default($tpl = '') {
-		$model = $this -> getModel();
+		$model = $this->getModel();
 
 		// set the model state
-		$state = $model -> getState();
+		$state = $model->getState();
 		JFilterOutput::objectHTMLSafe($state);
-		$this -> assign('state', $state);
+		$this->assign('state', $state);
 
-		if (empty($this -> hidemenu)) {
+		if (empty($this->hidemenu)) {
 			// add toolbar buttons
-			$this -> _defaultToolbar();
+			$this->_defaultToolbar();
 		}
 
 		// page-navigation
-		$this -> assign('pagination', $model -> getPagination());
+		$this->assign('pagination', $model->getPagination());
 
 		// list of items
-		$this -> assign('items', $model -> getList());
+		$this->assign('items', $model->getList());
 
 		// form
 		$validate = JUtility::getToken();
 		$form = array();
-		$controller = strtolower($this -> get('_controller', JRequest::getVar('controller', JRequest::getVar('view'))));
-		$view = strtolower($this -> get('_view', JRequest::getVar('view')));
-		$action = $this -> get('_action', "index.php?option={$this->_option}&view={$view}");
+		$controller = strtolower($this->get('_controller', JRequest::getVar('controller', JRequest::getVar('view'))));
+		$view = strtolower($this->get('_view', JRequest::getVar('view')));
+		$action = $this->get('_action', "index.php?option={$this->_option}&view={$view}");
 		$form['action'] = $action;
 		$form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
-		$this -> assign('form', $form);
+		$this->assign('form', $form);
 	}
 
 	/**
@@ -195,58 +195,58 @@ class DSCView extends JView {
 	 * @return unknown_type
 	 */
 	function _form($tpl = '') {
-		$model = $this -> getModel();
+		$model = $this->getModel();
 
 		// set the model state
-		$state = $model -> getState();
+		$state = $model->getState();
 		JFilterOutput::objectHTMLSafe($state);
-		$this -> assign('state', $state);
+		$this->assign('state', $state);
 
 		// get the data
 		// not using getItem here to enable ->checkout (which requires JTable object)
-		$row = $model -> getTable();
-		$row -> load((int)$model -> getId());
+		$row = $model->getTable();
+		$row->load((int)$model->getId());
 		// TODO Check if the item is checked out and if so, setlayout to view
 
-		if (empty($this -> hidemenu)) {
+		if (empty($this->hidemenu)) {
 			// set toolbar
-			$layout = $this -> getLayout();
-			$isNew = ($row -> id < 1);
+			$layout = $this->getLayout();
+			$isNew = ($row->id < 1);
 			switch(strtolower($layout)) {
 				case "view" :
-					$this -> _viewToolbar($isNew);
+					$this->_viewToolbar($isNew);
 					break;
 				case "form" :
 				default :
 					// Checkout the item if it isn't already checked out
-					$row -> checkout(JFactory::getUser() -> id);
-					$this -> _formToolbar($isNew);
+					$row->checkout(JFactory::getUser()->id);
+					$this->_formToolbar($isNew);
 					break;
 			}
 			$view = strtolower(JRequest::getVar('view'));
-			$this -> displayTitle('Edit ' . $view);
+			$this->displayTitle('Edit ' . $view);
 		}
 
 		// form
 		$validate = JUtility::getToken();
 		$form = array();
-		$controller = strtolower($this -> get('_controller', JRequest::getVar('controller', JRequest::getVar('view'))));
-		$view = strtolower($this -> get('_view', JRequest::getVar('view')));
-		$action = $this -> get('_action', "index.php?option={$this->_option}&view={$view}&task=edit&id=" . $model -> getId());
-		$validation_url = $this -> get('_validation', "index.php?option={$this->_option}&view={$view}&task=validate&format=raw");
+		$controller = strtolower($this->get('_controller', JRequest::getVar('controller', JRequest::getVar('view'))));
+		$view = strtolower($this->get('_view', JRequest::getVar('view')));
+		$action = $this->get('_action', "index.php?option={$this->_option}&view={$view}&task=edit&id=" . $model->getId());
+		$validation_url = $this->get('_validation', "index.php?option={$this->_option}&view={$view}&task=validate&format=raw");
 		$form['validation_url'] = $validation_url;
 		$form['action'] = $action;
 		$form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
-		$form['id'] = $model -> getId();
-		$this -> assign('form', $form);
-		$this -> assign('row', $model -> getItem());
+		$form['id'] = $model->getId();
+		$this->assign('form', $form);
+		$this->assign('row', $model->getItem());
 
 		// set the required image
 		// TODO Fix this
 		$required = new stdClass();
-		$required -> text = JText::_('Required');
-		$required -> image = "<img src='" . JURI::root() . "/media/{$this->_option}/images/required_16.png' alt='{$required->text}'>";
-		$this -> assign('required', $required);
+		$required->text = JText::_('Required');
+		$required->image = "<img src='" . JURI::root() . "/media/{$this->_option}/images/required_16.png' alt='{$required->text}'>";
+		$this->assign('required', $required);
 	}
 
 	/**
@@ -266,7 +266,7 @@ class DSCView extends JView {
 	 */
 	function _formToolbar($isNew = null) {
 		$divider = false;
-		$surrounding = (!empty($this -> surrounding)) ? $this -> surrounding : array();
+		$surrounding = (!empty($this->surrounding)) ? $this->surrounding : array();
 		if (!empty($surrounding['prev'])) {
 			$divider = true;
 			JToolBarHelper::custom('saveprev', "saveprev", "saveprev", 'Save and Prev', false);
@@ -297,7 +297,7 @@ class DSCView extends JView {
 	 */
 	function _viewToolbar($isNew = null) {
 		$divider = false;
-		$surrounding = (!empty($this -> surrounding)) ? $this -> surrounding : array();
+		$surrounding = (!empty($this->surrounding)) ? $this->surrounding : array();
 		if (!empty($surrounding['prev'])) {
 			$divider = true;
 			JToolBarHelper::custom('prev', "prev", "prev", JText::_('Prev'), false);
