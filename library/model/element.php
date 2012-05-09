@@ -97,7 +97,7 @@ class DSCModelElement extends DSCModel
         $html = '
             <div class="button2-left">
                 <div class="blank">
-                    <a href="javascript::void();" onclick="Dsc.reset'. $this->getName() .'( \''.$value.'\', \''.JText::_( $this->select_title_constant ).'\', \''.$name.'\' )">' . 
+                    <a href="javascript:void(0);" onclick="Dsc.reset'. $this->getName() .'( \''.$value.'\', \''.JText::_( $this->select_title_constant ).'\', \''.$name.'\' )">' . 
         JText::_( $this->clear_constant ) . '
                     </a>
                 </div>
