@@ -314,12 +314,13 @@ class DSCController extends JController
 		$view->setModel( $model, true );
 		$view->assign( 'row', $row );
 		$view->setLayout( 'view' );
-
+		
 		$model->emptyState();
 		$this->_setModelState();
 		$surrounding = $model->getSurrounding( $model->getId() );
 		$view->assign( 'surrounding', $surrounding );
 
+		$view->setTask(true);
 		$view->display();
 		$this->footer();
 		return;
@@ -371,6 +372,7 @@ class DSCController extends JController
 		$surrounding = $model->getSurrounding( $model->getId() );
 		$view->assign( 'surrounding', $surrounding );
 
+		$view->setTask(true);
 		$view->display();
 		$this->footer();
 		return;
@@ -883,6 +885,7 @@ class DSCController extends JController
 		$view->hidestats = true;
 		$view->setModel( $model, true );
 		$view->setLayout('footer');
+		$view->setTask(true);
 		$view->assign('extraHtml', $html);
 		$view->display();
 	}
@@ -984,6 +987,7 @@ class DSCController extends JController
 		$view	= $this->getView( 'elementarticle' );
 		include_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php' );
 		$view->setModel( $model, true );
+		$view->setTask(true);
 		$view->display();
 	}
 
@@ -996,6 +1000,7 @@ class DSCController extends JController
 		$model 	= $this->getModel( 'elementuser' );
 		$view	= $this->getView( 'elementuser' );
 		$view->setModel( $model, true );
+		$view->setTask(true);
 		$view->display();
 	}
 }
