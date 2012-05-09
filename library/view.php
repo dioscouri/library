@@ -64,7 +64,8 @@ class DSCView extends JView {
 	{
 	    // display() will return null if 'doTask' is not set by the controller
 	    // This prevents unauthorized access by bypassing the controllers
-	    if (empty($this->getTask()))
+	    $task = $this->getTask();
+	    if (empty($task))
 	    {
 	        return null;
 	    }
