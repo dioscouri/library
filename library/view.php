@@ -70,8 +70,6 @@ class DSCView extends JView {
 	        return null;
 	    }
 	    
-	    $this->getLayoutVars($tpl);
-	    
 	    parent::display($tpl);
 	}
 

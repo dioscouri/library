@@ -37,6 +37,8 @@ class DSCViewSite extends DSCView
         {
             return null;
         }
+        
+        $this->getLayoutVars($tpl);
 
         if (!JRequest::getInt('hidemainmenu') && empty($this->hidemenu))
         {
