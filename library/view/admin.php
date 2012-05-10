@@ -53,9 +53,18 @@ class DSCViewAdmin extends DSCView
 	*/
 	public function displayTitle($text = '')
 	{
-	    $app = DSC::getApp();
-	    $title = $text ? JText::_($text) : JText::_(ucfirst(JRequest::getVar('view')));
-	    JToolBarHelper::title($title, $app->getName());
+	    $layout = $this->getLayout();
+        switch(strtolower($layout))
+        {
+            case "footer":
+                break;
+            case "default":
+            default:
+                $app = DSC::getApp();
+                $title = $text ? JText::_($text) : JText::_(ucfirst(JRequest::getVar('view')));
+                JToolBarHelper::title($title, $app->getName());
+                break;
+        }
 	}
 	
 	/**
@@ -90,6 +99,59 @@ class DSCViewAdmin extends DSCView
 	    echo "</td>";
 	    echo "</tr>";
 	    echo "</table>";
+	}
+	
+	/**
+	* Basic commands for displaying a list
+	*
+	* @param $tpl
+	* @return unknown_type
+	*/
+	function _default($tpl = '') 
+	{
+	    if (empty($this->hidemenu)) 
+	    {
+	        // add toolbar buttons
+	        $this->_defaultToolbar();
+	    }
+	    
+	    parent::_default($tpl);
+	}
+	
+	/**
+	* Basic methods for displaying an item from a list
+	* @param $tpl
+	* @return unknown_type
+	*/
+	function _form($tpl = '') 
+	{
+	    if (empty($this->hidemenu)) 
+	    {
+	        $model = $this->getModel();
+	        
+	        // get the data
+	        $table = $model->getTable();
+	        $table->load( (int) $model->getId() );
+	        
+	        // set toolbar
+	        $layout = $this->getLayout();
+	        $isNew = ($table->id < 1);
+	        $view = ucwords( strtolower( JRequest::getVar('view') ) );
+	        switch(strtolower($layout)) 
+	        {
+	            case "view" :
+	                $this->set( "title", 'View ' . $view);
+	                $this->_viewToolbar($isNew);
+	                break;
+	            case "form" :
+	            default :
+	                $this->set( "title", 'Edit ' . $view);
+	                $this->_formToolbar($isNew);	                
+	                break;
+	        }
+	    }
+	    
+	    parent::_form($tpl);
 	}
 	
 	/**
