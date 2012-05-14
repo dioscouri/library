@@ -17,6 +17,16 @@ class DSC extends JObject
 	static $_versiontype    = 'community';
 	static $_copyrightyear 	= '2011';	
 	static $_min_php		= '5.2';
+
+	/**
+	* constructor
+	* @return void
+	*/
+	public function __construct()
+	{
+	    parent::__construct();
+	    $this->setVariables();
+	}
 	
 	/**
 	* Get the version
@@ -508,17 +518,32 @@ class DSC extends JObject
 	}
 	
 	/**
+	* Returns the query
+	* @return string The query to be used to retrieve the config data from the database
+	*/
+	public function _buildQuery()
+	{
+	    $query = "";
+	    //$query = "SELECT * FROM #__component_config";
+	    return $query;
+	}
+	
+	/**
 	* Retrieves the data
 	* @return array Array of objects containing the data from the database
 	*/
 	public function getData() 
 	{
 	    // load the data if it doesn't already exist
-	    if (empty( $this->_data )) {
+	    if (empty( $this->_data )) 
+	    {
+	        $this->_data = '';
 	        $database = JFactory::getDBO();
-	        $query = $this->_buildQuery();
-	        $database->setQuery( $query );
-	        $this->_data = $database->loadObjectList();
+	        if ($query = $this->_buildQuery()) 
+	        {
+    	        $database->setQuery( $query );
+    	        $this->_data = $database->loadObjectList();
+	        }
 	    }
 	
 	    return $this->_data;

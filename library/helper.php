@@ -223,7 +223,7 @@ class DSCHelper extends JObject
 	 * @return	array	Column of values from the source array
 	 * @since	1.5
 	 */
-	function getColumn(&$array, $index)
+	public function getColumn(&$array, $index)
 	{
 		$result = array();
 
