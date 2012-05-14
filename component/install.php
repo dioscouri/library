@@ -103,21 +103,6 @@ if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && 
 		// track the message and status of installation from dscInstaller
 		if ($result) 
 		{
-			// update the module record if the position != left
-			if (isset($mposition) && $mposition != 'left')
-			{
-				// set the position of the module
-				$database = JFactory::getDBO();
-			    if(version_compare(JVERSION,'1.6.0','ge')) {
-                    // Joomla! 1.6+ code here
-                    $query = "UPDATE #__extensions SET `position` = '$mposition' WHERE `type` = 'module' AND `element` = '".$mname."'";
-                } else {
-                    // Joomla! 1.5 code here
-                    $query = "UPDATE #__modules SET `position` = '{$mposition}' WHERE `module` = '{$mname}';";
-                }				
-				$database->setQuery($query);
-				$database->query();
-			}
 			$alt = JText::_( "Installed" );
 			$mstatus = "<img src='/media/dioscouri/images/tick.png' border='0' alt='{$alt}' />";
 		} else {
