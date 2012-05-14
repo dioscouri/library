@@ -67,7 +67,7 @@ class DSCTools
 	 * @param $eventName
 	 * @return unknown_type
 	 */
-	function hasEvent( $element, $eventName, $group )
+	public static function hasEvent( $element, $eventName, $group )
 	{
 		$success = false;
 		if (!$element || !is_object($element)) {
