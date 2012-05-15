@@ -77,11 +77,11 @@ class DSCHelper extends JObject
 	function checkDirectory($dir, $create = true)
 	{
 		$return = true;
-		if (!$exists = &JFolder::exists( $dir ) ) 
+		if (!$exists = JFolder::exists( $dir ) ) 
 		{
 			if ($create)
 			{
-			    if (!$return = &JFolder::create( $dir ))
+			    if (!$return = JFolder::create( $dir ))
 			    {
 			        self::setError( "Attempted to Create Dir But Failed" );
 			    }
@@ -95,7 +95,7 @@ class DSCHelper extends JObject
 		
         if (!is_writable($dir)) 
         {
-            if (!$change = &JPath::setPermissions( $dir ))
+            if (!$change = JPath::setPermissions( $dir ))
             {
                 self::setError( "Changing Permissions on Dir Failed" );
             }
