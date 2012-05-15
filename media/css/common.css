@@ -47,6 +47,23 @@
 
 .dsc-table .dsc-row .dsc-cell {
     display : table-cell;
+    padding: 2px;
+}
+
+.dsc-table .dsc-row .dsc-cell.dsc-key {
+    padding-right: 20px;
+    padding-top: 7px;
+    vertical-align: top;
+    min-width: 200px;
+}
+
+.dsc-table .dsc-row .dsc-cell.dsc-value {
+    vertical-align: bottom;
+}
+
+.dsc-key {
+    font-size: 120%;
+    font-weight: bold;
 }
 
 /*-------------------------------------------
