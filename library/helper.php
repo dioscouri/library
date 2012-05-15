@@ -63,7 +63,7 @@ class DSCHelper extends JObject
 
 			$instance = new $helperClass();
 			
-			$instances[$helperClass] = & $instance;
+			$instances[$helperClass] = $instance;
 		}
 
 		return $instances[$helperClass];
