@@ -20,7 +20,7 @@ class DSCHelper extends JObject
 	 * @param string 	$prefix	 A prefix for the helper class name. Optional.
 	 * @return helper The Helper Object	 
 	*/
-	function &getInstance( $type = 'Base', $prefix = 'SampleHelper' )
+	public static function getInstance( $type = 'Base', $prefix = 'SampleHelper' )
 	{
 		static $instances;
 
@@ -133,7 +133,7 @@ class DSCHelper extends JObject
 	 * @return	array	An array with directory elements
 	 * @since 1.5
 	 */
-	function addIncludePath( $path=null )
+	public static function addIncludePath( $path=null )
 	{
 		static $sampleHelperPaths;
 
