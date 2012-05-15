@@ -32,7 +32,7 @@ class DSCFile extends JObject
 			$dir = $this->getDirectory();	
 		}		
 		
-		$helper = DSCHelperBase::getInstance();
+		$helper = new DSCHelper();
 		$helper->checkDirectory($dir);
 
 		// then confirms existence of htaccess file
@@ -154,7 +154,7 @@ class DSCFile extends JObject
 	function handleMultipleUpload ($fieldname='userfile', $num = 0) 
 	{
 		$success = false;
-		$config = &DSCConfig::getInstance();
+		$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -190,7 +190,7 @@ class DSCFile extends JObject
 		
 		$this->size = $userfile['size'][$num]/1024;		
 		// check size of upload against max set in config
-		if($this->size > $config->get( 'files_maxsize', '3000' ) ) 
+		if($this->size > $config->get( 'files_maxsize', '10000' ) ) 
 		{
 			$this->setError( JText::_( 'Invalid File Size' ) );
 			return $success;

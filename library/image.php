@@ -16,7 +16,10 @@ class DSCImage extends DSCFile
 	var $image;
 	var $type;
 	
-	function DSCImage($filename = "") 
+	public $thumb_width = '160';
+	public $thumb_height = '90';
+	
+	function __construct($filename = "") 
 	{
 		parent::__construct();
 		
@@ -60,7 +63,7 @@ class DSCImage extends DSCFile
             $dir = $this->getDirectory();   
         }       
         
-        $helper = DSCHelperBase::getInstance();
+        $helper = new DSCHelper();
         $helper->checkDirectory($dir);
         $this->_directory = $dir;
         return $this->_directory;
@@ -249,6 +252,74 @@ class DSCImage extends DSCFile
         imagecopyresampled( $image_resized, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight() );
         
         $this->image = $image_resized;
+	}
+	
+	/**
+	* Batch actions for saving a thumb of an image
+	*
+	* @param image	string	filename of the image
+	* @param options	array	array of options: width, height, thumb_path
+	* @return thumb full path
+	*/
+	function saveThumb( $img, $options = array() )
+	{
+	    $thumb_path = $img->getDirectory().DS.'thumbs';
+	    $img_width = 'thumb_width';
+	    $img_height = 'thumb_height';
+	
+	    $img->load();
+	
+	    // Default width or options width?
+	    if(!empty($options['width']) && is_numeric($options['width'])) 
+	    {
+	        $width = $options['width'];
+	    }
+	        else 
+	    {
+	        $width = $this->$img_width; 
+	    }
+	
+	    // Default height or options height?
+	    if(!empty($options['height']) && is_numeric($options['height']))
+	    {
+	        $height = $options['height'];
+	    }
+	        else 
+	    {
+	        $height = $this->$img_height;
+	    }
+	
+	    // Default thumb path or options thumb path?
+	    if(!empty($options['thumb_path'])) 
+	    {
+	        $dest_dir = $options['thumb_path'];
+	    }
+	        else
+	    {
+    	    $dest_dir = $thumb_path;
+	    }
+	    	
+	    $helper = new DSCHelper();
+	    $helper->checkDirectory($dest_dir);
+	
+	    if ($width >= $height) 
+	    {
+	        $img->resizeToWidth( $width );
+	    }
+	        else 
+	    {
+    	    $img->resizeToHeight( $height );
+	    }
+	    	
+	    $dest_path = $dest_dir.DS.$img->getPhysicalName();
+	
+	    if (!$img->save( $dest_path ))
+	    {
+	        $this->setError( $img->getError() );
+	        return false;
+	    }
+	
+	    return $dest_path;
 	}
 }
 ?>
