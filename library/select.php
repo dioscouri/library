@@ -13,8 +13,21 @@ require_once( JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'sele
 
 class DSCSelect extends JHTMLSelect
 {
+    /**
+    * Generates a yes/no radio list with the arguments in a consistent order
+    *
+    * @param string The value of the HTML name attribute
+    * @param string Additional HTML attributes for the <select> tag
+    * @param mixed The key that is selected
+    * @returns string HTML for the radio list
+    */
+    public static function booleanlist( $selected, $name='', $attribs = null, $yes = 'yes', $no = 'no', $id = false )
+    {
+        return parent::booleanlist( $name, $attribs, $selected, $yes, $no, $id );
+    }
+    
 	/**
-	* Generates a yes/no radio list
+	* Generates a yes/no select list
 	*
 	* @param string The value of the HTML name attribute
 	* @param string Additional HTML attributes for the <select> tag
