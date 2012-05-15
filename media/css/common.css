@@ -1,0 +1,62 @@
+/*-------------------------------------------
+    Common
+-------------------------------------------*/
+.dsc-right {
+    float : right;
+}
+
+.dsc-left {
+    float : left;
+}
+
+.dsc-clear {
+    clear : both;
+}
+
+.dsc-full {
+    width : 100%;
+}
+
+.dsc-flat li {
+    float : left;
+}
+
+.dsc-center {
+    margin : 0 auto;
+}
+
+.dsc-text-center {
+    text-align : center;
+}
+
+.dsc-text-right {
+    text-align : right;
+}
+
+.dsc-table {
+    display : table;
+}
+
+.dsc-table .dsc-row {
+    display : table-row;
+}
+
+.dsc-table .dsc-row .dsc-cell {
+    display : table-cell;
+}
+
+/*-------------------------------------------
+    Self-clearing Floats
+-------------------------------------------*/
+.dsc-clear:after, .dsc-wrap:after, .dsc-flat:after {
+    clear      : both;
+    content    : '.';
+    height     : 0;
+    width      : 0;
+    visibility : hidden;
+    display    : block;
+}
+
+.dsc-clear, .dsc-wrap, .dsc-flat {
+    zoom : 1;
+}
