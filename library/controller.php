@@ -126,7 +126,7 @@ class DSCController extends JController
 		// Display the view
 		if ($cachable && $viewType != 'feed') {
 			global $option;
-			$cache =& JFactory::getCache($option, 'view');
+			$cache = JFactory::getCache($option, 'view');
 			$cache->get($view, 'display');
 		} else {
 			$view->display();
@@ -850,7 +850,7 @@ class DSCController extends JController
 		$constant = 'page_tooltip_'.$key;
 		$config_title = $constant."_disabled";
 
-		$database = &JFactory::getDBO();
+		$database = JFactory::getDBO();
 		JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS );
 		unset($table);
 		$table = JTable::getInstance( 'config', $app.'Table' );
@@ -912,7 +912,7 @@ class DSCController extends JController
 
 		// gets the plugin named $element
 		$import 	= JPluginHelper::importPlugin( $this ->_name, $element );
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		// executes the event $elementTask for the $element plugin
 		// returns the html from the plugin
 		// passing the element name allows the plugin to check if it's being called (protects against same-task-name issues)
@@ -955,7 +955,7 @@ class DSCController extends JController
 
 		// gets the plugin named $element
 		$import 	= JPluginHelper::importPlugin( $this -> _name, $element );
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 
 		// executes the event $elementTask for the $element plugin
 		// returns the html from the plugin
