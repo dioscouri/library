@@ -23,7 +23,19 @@ class DSCPlugin extends JPlugin
      * @var $_element  string  Should always correspond with the plugin's filename, 
      *                         forcing it to be unique 
      */
-    var $_element    = '';
+    protected $_element    = '';
+    
+    /**
+    *
+    * Dot notation prefix to the plugin, e.g. 'plugin_element.'
+    */
+    protected $dot_path_prefix = '';
+    
+    /**
+     *
+     * Slash notation prefix to the plugin's path, e.g. 'plugin_element/'
+     */
+    protected $path_prefix = '';
     
     /**
      * Checks to make sure that this plugin is the one being triggered by the extension
@@ -32,7 +44,7 @@ class DSCPlugin extends JPlugin
      * @return mixed Parameter value
      * @since 1.5
      */
-    function _isMe( $row ) 
+    protected function _isMe( $row ) 
     {
         $element = $this->_element;
         $success = false;
@@ -53,7 +65,7 @@ class DSCPlugin extends JPlugin
      * 
      * @return string   HTML to display
      */
-    function _renderForm()
+    protected function _renderForm()
     {
         $vars = new JObject();
         $html = $this->_getLayout('form', $vars);
@@ -66,7 +78,7 @@ class DSCPlugin extends JPlugin
      * @param array
      * @return string   HTML to display
      */
-    function _renderView( $options='' )
+    protected function _renderView( $options='' )
     {
         $vars = new JObject();
         $html = $this->_getLayout('view', $vars);
@@ -80,7 +92,7 @@ class DSCPlugin extends JPlugin
      * @return string
      * @access protected
      */
-    function _renderMessage($message = '')
+    protected function _renderMessage($message = '')
     {
         $vars = new JObject();
         $vars->message = $message;
@@ -98,8 +110,20 @@ class DSCPlugin extends JPlugin
      * @return string
      * @access protected
      */
-    function _getLayout($layout, $vars = false, $plugin = '', $group = 'sample' )
+    protected function _getLayout($layout, $vars = false, $plugin = '', $group = '' )
     {
+        if (empty($group))
+        {
+            $config = DSC::getApp();
+            $com_name = $app->getName();
+            $group = str_replace( 'com_', '', $com_name );
+            if (empty($group))
+            {
+                // TODO Try to get it some other way, such as from the name of the plugin?
+                return null;
+            }
+        }
+        
         if (empty($plugin)) 
         {
             $plugin = $this->_element;
@@ -124,7 +148,7 @@ class DSCPlugin extends JPlugin
      * @return  string  The path to the plugin layout file
      * @access protected
      */
-    function _getLayoutPath($plugin, $group, $layout = 'default')
+    protected function _getLayoutPath($plugin, $group, $layout = 'default')
     {
         $app = JFactory::getApplication();
 
@@ -156,15 +180,14 @@ class DSCPlugin extends JPlugin
      * 
      * @return unknown_type
      */
-    function _displayArticle()
+    protected function _displayArticle()
     {
         $html = '';
         
         $articleid = $this->params->get('articleid');
         if ($articleid)
         {
-            Sample::load( 'SampleArticle', 'library.article' );
-            $html = SampleArticle::display( $articleid );
+            $html = DSCArticle::display( $articleid );
         }
         
         return $html;
@@ -177,7 +200,7 @@ class DSCPlugin extends JPlugin
      * @param string $suffix
      * @return boolean
      */
-    function _checkToken( $suffix='', $method='post' )
+    protected function _checkToken( $suffix='', $method='post' )
     {
         $token  = JUtility::getToken();
         $token .= ".".strtolower($suffix);
@@ -195,7 +218,7 @@ class DSCPlugin extends JPlugin
      * @param string $suffix
      * @return string HTML
      */
-    function _getToken( $suffix='' )
+    protected function _getToken( $suffix='' )
     {
         $token  = JUtility::getToken();
         $token .= ".".strtolower($suffix);
@@ -211,7 +234,7 @@ class DSCPlugin extends JPlugin
      *  
      * @return string
      */
-    function _getTokenSuffix( $method='post' )
+    protected function _getTokenSuffix( $method='post' )
     {
         $suffix = JRequest::getVar( 'tokenSuffix', '', $method );
         if (!$this->_checkToken($suffix, $method))
@@ -227,7 +250,7 @@ class DSCPlugin extends JPlugin
      *  
      * @return object
      */
-    function _getMe()
+    protected function _getMe()
     {
         if (empty($this->_row))
         {
