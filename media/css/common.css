@@ -43,6 +43,7 @@
 
 .dsc-table .dsc-row {
     display : table-row;
+    clear : both;
 }
 
 .dsc-table .dsc-row .dsc-cell {
