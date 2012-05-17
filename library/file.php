@@ -37,7 +37,7 @@ class DSCFile extends JObject
 
 		// then confirms existence of htaccess file
 		$htaccess = $dir.DS.'.htaccess';
-		if (!$fileexists = &JFile::exists( $htaccess ) ) 
+		if (!$fileexists = JFile::exists( $htaccess ) ) 
 		{
 			$destination = $htaccess;
 			$text = "deny from all";
@@ -74,7 +74,7 @@ class DSCFile extends JObject
 	function handleUpload ($fieldname='userfile') 
 	{
 		$success = false;
-		$config = &DSCConfig::getInstance();
+		$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -99,7 +99,7 @@ class DSCFile extends JObject
 		
 		//$this->proper_name = basename($userfile['name']);
 		$userFileName = basename($userfile['name']);
-		$this->proper_name = DSCFile::getProperName($userFileName);
+		$this->proper_name = $this->getProperName($userFileName);
 		
 		if ($userfile['size'] == 0) {
 			$this->setError( JText::_( 'Invalid File' ) );
@@ -130,18 +130,18 @@ class DSCFile extends JObject
 	 * @param  String
 	 * @return String
 	 */
-	function getProperName($fileName){
-	
-	$position=strrpos($fileName,'.');
-	$length=strlen($fileName);
-	$file=substr($fileName,0,$position);
-	$temp=explode('.',$file);
-    $file=implode('-',$temp);
-	
-	$extention=substr($fileName,$position+1,$length-$position);
-	$fileName=$file.".".$extention;
-	
-	return $fileName;
+	public function getProperName($fileName)
+	{	
+	    $position=strrpos($fileName,'.');
+	    $length=strlen($fileName);
+	    $file=substr($fileName,0,$position);
+	    $temp=explode('.',$file);
+	    $file=implode('-',$temp);
+	     
+	    $extention=substr($fileName,$position+1,$length-$position);
+	    $fileName=$file.".".$extention;
+	     
+	    return $fileName;
 	}
 	
 	
@@ -181,7 +181,7 @@ class DSCFile extends JObject
 		
 		$userFileName=basename($userfile['name'][$num]);
 		
-		$this->proper_name = DSCFile::getProperName($userFileName);
+		$this->proper_name = $this->getProperName($userFileName);
 		
 		if ($userfile['size'][$num] == 0) {
 			$this->setError( JText::_( 'Invalid File' ) );
@@ -437,7 +437,7 @@ class DSCFile extends JObject
 			$name = JUtility::getHash( time() );
 			$physicalname = $name.".".$extension;
 			
-			while ($fileexists = &JFile::exists( $dir.DS.$physicalname ) ) 
+			while ($fileexists = JFile::exists( $dir.DS.$physicalname ) ) 
 			{
 				$name = JUtility::getHash( time() );
 				$physicalname = $name.".".$extension;
@@ -524,7 +524,7 @@ class DSCFile extends JObject
 	 */
 	function fileToBlob () 
 	{
-		$database = &JFactory::getDBO();
+		$database = JFactory::getDBO();
 		$source = $this->file_path;
 		$success = false;
 		
@@ -554,7 +554,7 @@ class DSCFile extends JObject
 	 */
 	function textToFile ( $file, $temppath='' ) 
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 		$result = false;
 		if (!$temppath || !is_writable($temppath)) 
 		{
@@ -579,7 +579,7 @@ class DSCFile extends JObject
 	 */
 	function blobToFile ( $file, $temppath='' ) 
 	{
-		global $mainframe;
+		$mainframe = JFactory::getApplication();
 		$result = false;
 		if (!$temppath || !is_writable($temppath)) 
 		{
@@ -601,7 +601,7 @@ class DSCFile extends JObject
 	 * Retrieves the values
 	 * @return array Array of objects containing the data from the database
 	 */
-	function getStorageMethods() 
+	public static function getStorageMethods() 
 	{
 		static $instance;
 		
@@ -625,13 +625,13 @@ class DSCFile extends JObject
 	 * Creates a List
 	 * @return array Array of objects containing the data from the database
 	 */
-	function getArrayListStorageMethods() 
+	public static function getArrayListStorageMethods() 
 	{
 		static $instance;
 		
 		if (!is_array($instance)) {
 			$instance = array();
-			$data = &DSCFile::getStorageMethods();
+			$data = DSCFile::getStorageMethods();
 			for ($i=0; $i<count($data); $i++) {
 				$d = $data[$i];
 		  		$instance[] = JHTML::_('select.option', $d->id, JText::_( $d->title ) );
