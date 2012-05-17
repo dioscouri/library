@@ -499,11 +499,15 @@ class DSCController extends JController
 
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger( 'onAfterSave'.$this->get('suffix'), array( $row ) );
+			
+			$return = $row;
 		}
 		else
 		{
 			$this->messagetype 	= 'notice';
 			$this->message 		= JText::_( 'Save Failed' )." - ".$row->getError();
+			
+			$return = false;
 		}
 
 		$redirect = "index.php?option=" . $this->get('com');
@@ -547,6 +551,8 @@ class DSCController extends JController
 
 		$redirect = JRoute::_( $redirect, false );
 		$this->setRedirect( $redirect, $this->message, $this->messagetype );
+		
+		return $return;
 	}
 
 	/**
