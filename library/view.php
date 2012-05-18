@@ -23,9 +23,7 @@ class DSCView extends JView {
 	function __construct() 
 	{
 		$app = DSC::getApp();
-		/*$this->_option = 'com_'.$app->getName();*/
-		$this->_option = JRequest::getCmd('option');
-		$this->_name = $app->getName();
+		$this->_option = 'com_'.$app->getName();
 		parent::__construct();
 	}
 	
