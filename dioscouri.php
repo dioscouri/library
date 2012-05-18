@@ -210,7 +210,7 @@ class DSC extends JObject
 			require_once JPATH_SITE.'/libraries/dioscouri/loader.php';
 		}
 		
-		$parentPath = JPATH_SITE . '/libraries/dioscouri/library';
+		$parentPath = JPATH_SITE . DS . 'libraries' . DS . 'dioscouri' . DS . 'library';
 		DSCLoader::discover('DSC', $parentPath, true);
 		
 		$autoloader = new DSCLoader();

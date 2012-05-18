@@ -14,7 +14,7 @@ class DSCLoader extends JLoader
     public function __construct() 
     {
         // Register DSCLoader::load as an autoload class handler.
-        spl_autoload_register(array($this, 'load'));        
+        spl_autoload_register(array($this, 'load'));
     }
     
 	/**
@@ -41,18 +41,24 @@ class DSCLoader extends JLoader
 			// Iterate through the folder contents to search for input classes.
 			while (false !== ($entry = $d->read()))
 			{
-				if (!in_array($entry, $excluded_dirs) && is_dir($parentPath.'/'.$entry)) {
-					self::discover($classPrefix.$entry, $parentPath.'/'.$entry, $force, $recurse);
+				if (!in_array($entry, $excluded_dirs) && is_dir($parentPath.DS.$entry)) {
+					self::discover($classPrefix.$entry, $parentPath.DS.$entry, $force, $recurse);
 				} else {
 					// Only load for php files.
-					if (file_exists($parentPath.'/'.$entry) && (substr($entry, strrpos($entry, '.') + 1) == 'php')) {
+					if (file_exists($parentPath.DS.$entry) && (substr($entry, strrpos($entry, '.') + 1) == 'php')) {
 		
 						// Get the class name and full path for each file.
 						$class = strtolower($classPrefix.preg_replace('#\.[^.]*$#', '', $entry));
-						$path  = $parentPath.'/'.$entry;
+						$path  = $parentPath.DS.$entry;
 		
 						// Register the class with the autoloader if not already registered or the force flag is set.
-						self::register($class, $path, $force);
+						if(version_compare(JVERSION,'1.6.0','ge')) {
+						    // Joomla! 1.6+ code here
+						    self::register($class, $path, $force);
+						} else {
+						    // Joomla! 1.5 code here
+						    JLoader::register($class, $path);
+						}
 					}
 				}
 			}
