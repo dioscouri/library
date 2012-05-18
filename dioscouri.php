@@ -213,6 +213,8 @@ class DSC extends JObject
 		$parentPath = JPATH_SITE . '/libraries/dioscouri/library';
 		DSCLoader::discover('DSC', $parentPath, true);
 		
+		$autoloader = new DSCLoader();
+		
 		$doc = JFactory::getDocument( );
 		$uri = JURI::getInstance( );
 		$js = "Dsc.jbase = '" . $uri->root( ) . "';\n";

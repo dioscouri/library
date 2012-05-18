@@ -9,11 +9,14 @@
 
 defined('_JEXEC') or die;
 
-// Register DSCLoader::load as an autoload class handler.
-spl_autoload_register(array('DSCLoader', 'load'));
-
 class DSCLoader extends JLoader 
 {
+    public function __construct() 
+    {
+        // Register DSCLoader::load as an autoload class handler.
+        spl_autoload_register(array($this, 'load'));        
+    }
+    
 	/**
 	* Method to recursively discover classes of a given type in a given path.
 	*
