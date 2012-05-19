@@ -304,21 +304,7 @@ if (!class_exists( 'DSCInstaller' )) {
 			//grab the manifest information
 			$manifestInformation = $this->getManifestInformation($installer, $name);
             $savedParameters = new stdClass(); 
-			
-			//check if the extension is installed already and if so uninstall it
-			$elementID = $this->checkIfInstalledAlready($manifestInformation);
-			if ($elementID != 0) {
-				//save the extensions parameters if requested
-				$savedParameters = $this->saveParameters($manifestInformation);
 				
-				//prevent any custom uninstall scripts if requested for components
-				if (($this->_preventUninstallScript) && ($manifestInformation["type"] == "component")) {
-					$this->preventCustomUninstall($installer);
-				}
-				//uninstall the extension using the joomla uninstaller
-				$installer->uninstall($manifestInformation["type"], $elementID);
-			}
-	
 			//set the installer to overwrite just encase any files were left on the server
 			$installer->setOverwrite(true);
 			//now that the extension was uninstalled if nessecary we can install it
