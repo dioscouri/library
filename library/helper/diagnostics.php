@@ -61,7 +61,7 @@ class DSCHelperDiagnostics extends DSCHelper
     {
         if (!$this->tableExists( $table ))
         {
-            $db =& JFactory::getDBO();
+            $db = JFactory::getDBO();
             $db->setQuery( $definition );
             if (!$db->query())
             {
@@ -79,11 +79,11 @@ class DSCHelperDiagnostics extends DSCHelper
      */
     function tableExists( $table )
     {
-        $db =& JFactory::getDBO();
-        
+        $db = JFactory::getDBO();
+
         // Manually replace the Joomla Tables prefix. Automatically it fails
         // because the table name is between single-quotes
-        $db->setQuery(str_replace('#__', $db->_table_prefix, "SHOW TABLES LIKE '$table'"));
+        $db->setQuery(str_replace('#__', $db->getPrefix(), "SHOW TABLES LIKE '$table'"));
         $result = $db->loadObject();
         
         if ($result === null) return false;
