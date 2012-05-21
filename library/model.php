@@ -22,6 +22,18 @@ class DSCModel extends JModel
     {
         parent::__construct($config);
         $this->_filterinput = &JFilterInput::getInstance();
+
+    	if (empty($this->option))
+		{
+			$r = null;
+
+			if (!preg_match('/(.*)Model/i', get_class($this), $r))
+			{
+				JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'));
+			}
+
+			$this->option = 'com_' . strtolower($r[1]);
+		}
         
         //set the model state
 		if (array_key_exists('state', $config))  {
