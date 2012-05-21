@@ -137,7 +137,7 @@ class DSC extends JObject
 	    $name = 'dioscouri';
 	    if (!empty($com)) {
 	        $app = self::getApp($com);
-	        $name = "com_" . $app;
+	        $name = "com_" . $app->getName();
 	    }
 	    	    
 	    $url = '';
@@ -172,7 +172,7 @@ class DSC extends JObject
 	    $name = 'dioscouri';
 	    if (!empty($com)) {
 	        $app = self::getApp($com);
-	        $name = "com_" . $app;
+	        $name = "com_" . $app->getName();
 	    }
 	    
 	    $path = '';

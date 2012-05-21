@@ -62,9 +62,21 @@ class DSCModelElement extends DSCModel
                    }";
         $doc->addScriptDeclaration($js);
     
-        $option = $this->option;
-		if(empty($option)){  $option = JRequest::getCmd( 'option' );}
-		
+        if (!empty($this->option)) 
+        {
+            $option = $this->option;
+        } 
+            else 
+        {
+			$r = null;
+
+			if (!preg_match('/(.*)Model/i', get_class($this), $r))
+			{
+				JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'));
+			}
+
+			$option = 'com_' . strtolower($r[1]);
+        }
         $link = 'index.php?option='.$option.'&view='.$this->getName().'&tmpl=component&object='.$name;
     
         JHTML::_('behavior.modal', 'a.modal');
