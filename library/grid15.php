@@ -24,7 +24,7 @@ class DSCGrid extends JHTMLGrid
 	 */
 	public function sort( $title, $order, $direction = 'asc', $selected = 0, $form='document.adminForm' )
 	{
-		JHTML::_('script', 'sample.js', 'media/com_sample/js/');
+		
 		
 		$direction	= strtolower( $direction );
 		$images		= array( 'sort_asc.png', 'sort_desc.png' );
@@ -32,7 +32,7 @@ class DSCGrid extends JHTMLGrid
 		$index		= intval( $direction == 'desc' );
 		$direction	= ($direction == 'desc') ? 'asc' : 'desc';
 
-		$html = '<a href="javascript:sampleGridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
+		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
 		$html .= JText::_( $title );
 		if ($order == $selected ) {
 		    $html .= '<img src="'. DSC::getURL('images'). $images[$index] .'" border="0" alt="'. $alts[$index] .'" />';
@@ -72,10 +72,10 @@ class DSCGrid extends JHTMLGrid
 		$down = 'downarrow.png'; $down_title = JText::_("Move Down");
 
 		$result =
-			'<a href="javascript:sampleGridOrder('.$id.', -1)" >'
+			'<a href="javascript:Dsc.gridOrder('.$id.', -1)" >'
 			.'<img src="'. DSC::getURL('images'). $up .'" border="0" alt="'. $up_title .'" />'
 			.'</a>'
-			.'<a href="javascript:sampleGridOrder('.$id.', 1)" >'
+			.'<a href="javascript:Dsc.gridOrder('.$id.', 1)" >'
 			.'<img src="'. DSC::getURL('images'). $down .'" border="0" alt="'. $down_title .'" />'
 			.'</a>';
 			
