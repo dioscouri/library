@@ -63,6 +63,8 @@ class DSCModelElement extends DSCModel
         $doc->addScriptDeclaration($js);
     
         $option = $this->option;
+		if(empty($option)){  $option = JRequest::getCmd( 'option' );}
+		
         $link = 'index.php?option='.$option.'&view='.$this->getName().'&tmpl=component&object='.$name;
     
         JHTML::_('behavior.modal', 'a.modal');
