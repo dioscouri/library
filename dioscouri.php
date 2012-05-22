@@ -210,16 +210,21 @@ class DSC extends JObject
 			require_once JPATH_SITE.'/libraries/dioscouri/loader.php';
 		}
 		
-		$parentPath = JPATH_SITE . DS . 'libraries' . DS . 'dioscouri' . DS . 'library';
-		DSCLoader::discover('DSC', $parentPath, true);
-		
-		$autoloader = new DSCLoader();
-		
-		$doc = JFactory::getDocument( );
-		$uri = JURI::getInstance( );
-		$js = "Dsc.jbase = '" . $uri->root( ) . "';\n";
-		$doc->addScript( DSC::getURL('js') . 'common.js' );
-		$doc->addScriptDeclaration( $js );
+		if (!defined('_DSC')) 
+		{
+		    define('_DSC', 1);
+		    
+		    $parentPath = JPATH_SITE . DS . 'libraries' . DS . 'dioscouri' . DS . 'library';
+		    DSCLoader::discover('DSC', $parentPath, true);
+		    
+		    $autoloader = new DSCLoader();
+		    
+		    $doc = JFactory::getDocument( );
+		    $uri = JURI::getInstance( );
+		    $js = "Dsc.jbase = '" . $uri->root( ) . "';\n";
+		    $doc->addScript( DSC::getURL('js') . 'common.js' );
+		    $doc->addScriptDeclaration( $js );
+		}
 				
 		return true;
 	}
