@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.6" type="library" method="upgrade">
+<extension type="library" method="upgrade" version="2.5">
 	<name>Dioscouri Library</name>
 	<libraryname>dioscouri</libraryname>
 	<author>Dioscouri Design</author>
-	<creationDate>December 2011</creationDate>
-	<copyright>Copyright (C) 2011 Dioscouri Design. All rights reserved.</copyright>
+	<creationDate>May 2012</creationDate>
+	<copyright>Copyright (C) 2012 Dioscouri Design. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>info@dioscouri.com</authorEmail>
 	<authorUrl>www.dioscouri.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.1.1</version>
 	<description></description>
     
 	<files>
@@ -31,5 +31,9 @@
         <folder>js</folder>
         <file>index.html</file>
     </media>
+    
+    <updateservers>
+       <server type="extension" priority="1" name="Dioscouri Library Updates">http://updates.dioscouri.com/library/updates.xml</server>
+    </updateservers>
     
 </extension>
