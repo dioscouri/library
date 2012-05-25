@@ -200,7 +200,7 @@ class DSC extends JObject
 	 * 
 	 * Enter description here ...
 	 */
-	public static function loadLibrary()
+	public static function loadLibrary( $load_js=true )
 	{
 		if (!class_exists('DSCLoader')) {
 			jimport('joomla.filesystem.file');
@@ -219,11 +219,14 @@ class DSC extends JObject
 		    
 		    $autoloader = new DSCLoader();
 		    
-		    $doc = JFactory::getDocument( );
-		    $uri = JURI::getInstance( );
-		    $js = "Dsc.jbase = '" . $uri->root( ) . "';\n";
-		    $doc->addScript( DSC::getURL('js') . 'common.js' );
-		    $doc->addScriptDeclaration( $js );
+			if ($load_js) 
+		    {
+    		    $doc = JFactory::getDocument( );
+    		    $uri = JURI::getInstance( );
+    		    $js = "Dsc.jbase = '" . $uri->root( ) . "';\n";
+    		    $doc->addScript( DSC::getURL('js') . 'common.js' );
+    		    $doc->addScriptDeclaration( $js );
+		    }
 		}
 				
 		return true;
