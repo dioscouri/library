@@ -95,10 +95,6 @@ class DSCHelperUser extends DSCHelper
 
         $usersConfig = JComponentHelper::getParams( 'com_users' );
 
-        // Initialize new usertype setting
-        $newUsertype = $usersConfig->get( 'new_usertype' );
-        if (!$newUsertype) { $newUsertype = 'Registered'; }
-
         // Bind the post array to the user object
         if (!$user->bind( $details )) 
         {
@@ -115,7 +111,21 @@ class DSCHelperUser extends DSCHelper
         // Set some initial user values
         $user->set('id', 0);
         $user->set('usertype', '');
-        $user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+        
+        if(version_compare(JVERSION,'1.6.0','ge')) {
+            $newUsertype = $usersConfig->get( 'new_usertype', '2' );
+            
+            // Joomla! 1.6+ code here
+            $user->set('usertype', 'deprecated');
+            $user->set('groups', array($newUsertype) );
+        } else {
+            // Joomla! 1.5 code here
+            $newUsertype = $usersConfig->get( 'new_usertype' );
+            if (!$newUsertype) {
+                $newUsertype = 'Registered';
+            }
+            $user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+        }
 
         $date = JFactory::getDate();
         $user->set('registerDate', $date->toMySQL());
