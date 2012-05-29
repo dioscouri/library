@@ -369,8 +369,13 @@ if (!class_exists( 'DSCInstaller' )) {
 	
 	        //check to see if the manifest was found
 	        if (isset($file)) {
-	            // Is it a valid joomla installation manifest file?
-	            $manifest = $installer->_isManifest($file);
+	            if(version_compare(JVERSION,'1.6.0','ge')) {
+	                // Joomla! 1.6+ code here
+	                $manifest = $installer->isManifest($file);
+	            } else {
+	                // Joomla! 1.5 code here
+	                $manifest = $installer->_isManifest($file);
+	            }
 	
 	            if (!is_null($manifest)) {
 	
@@ -381,7 +386,7 @@ if (!class_exists( 'DSCInstaller' )) {
 	                }
 	
 	                // Set the manifest object and path
-	                $installer->_manifest =& $manifest;
+	                $installer->_manifest = $manifest;
 	                $installer->setPath('manifest', $file);
 	
 	                // Set the installation source path to that of the manifest file
@@ -454,9 +459,13 @@ if (!class_exists( 'DSCInstaller' )) {
 	            case "plugin":
 	                // Get the plugin base path
 	                $baseDir = JPATH_SITE.DS.'plugins';
-	
-	                // Get the plugin xml file
-	                $xmlfile = $baseDir.DS.$package['group'].DS.$package['element'].".xml";
+    	            if(version_compare(JVERSION,'1.6.0','ge')) {
+    	                // Get the plugin xml file
+    	                $xmlfile = $baseDir.DS.$package['group'].DS.$package['element'].DS.$package['element'].".xml";
+                    } else {
+    	                // Get the plugin xml file
+    	                $xmlfile = $baseDir.DS.$package['group'].DS.$package['element'].".xml";
+                    }
 	
 	                if (file_exists($xmlfile)) {
 	                    if ($data = JApplicationHelper::parseXMLInstallFile($xmlfile)) {
@@ -1096,6 +1105,37 @@ if (!class_exists( 'DSCInstaller' )) {
                 $return = $manifest->document;
             }
             return $return;
+		}
+		
+		function getComponentManifestFile( $com )
+		{
+		    $short_element = str_replace('com_', '', $com);
+		
+		    $manifestPath = JPATH_ADMINISTRATOR . '/components/' . $com . '/' . 'manifest.xml';
+		    $shortElementManifestPath = JPATH_ADMINISTRATOR . '/components/' . $com . '/' . $short_element . '.xml';
+		
+		    if (JFile::exists($manifestPath)) {
+		        $file = $manifestPath;
+		    }
+		
+		    if (JFile::exists($shortElementManifestPath)) {
+		        $file = $shortElementManifestPath;
+		    }
+		    
+		    if (empty($file)) {
+		        return false;
+		    }
+		    
+		    $installer = new JInstaller();
+		    if(version_compare(JVERSION,'1.6.0','ge')) {
+		        // Joomla! 1.6+ code here
+		        $manifest = $installer->isManifest($file);
+		    } else {
+		        // Joomla! 1.5 code here
+		        $manifest = $installer->_isManifest($file);
+		    }
+		    
+		    return $manifest;
 		}
 	}
 }

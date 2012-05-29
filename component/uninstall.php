@@ -3,10 +3,10 @@
 //$thisextension = strtolower( "com_whatever" );
 //$thisextensionname = substr ( $thisextension, 4 );
 
-JLoader::import( 'dioscouri.library.dscinstaller', '/libraries/' );
+JLoader::import( 'dioscouri.library.installer', JPATH_SITE . DS . 'libraries' );
 $dscinstaller = new dscInstaller();
 $dscinstaller->thisextension = $thisextension;
-$dscinstaller->manifest = $this->manifest;
+$dscinstaller->manifest = !empty($this->manifest) ? $this->manifest : $dscinstaller->getComponentManifestFile($thisextension);
 
 // load the component language file
 $language = JFactory::getLanguage();
@@ -17,10 +17,47 @@ $status->modules = array();
 $status->plugins = array();
 $status->templates = array();
 
-// TODO Should list all the aux extensions from the install.XML file with a notice saying that each one is still installed
-// and that if the user wants to completely remove component, must also uninstall all of them too
-// and remove database tables
-// Questions: do any of these files exist at this point?  when is the uninstall.php being run?
+/***********************************************************************************************
+* ---------------------------------------------------------------------------------------------
+* // TEMPLATES UNINSTALLATION SECTION
+* ---------------------------------------------------------------------------------------------
+***********************************************************************************************/
+$templates = $dscinstaller->getElementByPath('templates');
+if ( (is_a($templates, 'JSimpleXMLElement') || is_a( $templates, 'JXMLElement')) && !empty( $templates ) && count($templates->children())) {
+
+    foreach ($templates->children() as $template)
+    {
+        $mname		= $dscinstaller->getAttribute('template', $template);
+        $mpublish	= $dscinstaller->getAttribute('publish', $template);
+        $mclient	= JApplicationHelper::getClientInfo($dscinstaller->getAttribute('client', $template), true);
+
+        $package    = array();
+        $package['type'] = 'template';
+        $package['group'] = '';
+        $package['element'] = $mname;
+        $package['client'] = $dscinstaller->getAttribute('client', $template);
+        
+        /*
+         * fire the dioscouriInstaller with the foldername and folder entryType
+        */
+        $dscInstaller = new dscInstaller();
+        $result = $dscInstaller->uninstallExtension($pathToFolder, 'folder');
+
+        // track the message and status of installation from dscInstaller
+        if ($result)
+        {
+            $alt = JText::_( "Uninstalled" );
+            $mstatus = "<img src='" . DSC::getURL( 'images' ) . "tick.png' border='0' alt='{$alt}' />";
+        } else {
+            $alt = JText::_( "Failed" );
+            $error = $dscInstaller->getError();
+            $mstatus = "<img src='" . DSC::getURL( 'images' ) . "publish_x.png' border='0' alt='{$alt}' />";
+            $mstatus .= " - ".$error;
+        }
+
+        $status->templates[] = array('name'=>$mname,'client'=>$mclient->name, 'status'=>$mstatus );
+    }
+}
 
 /***********************************************************************************************
  * ---------------------------------------------------------------------------------------------
@@ -29,29 +66,21 @@ $status->templates = array();
  ***********************************************************************************************/
 
 $modules = $dscinstaller->getElementByPath('modules');
-if (is_a($modules, 'JSimpleXMLElement') && count($modules->children())) {
+if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && !empty( $modules ) && count($modules->children())) {
 
     foreach ($modules->children() as $module)
     {
-        $mname      = $module->attributes('module');
-        $mpublish   = $module->attributes('publish');
-        $mposition  = $module->attributes('position');
-        $mclient    = JApplicationHelper::getClientInfo($module->attributes('client'), true);
-        
+		$mname		= $dscinstaller->getAttribute('module', $module);
+		$mpublish	= $dscinstaller->getAttribute('publish', $module);
+		$mposition	= $dscinstaller->getAttribute('position', $module);
+		$mclient	= JApplicationHelper::getClientInfo($dscinstaller->getAttribute('client', $module), true);
+                
         $package    = array();
         $package['type'] = 'module';
         $package['group'] = '';
         $package['element'] = $mname;
-        $package['client'] = $module->attributes('client');
+        $package['client'] = $dscinstaller->getAttribute('client', $module);
                 
-        // Set the installation path
-        if (!empty ($mname)) {
-            $this->parent->setPath('extension_root', $mclient->path.DS.'modules'.DS.$mname);
-        } else {
-            $this->parent->abort(JText::_('Module').' '.JText::_('Install').': '.JText::_('Install Module File Missing'));
-            return false;
-        }
-        
         /*
          * fire the dioscouriInstaller
          */
@@ -62,13 +91,13 @@ if (is_a($modules, 'JSimpleXMLElement') && count($modules->children())) {
         if ($result) 
         {
             $alt = JText::_( "Uninstalled" );
-            $mstatus = "<img src='images/tick.png' border='0' alt='{$alt}' />";
+            $mstatus = "<img src='" . DSC::getURL( 'images' ) . "tick.png' border='0' alt='{$alt}' />";
         } 
             else 
         {
             $alt = JText::_( "Failed" );
             $error = $dscInstaller->getError();
-            $mstatus = "<img src='images/publish_x.png' border='0' alt='{$alt}' />";
+            $mstatus = "<img src='" . DSC::getURL( 'images' ) . "publish_x.png' border='0' alt='{$alt}' />";
             $mstatus .= " - ".$error;
         }
         
@@ -83,27 +112,20 @@ if (is_a($modules, 'JSimpleXMLElement') && count($modules->children())) {
  ***********************************************************************************************/
 
 $plugins = $dscinstaller->getElementByPath('plugins');
-if (is_a($plugins, 'JSimpleXMLElement') && count($plugins->children())) {
+if ( (is_a($plugins, 'JSimpleXMLElement') || is_a( $plugins, 'JXMLElement')) && !empty( $plugins ) && count($plugins->children())) {
 
     foreach ($plugins->children() as $plugin)
     {
-        $pname      = $plugin->attributes('plugin');
-        $ppublish   = $plugin->attributes('publish');
-        $pgroup     = $plugin->attributes('group');
+        $pname		= $dscinstaller->getAttribute('plugin', $plugin);
+        $ppublish	= $dscinstaller->getAttribute('publish', $plugin);
+        $pgroup		= $dscinstaller->getAttribute('group', $plugin);
+        $name		= $dscinstaller->getAttribute('element', $plugin);
 
         $package    = array();
         $package['type'] = 'plugin';
         $package['group'] = $pgroup;
-        $package['element'] = $plugin->attributes('element');
+        $package['element'] = $name;
         $package['client'] = '';
-        
-        // Set the installation path
-        if (!empty($pname) && !empty($pgroup)) {
-            $this->parent->setPath('extension_root', JPATH_ROOT.DS.'plugins'.DS.$pgroup);
-        } else {
-            $this->parent->abort(JText::_('Plugin').' '.JText::_('Install').': '.JText::_('Install Plugin File Missing'));
-            return false;
-        }
         
         /*
          * fire the dioscouriInstaller
@@ -115,13 +137,13 @@ if (is_a($plugins, 'JSimpleXMLElement') && count($plugins->children())) {
         if ($result) 
         {
             $alt = JText::_( "Uninstalled" );
-            $pstatus = "<img src='images/tick.png' border='0' alt='{$alt}' />"; 
+            $pstatus = "<img src='" . DSC::getURL( 'images' ) . "tick.png' border='0' alt='{$alt}' />"; 
         } 
             else 
         {
             $alt = JText::_( "Failed" );
             $error = $dscInstaller->getError();
-            $pstatus = "<img src='images/publish_x.png' border='0' alt='{$alt}' /> ";
+            $pstatus = "<img src='" . DSC::getURL( 'images' ) . "publish_x.png' border='0' alt='{$alt}' /> ";
             $pstatus .= " - ".$error;   
         }
 
