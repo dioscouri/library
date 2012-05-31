@@ -19,7 +19,7 @@ class DSCAcl {
 	 * @param INT
 	 */
 
-	public static function isAdmin($userid = NULL, $admin_groups = '7,8', $group_ids_passed = false)//if group_ids_passed = true then the admin_groups is an array of groupids and not their names
+	public static function isAdmin($userid = NULL, $admin_groups = array("7", "8"), $group_ids_passed = true)//if group_ids_passed = true then the admin_groups is an array of groupids and not their names
 	{
 
 		if (version_compare(JVERSION, '1.6.0', 'ge')) {
@@ -28,7 +28,7 @@ class DSCAcl {
 			$user = JFactory::getUser($userid);
 			$groups = JUserHelper::getUserGroups($user -> id);
 
-			//var_dump($admin_groups);exit;
+			//var_dump($admin_groups);
 
 			if ($group_ids_passed) {
 				foreach ($groups as $temp) {
