@@ -19,7 +19,8 @@ class DSCUrl {
 	 * @param	string $string The string to translate
 	 *
 	 */
-	function &_( $url, $text, $params='', $xhtml=true, $ssl=null, $addItemid='1' ) {
+	public static function _( $url, $text, $params='', $xhtml=true, $ssl=null, $addItemid='1' ) 
+	{
 		if ($addItemid == '1') { $url = DSCUrl::addItemid($url); }
 		$return = "<a href='".JRoute::_($url, $xhtml, $ssl)."' ".addslashes($params)." >".$text."</a>";
 		return $return;			
@@ -31,7 +32,7 @@ class DSCUrl {
 	 * @param	string $string The string to translate
 	 *
 	 */
-	function &addItemid( $url ) {
+	public static function addItemid( $url ) {
 		global $Itemid;
 		$return = $url;
 		$return.= "&Itemid=".$Itemid;
@@ -54,7 +55,7 @@ class DSCUrl {
 	 * 				)
 	 * @return popup html
 	 */
-	function popup( $url, $text, $options = array() ) 
+	public static function popup( $url, $text, $options = array() ) 
 	{
 		$html = "";
 		
