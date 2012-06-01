@@ -61,6 +61,50 @@ class DSCAcl {
 
 		}
 	}
+	
+	/**
+	 * Returns a list of users that should be administrators
+	 * optional only return the query instead of the  object, so you can get arrays or objects or whatever.
+	 * @param INT
+	 */
+	
+	public static function getAdminList($returnQuery = NULL) {
+		
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+    		// Joomla! 1.6+ code here
+   			 $query = "
+				SELECT
+					u.*
+				FROM
+					#__users AS u
+					INNER JOIN #__user_usergroup_map AS ug ON u.id = ug.user_id
+				WHERE 1
+					AND ug.group_id = '8'
+			";
+			} else {
+ 		   // Joomla! 1.5 code here
+ 		   $query = "
+				SELECT
+					u.*
+				FROM
+					#__users AS u
+				WHERE 1
+					AND u.gid = '25'
+			";
+			}	
+			if($returnQuery != NULl){
+				return $query;
+				
+			}
+			$database = JFactory::getDBO();
+			$database->setQuery( $query );
+			$users = $database->loadObjectList();
+		
+		return $users;
+	}
+	
+	
+	
 
 }
 ?>
