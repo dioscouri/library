@@ -55,7 +55,7 @@
     padding-right: 20px;
     padding-top: 7px;
     vertical-align: top;
-    min-width: 200px;
+    width: 200px;
 }
 
 .dsc-table .dsc-row .dsc-cell.dsc-value {
@@ -71,6 +71,14 @@ p.dsc-tip {
     color: #525252;
     margin: 2px 0px 0px 0px;
     padding: 0px;
+}
+
+.dsc-small {
+    font-size: 75%;
+}
+
+.dsc-large {
+    font-size: 125%;
 }
 
 /*-------------------------------------------

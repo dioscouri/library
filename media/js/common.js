@@ -89,13 +89,15 @@ Dsc.formValidation = function( url, container, task, form, doModal, msg, onCompl
         var str = new Array();
         for(i=0; i<form.elements.length; i++)
         {
-            postvar = {
-                name : form.elements[i].name,
-                value : form.elements[i].value,
-                checked : form.elements[i].checked,
-                id : form.elements[i].id
-            };
-            str[i] = postvar;
+            if (form.elements[i].name) {
+                postvar = {
+                        name : form.elements[i].name,
+                        value : form.elements[i].value,
+                        checked : form.elements[i].checked,
+                        id : form.elements[i].id
+                    };
+                str[i] = postvar;
+            }
         }
         
         // execute request to server
@@ -107,7 +109,6 @@ Dsc.formValidation = function( url, container, task, form, doModal, msg, onCompl
                 var resp = JSON.decode(response, false);
                 if (resp.error != '1')
                 {
-                	if (doModal != false) { (function() { document.body.removeChild($('dscModal')); }).delay(500); }
                     if (typeof onCompleteFunction == 'function') {
                         onCompleteFunction();
                     }
@@ -116,6 +117,7 @@ Dsc.formValidation = function( url, container, task, form, doModal, msg, onCompl
                 } else {
                     if (document.id(container)) { document.id(container).set( 'html', resp.msg); }
                 }
+                if (doModal != false) { (function() { document.body.removeChild($('dscModal')); }).delay(500); }
             }
         }).send();
         

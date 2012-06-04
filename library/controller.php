@@ -463,9 +463,14 @@ class DSCController extends JController
 		// validate it using table's ->check() method
 		if (!$table->check())
 		{
+		    $string = '';
 			// if it fails check, return message
 			$response['error'] = '1';
-			$response['msg'] = $helper->generateMessage( $table->getError() ); 
+            foreach ($table->getErrors() as $error)
+            {
+                $string .= "<li>" . $error . "</li>";
+            }
+            $response['msg'] = $helper->generateMessage( $string, false );
 		}
 			
 		echo ( json_encode( $response ) );
