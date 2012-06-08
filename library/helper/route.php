@@ -17,11 +17,19 @@ class DSCHelperRoute extends DSCHelper
     /**
      *
      */
-    public static function getItems( $option='com_sample' )
+    public static function getItems( $option='' )
     {
         static $items;
         
-        $menus = JApplication::getMenu('site', array());
+        if (empty($option)) {
+            $com = DSC::getApp();
+            $option = 'com_' . $com->getName();
+        }
+        
+        //$menus = JApplication::getMenu('site', array());
+        //$app = JFactory::getApplication('site');
+        $app = JApplication::getInstance('site');
+        $menus = $app->getMenu();
         if (empty($menus))
         {
             return array();
