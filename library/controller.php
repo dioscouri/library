@@ -509,8 +509,16 @@ class DSCController extends JController
 		}
 		else
 		{
+		    $app = JFactory::getApplication();
 			$this->messagetype 	= 'notice';
-			$this->message 		= JText::_( 'Save Failed' )." - ".$row->getError();
+			$this->message 		= JText::_( 'Save Failed' );
+			if ($errors = $row->getErrors()) {
+				foreach ($errors as $error) {
+    	            if (!empty($error)) {
+    	                $app->enqueueMessage( $error, 'notice' );
+    	            }
+	            }
+			}
 			
 			$return = false;
 		}

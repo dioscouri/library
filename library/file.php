@@ -240,11 +240,11 @@ class DSCFile extends JObject
     /**
      * Downloads file
      * 
-     * @param object Valid productfile object
+     * @param mixed A valid file object or a full path to a file
      * @param mixed Boolean
      * @return array
      */
-    function download( $file ) 
+    public static function download( $file ) 
     {
         $success = false;
         
