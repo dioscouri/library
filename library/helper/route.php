@@ -26,8 +26,6 @@ class DSCHelperRoute extends DSCHelper
             $option = 'com_' . $com->getName();
         }
         
-        //$menus = JApplication::getMenu('site', array());
-        //$app = JFactory::getApplication('site');
         $app = JApplication::getInstance('site');
         $menus = $app->getMenu();
         if (empty($menus))
