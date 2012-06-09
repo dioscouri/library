@@ -106,15 +106,22 @@ class DSCView extends JView {
         $model = $this->getModel();
 
         // set the model state
-            $state = $model->getState();
+            $state = new JObject();
+            if (method_exists( $model, 'getState') ) {
+                $state = $model->getState();
+            }
             JFilterOutput::objectHTMLSafe( $state );
             $this->assign( 'state', $state );
 
         // page-navigation
-            $this->assign( 'pagination', $model->getPagination() );
+            if (method_exists( $model, 'getPagination') ) {
+                $this->assign( 'pagination', $model->getPagination() );
+            }
 
         // list of items
-            $this->assign('items', $model->getList());
+            if (method_exists( $model, 'getList') ) {
+                $this->assign('items', $model->getList());
+            }
 
         // form
             $validate = JUtility::getToken();
