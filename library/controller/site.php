@@ -65,10 +65,15 @@ class DSCControllerSite extends DSCController
         // show a generous linkback, TIA
         $app = DSC::getApp();
         $show_linkback = $app->get('show_linkback', '1');
+        $name = $app->getName();
+        $model_name = $name . "ModelDashboard";
+         
+        $app->load( $model_name, "models.dashboard" );
+        $model  = new $model_name();
+        
         $format = JRequest::getVar('format');
         if ($show_linkback == '1' && $format != 'raw') 
         {
-            $model  = $this->getModel( 'dashboard' );
             $view   = $this->getView( 'dashboard', 'html' );
             $view->hidemenu = true;
             $view->setTask('footer');
@@ -79,7 +84,6 @@ class DSCControllerSite extends DSCController
         } 
             elseif ($format != 'raw')
         {
-            $model  = $this->getModel( 'dashboard' );
             $view   = $this->getView( 'dashboard', 'html' );
             $view->hidemenu = true;
             $view->setTask('footer');
