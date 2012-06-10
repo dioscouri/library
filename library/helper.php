@@ -345,7 +345,7 @@ class DSCHelper extends JObject
 	 *
 	 * @return unknown_type
 	 */
-	function setDateVariables( $curdate, $enddate, $period )
+	public static function setDateVariables( $curdate, $enddate, $period )
 	{
 		$database = JFactory::getDBO();
 
