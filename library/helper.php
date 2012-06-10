@@ -105,26 +105,6 @@ class DSCHelper extends JObject
 	}
 	
 	/**
-	 * Determines whether/not a user can view a record
-	 *
-	 * @param $id					id of commission
-	 * @param $userid [optional] 	If absent, current logged-in user is used
-	 * @return boolean
-	 */
-	function canView( $id, $userid=null )
-	{
-		$result = false;
-
-		$user = JFactory::getUser( $userid );
-		$userid = intval($user->id);
-
-		// if the user is super admin, yes
-			if ($user->gid == '25') { return true; }
-
-		return $result;
-	}
-	
-	/**
 	 * Add a directory where SampleHelper should search for helper types. You may
 	 * either pass a string or an array of directories.
 	 *
