@@ -161,13 +161,14 @@ class DSCGrid extends JHTMLGrid
 		{
 			$result = false;	
 		}
-			elseif (is_a($row, 'JTable')) 
+			elseif (is_object($row) && method_exists($row, 'isCheckedOut')) 
 		{
 			$result = $row->isCheckedOut($userid);
 		} 
 			else 
 		{
-			$result = JTable::isCheckedOut($userid, $row->checked_out);
+		    $table = JTable::getInstance('Content', 'JTable');
+		    $table->isCheckedOut($userid, $row->checked_out);
 		}
 
 		$checked = '';
