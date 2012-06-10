@@ -16,7 +16,7 @@ class DSCCharts extends JObject {
 	 * @param int $height. (default: 250)
 	 * @return void
 	 */
-	function renderGoogleChart($data, $title='A DSC Google Chart', $type='Column', $width=800, $height=250)
+	public static function renderGoogleChart($data, $title='A DSC Google Chart', $type='Column', $width=800, $height=250)
     {
         $title  = JText::_( $title );
         
