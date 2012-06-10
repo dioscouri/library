@@ -61,7 +61,7 @@ class DSCUrl {
 		
 		if (!empty($options['update']))
 		{
-		    JHTML::_('behavior.modal', 'a.modal', array('onClose'=>'\function(){sampleUpdate();}') );
+		    JHTML::_('behavior.modal', 'a.modal', array('onClose'=>'\function(){Dsc.Update();}') );
 		}
             else
 		{
@@ -95,7 +95,7 @@ class DSCUrl {
 		
 		$html	= "<a class=\"modal\" href=\"$url\" rel=\"$handler\" >\n";
 		$html 	.= "<span class=\"".$class."\" id=\"".$id."\" >\n";
-        $html   .= "$text\n";
+        $html   .=  JText::_($text);  
 		$html 	.= "</span>\n";
 		$html	.= "</a>\n";
 		
