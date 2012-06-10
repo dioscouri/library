@@ -346,7 +346,7 @@ class DSCController extends JController
 		    JRequest::setVar( 'hidemainmenu', '1' );
 		    $view->setLayout( 'form' );		    
 		}
-		elseif (!JTable::isCheckedOut($userid, $row->checked_out))
+		elseif (!$row->isCheckedOut($userid, $row->checked_out))
 		{
 			if ($row->checkout( $userid ))
 			{

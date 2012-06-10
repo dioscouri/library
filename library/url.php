@@ -11,8 +11,8 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 
-class DSCUrl {
-	
+class DSCUrl 
+{
 	/**
 	 * Wrapper that adds the current Itemid to the URL
 	 *
@@ -32,7 +32,8 @@ class DSCUrl {
 	 * @param	string $string The string to translate
 	 *
 	 */
-	public static function addItemid( $url ) {
+	public static function addItemid( $url ) 
+	{
 		global $Itemid;
 		$return = $url;
 		$return.= "&Itemid=".$Itemid;
@@ -61,7 +62,7 @@ class DSCUrl {
 		
 		if (!empty($options['update']))
 		{
-		    JHTML::_('behavior.modal', 'a.modal', array('onClose'=>'\function(){Dsc.Update();}') );
+		    JHTML::_('behavior.modal', 'a.modal', array('onClose'=>'\function(){Dsc.update();}') );
 		}
             else
 		{
@@ -95,7 +96,7 @@ class DSCUrl {
 		
 		$html	= "<a class=\"modal\" href=\"$url\" rel=\"$handler\" >\n";
 		$html 	.= "<span class=\"".$class."\" id=\"".$id."\" >\n";
-        $html   .=  JText::_($text);  
+        $html   .= "$text\n";
 		$html 	.= "</span>\n";
 		$html	.= "</a>\n";
 		

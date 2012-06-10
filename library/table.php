@@ -377,7 +377,7 @@ class DSCTable extends JTable
 		// Filter settings
 		jimport( 'joomla.application.component.helper' );
 		$config	= JComponentHelper::getParams( 'com_content' );
-		$user	= &JFactory::getUser();
+		$user	= JFactory::getUser();
 		$gid	= $user->get( 'gid' );
 
 		$filterGroups	= $config->get( 'filter_groups' );
