@@ -183,7 +183,7 @@ class DSCTableNested extends DSCTable
 	 * @param object
 	 * @return boolean
 	 */
-	function store() 
+	function store($updateNulls=false) 
 	{
 		$key = $this->getKeyName();
 		if (intval($this->$key) > 0) 
