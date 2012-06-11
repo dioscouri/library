@@ -45,7 +45,7 @@ if ( (is_a($templates, 'JSimpleXMLElement') || is_a( $templates, 'JXMLElement'))
 		 */
 		$pathToFolder = $this->parent->getPath('source').DS.$mname;
 		$dscInstaller = new dscInstaller();
-		if ($mpublish) {
+		if (!empty($mpublish) && $mpublish == "true") {
 			$dscInstaller->set( '_publishExtension', true );
 		}
 		$result = $dscInstaller->installExtension($pathToFolder, 'folder');
@@ -95,7 +95,7 @@ if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && 
 		 */
 		$pathToFolder = $this->parent->getPath('source').DS.$mname;
 		$dscInstaller = new dscInstaller();
-		if ($mpublish) {
+		if (!empty($mpublish) && $mpublish == 'true') {
 			$dscInstaller->set( '_publishExtension', true );
 		}
 		$result = $dscInstaller->installExtension($pathToFolder, 'folder', $mname);
@@ -146,7 +146,7 @@ if ( (is_a($plugins, 'JSimpleXMLElement') || is_a( $plugins, 'JXMLElement')) && 
 		 */
 		$pathToFolder = $this->parent->getPath('source').DS.$pname;
 		$dscInstaller = new dscInstaller();
-		if ($ppublish) {
+		if (!empty($ppublish) && $ppublish == 'true') {
 			$dscInstaller->set( '_publishExtension', true );
 		}
 		$result = $dscInstaller->installExtension($pathToFolder, 'folder', $name);
