@@ -127,7 +127,7 @@ class DSCView extends JView {
             $validate = JUtility::getToken();
             $form = array();
             $view = strtolower( JRequest::getVar('view') );
-            $form['action'] = "index.php?option={$this->_option}&controller={$view}&view={$view}";
+            $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$view}&view={$view}" );
             $form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
             $this->assign( 'form', $form );
     }
