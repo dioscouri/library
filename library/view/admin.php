@@ -80,12 +80,12 @@ class DSCViewAdmin extends DSCView
 	    echo "<td style='width: 180px; padding-right: 5px; vertical-align: top;' >";
 	
 	    DSC::load('DSCMenu', 'library.menu');
-	    if ($menu = &DSCMenu::getInstance($menuname)) {
+	    if ($menu = DSCMenu::getInstance($menuname)) {
 	        $menu->display('leftmenu');
 	    }
 	
 	    $modules = JModuleHelper::getModules($this->_name . "_left");
-	    $document = &JFactory::getDocument();
+	    $document = JFactory::getDocument();
 	    $renderer = $document->loadRenderer('module');
 	    $attribs = array();
 	    $attribs['style'] = 'xhtml';
