@@ -17,8 +17,8 @@ require_once( JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php' );
 
 class DSCMenu extends JObject
 {
-    private $_name = array();
-    private $_menu;
+    public $_name = array();
+    public $_menu;
     
     function __construct($name = 'submenu')
     {
@@ -143,7 +143,7 @@ class DSCMenu extends JObject
 	 * 
 	 * @return unknown_type
 	 */
-	public function display($layout='submenu', $hidemainmenu='')
+	public function display($layout='submenu', $hidemainmenu='', $type = '')
 	{
 	    jimport( 'joomla.application.component.view' );
 	    
