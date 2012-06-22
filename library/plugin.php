@@ -114,7 +114,7 @@ class DSCPlugin extends JPlugin
     {
         if (empty($group))
         {
-            $config = DSC::getApp();
+            $app = DSC::getApp();
             $com_name = $app->getName();
             $group = str_replace( 'com_', '', $com_name );
             if (empty($group))
