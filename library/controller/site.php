@@ -34,9 +34,6 @@ class DSCControllerSite extends DSCController
         // Register Extra tasks
         $this->registerTask( 'list', 'display' );
         $this->registerTask( 'close', 'cancel' );
-        $this->registerTask( 'add', 'edit' );
-        $this->registerTask( 'new', 'edit' );
-        $this->registerTask( 'apply', 'save' );
     }
 
     /**

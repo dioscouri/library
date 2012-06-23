@@ -59,24 +59,6 @@ class DSCController extends JController
 		// Register Extra tasks
 		$this->registerTask( 'list', 'display' );
 		$this->registerTask( 'close', 'cancel' );
-		$this->registerTask( 'add', 'edit' );
-		$this->registerTask( 'new', 'edit' );
-		$this->registerTask( 'apply', 'save' );
-		$this->registerTask( 'savenew', 'save' );
-		$this->registerTask( 'remove', 'delete' );
-		$this->registerTask( 'publish', 'enable' );
-		$this->registerTask( 'unpublish', 'enable' );
-		$this->registerTask( 'disable', 'enable' );
-		$this->registerTask( 'saveorder', 'ordering' );
-		$this->registerTask( 'prev', 'jump' );
-		$this->registerTask( 'next', 'jump' );
-		$this->registerTask( 'saveprev', 'save' );
-		$this->registerTask( 'savenext', 'save' );
-		$this->registerTask( 'page_tooltip_enable', 'pagetooltip_switch' );
-		$this->registerTask( 'page_tooltip_disable', 'pagetooltip_switch' );
-		$this->registerTask( 'save_as', 'save' );
-		$this->registerTask( 'published.enable', 'boolean' );
-		$this->registerTask( 'published.disable', 'boolean' );
 	}
 
 	/**
@@ -234,7 +216,7 @@ class DSCController extends JController
 	* Gets the available tasks in the controller.
 	*
 	* @return  array  Array[i] of task names.
-	* @since   11.1
+	* @since   2.0
 	*/
 	public function getTaskMap()
 	{
@@ -251,7 +233,7 @@ class DSCController extends JController
 	 * Gets the available tasks in the controller.
 	 *
 	 * @return  array  Array[i] of task names.
-	 * @since   11.1
+	 * @since   2.0
 	 */
 	public function getDoTask()
 	{
@@ -478,414 +460,6 @@ class DSCController extends JController
 	}
 
 	/**
-	 * Saves an item and redirects based on task
-	 * @return void
-	 */
-	function save()
-	{
-		$model 	= $this->getModel( $this->get('suffix') );
-		$row = $model->getTable();
-		$row->load( $model->getId() );
-        $post = JRequest::get('post', '4');
-        $row->bind( $post );
-		$task = JRequest::getVar('task');
-
-		if ($task=="save_as")
-		{
-			$pk=$row->getKeyName();
-			$row->$pk= 0;
-		}
-
-		if ( $row->save() )
-		{
-			$model->setId( $row->id );
-			$this->messagetype 	= 'message';
-			$this->message  	= JText::_( 'Saved' );
-
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger( 'onAfterSave'.$this->get('suffix'), array( $row ) );
-			
-			$return = $row;
-		}
-		else
-		{
-		    $app = JFactory::getApplication();
-			$this->messagetype 	= 'notice';
-			$this->message 		= JText::_( 'Save Failed' );
-			if ($errors = $row->getErrors()) {
-				foreach ($errors as $error) {
-    	            if (!empty($error)) {
-    	                $app->enqueueMessage( $error, 'notice' );
-    	            }
-	            }
-			}
-			
-			$return = false;
-		}
-
-		$redirect = "index.php?option=" . $this->get('com');
-			
-		switch ($task)
-		{
-			case "saveprev":
-				$redirect .= '&view='.$this->get('suffix');
-				// get prev in list
-				$model->emptyState();
-				$this->_setModelState();
-				$surrounding = $model->getSurrounding( $model->getId() );
-				if (!empty($surrounding['prev']))
-				{
-					$redirect .= '&task=edit&id='.$surrounding['prev'];
-				}
-				break;
-			case "savenext":
-				$redirect .= '&view='.$this->get('suffix');
-				// get next in list
-				$model->emptyState();
-				$this->_setModelState();
-				$surrounding = $model->getSurrounding( $model->getId() );
-				if (!empty($surrounding['next']))
-				{
-					$redirect .= '&task=edit&id='.$surrounding['next'];
-				}
-				break;
-
-			case "savenew":
-				$redirect .= '&view='.$this->get('suffix').'&task=add';
-				break;
-			case "apply":
-				$redirect .= '&view='.$this->get('suffix').'&task=edit&id='.$model->getId();
-				break;
-			case "save":
-			default:
-				$redirect .= "&view=".$this->get('suffix');
-				break;
-		}
-
-		$redirect = JRoute::_( $redirect, false );
-		$this->setRedirect( $redirect, $this->message, $this->messagetype );
-		
-		return $return;
-	}
-
-	/**
-	 * Deletes record(s) and redirects to default layout
-	 */
-	function delete()
-	{
-		$error = false;
-		$this->messagetype	= '';
-		$this->message 		= '';
-		if (!isset($this->redirect)) {
-			$this->redirect = JRequest::getVar( 'return' )
-			? base64_decode( JRequest::getVar( 'return' ) )
-			: 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
-			$this->redirect = JRoute::_( $this->redirect, false );
-		}
-
-		$model = $this->getModel($this->get('suffix'));
-		$row = $model->getTable();
-
-		$cids = JRequest::getVar('cid', array (0), 'request', 'array');
-		foreach (@$cids as $cid)
-		{
-			if (!$row->delete($cid))
-			{
-				$this->message .= $row->getError();
-				$this->messagetype = 'notice';
-				$error = true;
-			}
-		}
-
-		if ($error)
-		{
-			$this->message = JText::_('Error') . " - " . $this->message;
-		}
-		else
-		{
-			$this->message = JText::_('Items Deleted');
-		}
-
-		$this->setRedirect( $this->redirect, $this->message, $this->messagetype );
-	}
-
-	/**
-	 * Reorders a single item either up or down (based on arrow-click in list) and redirects to default layout
-	 * @return void
-	 */
-	function order()
-	{
-		$error = false;
-		$this->messagetype	= '';
-		$this->message 		= '';
-		$redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
-		$redirect = JRoute::_( $redirect, false );
-
-		$model = $this->getModel($this->get('suffix'));
-		$row = $model->getTable();
-		$row->load( $model->getId() );
-
-		$change	= JRequest::getVar('order_change', '0', 'post', 'int');
-
-		if ( !$row->move( $change ) )
-		{
-			$this->messagetype 	= 'notice';
-			$this->message 		= JText::_( 'Ordering Failed' )." - ".$row->getError();
-		}
-
-		$this->setRedirect( $redirect, $this->message, $this->messagetype );
-	}
-
-	/**
-	 * Reorders multiple items (based on form input from list) and redirects to default layout
-	 * @return void
-	 */
-	function ordering()
-	{
-		$error = false;
-		$this->messagetype	= '';
-		$this->message 		= '';
-		$redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
-		$redirect = JRoute::_( $redirect, false );
-
-		$model = $this->getModel($this->get('suffix'));
-		$row = $model->getTable();
-
-		$ordering = JRequest::getVar('ordering', array(0), 'post', 'array');
-		$cids = JRequest::getVar('cid', array (0), 'post', 'array');
-		foreach (@$cids as $cid)
-		{
-			$row->load( $cid );
-			$row->ordering = @$ordering[$cid];
-
-			if (!$row->store())
-			{
-				$this->message .= $row->getError();
-				$this->messagetype = 'notice';
-				$error = true;
-			}
-		}
-
-		$row->reorder();
-
-		if ($error)
-		{
-			$this->message = JText::_('Error') . " - " . $this->message;
-		}
-		else
-		{
-			$this->message = JText::_('Items Ordered');
-		}
-
-		$this->setRedirect( $redirect, $this->message, $this->messagetype );
-	}
-
-	/**
-	 * Changes the value of a boolean in the database
-	 * Expects the task to be in the format: {field}_{action}
-	 * where {field} = the name of the field in the database
-	 * and {action} is either switch/enable/disable
-	 *
-	 * @return unknown_type
-	 */
-	function boolean()
-	{
-		$error = false;
-		$this->messagetype	= '';
-		$this->message 		= '';
-		$redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
-		$redirect = JRoute::_( $redirect, false );
-
-		$model = $this->getModel($this->get('suffix'));
-		$row = $model->getTable();
-
-		$cids = JRequest::getVar('cid', array (0), 'post', 'array');
-		$task = JRequest::getVar( 'task' );
-		$vals = explode('.', $task);
-
-		$field = $vals['0'];
-		$action = $vals['1'];
-
-		switch (strtolower($action))
-		{
-			case "switch":
-				$switch = '1';
-				break;
-			case "disable":
-				$enable = '0';
-				$switch = '0';
-				break;
-			case "enable":
-				$enable = '1';
-				$switch = '0';
-				break;
-			default:
-				$this->messagetype 	= 'notice';
-				$this->message 		= JText::_( "Invalid Task" );
-				$this->setRedirect( $redirect, $this->message, $this->messagetype );
-				return;
-				break;
-		}
-
-		if ( !in_array( $field, array_keys( $row->getProperties() ) ) )
-		{
-			$this->messagetype 	= 'notice';
-			$this->message 		= JText::_( "Invalid Field" ).": {$field}";
-			$this->setRedirect( $redirect, $this->message, $this->messagetype );
-			return;
-		}
-
-		foreach (@$cids as $cid)
-		{
-			unset($row);
-			$row = $model->getTable();
-			$row->load( $cid );
-
-			switch ($switch)
-			{
-				case "1":
-					$row->$field = $row->$field ? '0' : '1';
-					break;
-				case "0":
-				default:
-					$row->$field = $enable;
-					break;
-			}
-
-			if ( !$row->save() )
-			{
-				$this->message .= $row->getError();
-				$this->messagetype = 'notice';
-				$error = true;
-			}
-		}
-
-		if ($error)
-		{
-			$this->message = JText::_('Error') . ": " . $this->message;
-		}
-		else
-		{
-			$this->message = JText::_('Status Changed');
-		}
-
-		$this->setRedirect( $redirect, $this->message, $this->messagetype );
-	}
-
-	/*
-	 * Wrapper for boolean() for easy backwards compatability
-	 */
-	function enable()
-	{
-		$task = JRequest::getVar( 'task' );
-		switch (strtolower($task))
-		{
-			case "switch_publish":
-				$field = 'published';
-				$action = 'switch';
-				break;
-			case "switch":
-			case "switch_enable":
-				$field = 'enabled';
-				$action = 'switch';
-				break;
-			case "unpublish":
-				$field = 'published';
-				$action = 'disable';
-				break;
-			case "disable":
-				$field = 'enabled';
-				$action = 'disable';
-				break;
-			case "publish":
-				$field = 'published';
-				$action = 'enable';
-				break;
-			case "enable":
-			default:
-				$field = 'enabled';
-				$action = 'enable';
-				break;
-		}
-		JRequest::setVar( 'task', $field.'.'.$action );
-		$this->boolean();
-	}
-
-	/**
-	 * Checks in the current item and displays the previous/next one in the list
-	 * @return unknown_type
-	 */
-	function jump()
-	{
-		$model = $this->getModel( $this->get('suffix') );
-		$id = $model->getId();
-		$row = $model->getTable();
-		$row->load( $id );
-		if (isset($row->checked_out) && !JTable::isCheckedOut( JFactory::getUser()->id, $row->checked_out) )
-		{
-			$row->checkin();
-		}
-		$task = JRequest::getVar( "task" );
-		$redirect = "index.php?option=".$this->get('com')."&view=".$this->get('suffix');
-
-		$model->emptyState();
-		$this->_setModelState();
-		$surrounding = $model->getSurrounding( $id );
-
-		switch ($task)
-		{
-			case "prev":
-				if (!empty($surrounding['prev']))
-				{
-					$redirect .= "&task=view&id=".$surrounding['prev'];
-				}
-				break;
-			case "next":
-				if (!empty($surrounding['next']))
-				{
-					$redirect .= "&task=view&id=".$surrounding['next'];
-				}
-				break;
-		}
-		$redirect = JRoute::_( $redirect, false );
-		$this->setRedirect( $redirect, $this->message, $this->messagetype );
-	}
-
-	/**
-	 * Hides a tooltip message
-	 * @return unknown_type
-	 */
-	function pagetooltip_switch()
-	{
-		$msg = new stdClass();
-		$msg->type 		= '';
-		$msg->message 	= '';
-		$option = $this->get('com');
-		$view = JRequest::getVar('view');
-		$msg->link 		= 'index.php?option='.$option.'&view='.$view;
-		$app = str_replace("com_", "", $option);
-
-		$key = JRequest::getVar('key');
-		$constant = 'page_tooltip_'.$key;
-		$config_title = $constant."_disabled";
-
-		$database = JFactory::getDBO();
-		JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS );
-		unset($table);
-		$table = JTable::getInstance( 'config', $app.'Table' );
-		$table->load( array('config_name'=>$config_title) );
-		$table->config_name = $config_title;
-		$table->value = '1';
-
-		if (!$table->save())
-		{
-			$msg->message = JText::_('Error') . ": " . $table->getError();
-		}
-
-		$this->setRedirect( $msg->link, $msg->message, $msg->type );
-	}
-
-	/**
 	 * Displays the footer
 	 *
 	 * @return unknown_type
@@ -1021,6 +595,519 @@ class DSCController extends JController
 		$view->setModel( $model, true );
 		$view->setTask(true);
 		$view->display();
+	}
+	
+	/**
+	 * Method to check if you can add a new record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array  $data  An array of input data.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowAdd($data = array(), $key = null)
+	{
+	    $user = JFactory::getUser();
+	    return $user->authorise('core.create', $this->option);
+	}
+	
+	/**
+	 * Method to check if you can edit a record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowEdit($data = array(), $key = 'id')
+	{
+	    return JFactory::getUser()->authorise('core.edit', $this->option);
+	}
+	
+	/**
+	 * Method to check if you can edit the state of a record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowEditState($data = array(), $key = 'id')
+	{
+	    return JFactory::getUser()->authorise('core.edit.state', $this->option);
+	}
+	
+	/**
+	 * Method to check if you can save a new or existing record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowSave($data, $key = 'id')
+	{
+	    // Initialise variables.
+	    $recordId = isset($data[$key]) ? $data[$key] : '0';
+	
+	    if ($recordId)
+	    {
+	        return $this->allowEdit($data, $key);
+	    }
+	    else
+	    {
+	        return $this->allowAdd($data);
+	    }
+	}
+
+	/**
+	 * Method to check if you can delete a record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowDelete($data = array(), $key = 'id')
+	{
+	    return JFactory::getUser()->authorise('core.delete', $this->option);
+	}
+	
+	/**
+	 * Method to check if you can view a record.
+	 *
+	 * Extended classes can override this if necessary.
+	 *
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key; default is id.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   2.0
+	 */
+	protected function allowView($data = array(), $key = 'id')
+	{
+	    return JFactory::getUser()->authorise('core.view', $this->option);
+	}
+	
+	/**
+	 * 
+	 */
+	protected function doSave()
+	{
+	    $model 	= $this->getModel( $this->get('suffix') );
+	    $row = $model->getTable();
+	    $row->load( $model->getId() );
+	    $post = JRequest::get('post', '4');
+	    $row->bind( $post );
+	    $task = JRequest::getVar('task');
+	    
+	    if ($task=="save_as")
+	    {
+	        $pk=$row->getKeyName();
+	        $row->$pk= 0;
+	    }
+	    
+	    // TODO add this access check
+	    /*
+	    $key = $row->getKeyname();
+	    jimport('joomla.utilities.arrayhelper');
+	    if (!$this->allowSave(JArrayHelper::fromObject($row), $key))
+	    {
+    	    $this->setError(JText::_('DSC_ERROR_SAVE_NOT_PERMITTED'));
+    	    $this->setMessage($this->getError(), 'error');
+    	     
+    	    $this->setRedirect( JRoute::_('index.php?option=' . $this->get('com') . '&view=' . $this->get( 'suffix' ), false ) );
+	     
+	        return false;
+	    }
+	    */
+	    
+	    if ( $row->save() )
+	    {
+	        $model->setId( $row->id );
+	        $this->messagetype 	= 'message';
+	        $this->message  	= JText::_( 'Saved' );
+	    
+	        $dispatcher = JDispatcher::getInstance();
+	        $dispatcher->trigger( 'onAfterSave'.$this->get('suffix'), array( $row ) );
+	    
+	        $return = $row;
+	    }
+	    else
+	    {
+	        $app = JFactory::getApplication();
+	        $this->messagetype 	= 'notice';
+	        $this->message 		= JText::_( 'Save Failed' );
+	        if ($errors = $row->getErrors()) {
+	            foreach ($errors as $error) {
+	                if (!empty($error)) {
+	                    $app->enqueueMessage( $error, 'notice' );
+	                }
+	            }
+	        }
+	    
+	        $return = false;
+	    }
+	    
+	    $redirect = "index.php?option=" . $this->get('com');
+	    
+	    switch ($task)
+	    {
+	        case "saveprev":
+	            $redirect .= '&view='.$this->get('suffix');
+	            // get prev in list
+	            $model->emptyState();
+	            $this->_setModelState();
+	            $surrounding = $model->getSurrounding( $model->getId() );
+	            if (!empty($surrounding['prev']))
+	            {
+	                $redirect .= '&task=edit&id='.$surrounding['prev'];
+	            }
+	            break;
+	        case "savenext":
+	            $redirect .= '&view='.$this->get('suffix');
+	            // get next in list
+	            $model->emptyState();
+	            $this->_setModelState();
+	            $surrounding = $model->getSurrounding( $model->getId() );
+	            if (!empty($surrounding['next']))
+	            {
+	                $redirect .= '&task=edit&id='.$surrounding['next'];
+	            }
+	            break;
+	    
+	        case "savenew":
+	            $redirect .= '&view='.$this->get('suffix').'&task=add';
+	            break;
+	        case "apply":
+	            $redirect .= '&view='.$this->get('suffix').'&task=edit&id='.$model->getId();
+	            break;
+	        case "save":
+	        default:
+	            $redirect .= "&view=".$this->get('suffix');
+	            break;
+	    }
+	    
+	    $redirect = JRoute::_( $redirect, false );
+	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	    
+	    return $return;
+	}
+	
+	protected function doDelete()
+	{
+	    $error = false;
+	    $this->messagetype	= '';
+	    $this->message 		= '';
+	    if (!isset($this->redirect)) {
+	        $this->redirect = JRequest::getVar( 'return' )
+	        ? base64_decode( JRequest::getVar( 'return' ) )
+	        : 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
+	        $this->redirect = JRoute::_( $this->redirect, false );
+	    }
+	    
+	    $model = $this->getModel($this->get('suffix'));
+	    $row = $model->getTable();
+	    
+	    $cids = JRequest::getVar('cid', array (0), 'request', 'array');
+	    foreach (@$cids as $cid)
+	    {
+	        if (!$row->delete($cid))
+	        {
+	            $this->message .= $row->getError();
+	            $this->messagetype = 'notice';
+	            $error = true;
+	        }
+	    }
+	    
+	    if ($error)
+	    {
+	        $this->message = JText::_('Error') . " - " . $this->message;
+	        $return = false;
+	    }
+	    else
+	    {
+	        $this->message = JText::_('Items Deleted');
+	        $return = true;
+	    }
+	    
+	    $this->setRedirect( $this->redirect, $this->message, $this->messagetype );	
+	    
+	    return $return;
+	}
+	
+	/**
+	 * Reorders a single item either up or down (based on arrow-click in list) and redirects to default layout
+	 * @return void
+	 */
+	protected function doOrder()
+	{
+	    $error = false;
+	    $this->messagetype	= '';
+	    $this->message 		= '';
+	    $redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
+	    $redirect = JRoute::_( $redirect, false );
+	
+	    $model = $this->getModel($this->get('suffix'));
+	    $row = $model->getTable();
+	    $row->load( $model->getId() );
+	
+	    $change	= JRequest::getVar('order_change', '0', 'post', 'int');
+	
+	    $return = true;
+	    if ( !$row->move( $change ) )
+	    {
+	        $this->messagetype 	= 'notice';
+	        $this->message 		= JText::_( 'Ordering Failed' )." - ".$row->getError();
+	        $return = false;
+	    }
+	
+	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	    
+	    return $return;
+	}
+	
+	/**
+	 * Reorders multiple items (based on form input from list) and redirects to default layout
+	 * @return void
+	 */
+	protected function doOrdering()
+	{
+	    $error = false;
+	    $this->messagetype	= '';
+	    $this->message 		= '';
+	    $redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
+	    $redirect = JRoute::_( $redirect, false );
+	
+	    $model = $this->getModel($this->get('suffix'));
+	    $row = $model->getTable();
+	
+	    $ordering = JRequest::getVar('ordering', array(0), 'post', 'array');
+	    $cids = JRequest::getVar('cid', array (0), 'post', 'array');
+	    foreach (@$cids as $cid)
+	    {
+	        $row->load( $cid );
+	        $row->ordering = @$ordering[$cid];
+	
+	        if (!$row->store())
+	        {
+	            $this->message .= $row->getError();
+	            $this->messagetype = 'notice';
+	            $error = true;
+	        }
+	    }
+	
+	    $row->reorder();
+	
+	    if ($error)
+	    {
+	        $this->message = JText::_('Error') . " - " . $this->message;
+	        $return = false;
+	    }
+	    else
+	    {
+	        $this->message = JText::_('Items Ordered');
+	        $return = true;
+	    }
+	
+	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	    return $return;
+	}
+	
+	/**
+	 * Changes the value of a boolean in the database
+	 * Expects the task to be in the format: {field}.{action}
+	 * where {field} = the name of the field in the database
+	 * and {action} is either switch/enable/disable
+	 *
+	 * @return unknown_type
+	 */
+	protected function doBoolean()
+	{
+	    $error = false;
+	    $this->messagetype	= '';
+	    $this->message 		= '';
+	    $redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
+	    $redirect = JRoute::_( $redirect, false );
+	
+	    $model = $this->getModel($this->get('suffix'));
+	    $row = $model->getTable();
+	
+	    $cids = JRequest::getVar('cid', array (0), 'post', 'array');
+	    $task = JRequest::getVar( 'task' );
+	    $vals = explode('.', $task);
+	
+	    $field = $vals['0'];
+	    $action = $vals['1'];
+	
+	    switch (strtolower($action))
+	    {
+	        case "switch":
+	            $switch = '1';
+	            break;
+	        case "disable":
+	            $enable = '0';
+	            $switch = '0';
+	            break;
+	        case "enable":
+	            $enable = '1';
+	            $switch = '0';
+	            break;
+	        default:
+	            $this->messagetype 	= 'notice';
+	            $this->message 		= JText::_( "Invalid Task" );
+	            $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	            return;
+	            break;
+	    }
+	
+	    if ( !in_array( $field, array_keys( $row->getProperties() ) ) )
+	    {
+	        $this->messagetype 	= 'notice';
+	        $this->message 		= JText::_( "Invalid Field" ).": {$field}";
+	        $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	        return;
+	    }
+	
+	    foreach (@$cids as $cid)
+	    {
+	        unset($row);
+	        $row = $model->getTable();
+	        $row->load( $cid );
+	
+	        switch ($switch)
+	        {
+	            case "1":
+	                $row->$field = $row->$field ? '0' : '1';
+	                break;
+	            case "0":
+	            default:
+	                $row->$field = $enable;
+	                break;
+	        }
+	
+	        if ( !$row->save() )
+	        {
+	            $this->message .= $row->getError();
+	            $this->messagetype = 'notice';
+	            $error = true;
+	        }
+	    }
+	
+	    if ($error)
+	    {
+	        $this->message = JText::_('Error') . ": " . $this->message;
+	        $return = false;
+	    }
+	    else
+	    {
+	        $this->message = JText::_('Status Changed');
+	        $return = true;
+	    }
+	
+	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
+	    return $return;
+	}
+	
+	/**
+	 * Wrapper for boolean() for easy backwards compatability
+	 */
+	protected function doEnable()
+	{
+	    $task = JRequest::getVar( 'task' );
+	    switch (strtolower($task))
+	    {
+	        case "switch_publish":
+	            $field = 'published';
+	            $action = 'switch';
+	            break;
+	        case "switch":
+	        case "switch_enable":
+	            $field = 'enabled';
+	            $action = 'switch';
+	            break;
+	        case "unpublish":
+	            $field = 'published';
+	            $action = 'disable';
+	            break;
+	        case "disable":
+	            $field = 'enabled';
+	            $action = 'disable';
+	            break;
+	        case "publish":
+	            $field = 'published';
+	            $action = 'enable';
+	            break;
+	        case "enable":
+	        default:
+	            $field = 'enabled';
+	            $action = 'enable';
+	            break;
+	    }
+	    
+	    JRequest::setVar( 'task', $field.'.'.$action );
+	    return $this->boolean();
+	}
+	
+	
+	/**
+	 * Checks in the current item and displays the previous/next one in the list
+	 * @return unknown_type
+	 */
+	protected function doJump()
+	{
+	    $model = $this->getModel( $this->get('suffix') );
+	    $id = $model->getId();
+	    $row = $model->getTable();
+	    $row->load( $id );
+	    if (isset($row->checked_out) && !JTable::isCheckedOut( JFactory::getUser()->id, $row->checked_out) )
+	    {
+	        $row->checkin();
+	    }
+	    $task = JRequest::getVar( "task" );
+	    $redirect = "index.php?option=".$this->get('com')."&view=".$this->get('suffix');
+	
+	    $model->emptyState();
+	    $this->_setModelState();
+	    $surrounding = $model->getSurrounding( $id );
+	
+	    switch ($task)
+	    {
+	        case "prev":
+	            if (!empty($surrounding['prev']))
+	            {
+	                $redirect .= "&task=view&id=".$surrounding['prev'];
+	            }
+	            break;
+	        case "next":
+	            if (!empty($surrounding['next']))
+	            {
+	                $redirect .= "&task=view&id=".$surrounding['next'];
+	            }
+	            break;
+	    }
+	    $redirect = JRoute::_( $redirect, false );
+	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
 	}
 }
 

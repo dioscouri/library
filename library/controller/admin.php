@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 0.1
- * @package Sample
+ * @package Dioscouri
  * @author  Dioscouri Design
  * @link    http://www.dioscouri.com
  * @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
@@ -26,7 +26,167 @@ class DSCControllerAdmin extends DSCController
 		}
 		
 		parent::__construct($config);
+
+		$this->registerTask( 'add', 'edit' );
+		$this->registerTask( 'new', 'edit' );
+		$this->registerTask( 'apply', 'save' );
+		$this->registerTask( 'savenew', 'save' );
+		$this->registerTask( 'remove', 'delete' );
+		$this->registerTask( 'publish', 'enable' );
+		$this->registerTask( 'unpublish', 'enable' );
+		$this->registerTask( 'disable', 'enable' );
+		$this->registerTask( 'saveorder', 'ordering' );
+		$this->registerTask( 'prev', 'jump' );
+		$this->registerTask( 'next', 'jump' );
+		$this->registerTask( 'saveprev', 'save' );
+		$this->registerTask( 'savenext', 'save' );
+		$this->registerTask( 'page_tooltip_enable', 'pagetooltip_switch' );
+		$this->registerTask( 'page_tooltip_disable', 'pagetooltip_switch' );
+		$this->registerTask( 'save_as', 'save' );
+		$this->registerTask( 'published.enable', 'boolean' );
+		$this->registerTask( 'published.disable', 'boolean' );
 		
+	}
+	
+	/**
+	 * Hides a tooltip message
+	 * Admin-only task
+	 * 
+	 * @return unknown_type
+	 */
+	function pagetooltip_switch()
+	{
+	    $msg = new stdClass();
+	    $msg->type 		= '';
+	    $msg->message 	= '';
+	    $option = $this->get('com');
+	    $view = JRequest::getVar('view');
+	    $msg->link 		= 'index.php?option='.$option.'&view='.$view;
+	    $app = str_replace("com_", "", $option);
+	
+	    $key = JRequest::getVar('key');
+	    $constant = 'page_tooltip_'.$key;
+	    $config_title = $constant."_disabled";
+	
+	    $database = JFactory::getDBO();
+	    JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS );
+	    unset($table);
+	    $table = JTable::getInstance( 'config', $app.'Table' );
+	    $table->load( array('config_name'=>$config_title) );
+	    $table->config_name = $config_title;
+	    $table->value = '1';
+	
+	    if (!$table->save())
+	    {
+	        $msg->message = JText::_('Error') . ": " . $table->getError();
+	    }
+	
+	    $this->setRedirect( $msg->link, $msg->message, $msg->type );
+	}
+	
+	/**
+	 * Saves an item and redirects based on task
+	 * 
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' ); 
+	 *  
+	 * @return boolean
+	 */
+	public function save()
+	{
+	    return $this->doSave();
+	}
+	
+	/**
+	 * Deletes an item and redirects based on task
+	 * 
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' ); 
+	 *  
+	 * @return boolean
+	 */
+	public function delete()
+	{
+	    return $this->doDelete();
+	}
+
+	/**
+	 * Orders an item
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
+	public function order()
+	{
+	    return $this->doOrder();
+	}
+	
+	/**
+	 * Orders a list of items
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
+	public function ordering()
+	{
+	    return $this->doOrdering();
+	}
+	
+	/**
+	 * Changes a boolean field
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
+	public function boolean()
+	{
+	    return $this->doBoolean();
+	}
+	
+	/**
+	 * Changes a boolean field, is a wrapper for boolean
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
+	public function enable()
+	{
+	    return $this->doEnable();
+	}
+	
+	/**
+	 * Displays a neighboring item in a list
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
+	public function jump()
+	{
+	    return $this->doJump();
 	}
 
 }
