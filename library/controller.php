@@ -107,7 +107,7 @@ class DSCController extends JController
 
 		// Display the view
 		if ($cachable && $viewType != 'feed') {
-			global $option;
+			$option = $this->get('com');
 			$cache = JFactory::getCache($option, 'view');
 			$cache->get($view, 'display');
 		} else {
@@ -118,6 +118,8 @@ class DSCController extends JController
 		$dispatcher->trigger('onAfterDisplay'.$site.'Component'.$this -> _Pluginname, array() );
 
 		$this->footer();
+		
+		return $this;
 	}
 
 	/**
@@ -286,7 +288,7 @@ class DSCController extends JController
 	 * Displays item
 	 * @return void
 	 */
-	function view()
+	protected function displayView($cachable=false, $urlparams = false)
 	{
 		$model = $this->getModel( $this->get('suffix') );
 		$model->getId();
@@ -303,9 +305,12 @@ class DSCController extends JController
 		$view->assign( 'surrounding', $surrounding );
 
 		$view->setTask(true);
+		
+		// TODO take into account the $cachable value, as in $this->display(); 
+		
 		$view->display();
 		$this->footer();
-		return;
+		return $this;
 	}
 
 	/**
@@ -314,7 +319,7 @@ class DSCController extends JController
 	 *
 	 * @return void
 	 */
-	function edit()
+	protected function displayEdit($cachable=false, $urlparams = false)
 	{
 		$view   = $this->getView( $this->get('suffix'), 'html' );
 		$model 	= $this->getModel( $this->get('suffix') );
@@ -355,9 +360,12 @@ class DSCController extends JController
 		$view->assign( 'surrounding', $surrounding );
 
 		$view->setTask(true);
+		
+		// TODO take into account the $cachable value, as in $this->display();
+		
 		$view->display();
 		$this->footer();
-		return;
+		return $this;
 	}
 
 	/**

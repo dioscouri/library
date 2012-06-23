@@ -37,22 +37,6 @@ class DSCControllerSite extends DSCController
     }
 
     /**
-     * @return void
-     */
-    function view() 
-    {       
-        parent::display();
-    }
-    
-    /**
-     * @return void
-     */
-    function edit() 
-    {
-        parent::display();
-    }
-
-    /**
      * Displays the footer
      * 
      * @return unknown_type

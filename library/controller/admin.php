@@ -85,6 +85,26 @@ class DSCControllerAdmin extends DSCController
 	}
 	
 	/**
+	 * Displays an item 
+	 * 
+	 *  Child controllers should check that user can actually view the item they're attempting to display
+	 */
+	public function view($cachable=false, $urlparams = false) 
+	{
+	    $this->displayView($cachable, $urlparams);
+	}
+	
+	/**
+	 * Displays a standard editing form 
+	 * 
+	 *  Child controllers should check that user can actually edit the item they're attempting to edit
+	 */
+	public function edit($cachable=false, $urlparams = false)
+	{
+	    $this->displayEdit($cachable, $urlparams);
+	}
+	
+	/**
 	 * Saves an item and redirects based on task
 	 * 
 	 * It is the responsibility of each child controller to check the validity of the request using
