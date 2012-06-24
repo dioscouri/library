@@ -79,11 +79,11 @@ class DSC extends JObject
 	/**
 	 * Get the Minimum Version of Php
 	 */
-	public static function getMinPhp()
+	public function getMinPhp()
 	{
 		//get version from PHP. Note this should be in format 'x.x.x' but on some systems will look like this: eg. 'x.x.x-unbuntu5.2'
-		$phpV = self::getServerPhp();
-		$minV = self::$_min_php;
+		$phpV = $this->getServerPhp();
+		$minV = $this->_min_php;
 		$passes = false;
 	
 		if ($phpV[0] >= $minV[0]) {
@@ -101,10 +101,10 @@ class DSC extends JObject
 		endif;
 	
 		//return minimum PHP version
-		return self::$_min_php;
+		return $this->_min_php;
 	}
 	
-	public static function getServerPhp()
+	public function getServerPhp()
 	{
 		return PHP_VERSION;
 	}
