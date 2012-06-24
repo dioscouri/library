@@ -250,6 +250,7 @@ class DSC extends JObject
 	    jimport('dioscouri.highroller.highroller.highrollerseriesdata');
 	    jimport('dioscouri.highroller.highroller.highrollersplinechart');
 	     
+	    DSC::loadJQuery();
 	    JHTML::_( 'script', 'highcharts.js', 'libraries/dioscouri/highroller/highcharts/' );
 	}
 	
