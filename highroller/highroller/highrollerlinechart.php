@@ -27,9 +27,9 @@ class HighRollerLineChart extends HighRoller {
   function __construct(){
     parent::__construct();
     $this->chart->type = 'line';
-//    $this->xAxis = new HighRollerXAxis();
-//    $this->yAxis = new HighRollerYAxis();
-//    $this->plotOptions->line = new HighRollerPlotOptionsByChartType($this->chart->type);
+    $this->xAxis = new HighRollerXAxis();
+    $this->yAxis = new HighRollerYAxis();
+    $this->plotOptions->line = new HighRollerPlotOptionsByChartType($this->chart->type);
   }
 
 }

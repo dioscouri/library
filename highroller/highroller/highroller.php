@@ -51,18 +51,18 @@ class HighRoller {
 
   public $chart;
   public $title;
-//  public $legend;
-//  public $tooltip;
-//  public $plotOptions;
+  public $legend;
+  public $tooltip;
+  public $plotOptions;
   public $series = array();
 
   function __construct(){
 
     $this->chart = new HighRollerChart();
     $this->title = new HighRollerTitle();
-//    $this->legend = new HighRollerLegend();
-//    $this->tooltip = new HighRollerToolTip();
-//    $this->plotOptions = new HighRollerPlotOptions($this->chart->type);
+    $this->legend = new HighRollerLegend();
+    $this->tooltip = new HighRollerToolTip();
+    $this->plotOptions = new HighRollerPlotOptions();
     $this->series = new HighRollerSeries();
 
   }
@@ -669,8 +669,15 @@ class HighRollerPlotLines {
 class HighRollerPlotOptions {
 
   public $series;
+  public $area;
+  public $bar;
+  public $column;
+  public $line;
+  public $pie;
+  public $scatter;
+  public $spline;
 
-  function __construct($chartType){
+  function __construct($chartType=null){
     $this->series = new HighRollerSeriesOptions();
     if($chartType == 'area'){ $this->area = null; }
     else if($chartType == 'bar'){ $this->bar = null; }
