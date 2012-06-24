@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 class DSC extends JObject 
 {
     protected $_name 		= 'dsc';
-    static $_version 		= '2.0';
-	static $_build          = '';
-	static $_versiontype    = '';
-	static $_copyrightyear 	= '2012';	
-	static $_min_php		= '5.3';
+    protected $_version 		= '2.0';
+	protected $_build          = '';
+	protected $_versiontype    = '';
+	protected $_copyrightyear 	= '2012';	
+	protected $_min_php		= '5.3';
 
 	/**
 	* constructor
@@ -31,35 +31,41 @@ class DSC extends JObject
 	/**
 	* Get the version
 	*/
-	public static function getVersion()
+	public function getVersion()
 	{
-		$version = self::$_version;
-		return $version;
+		return $this->get('_version');
+	}
+	/**
+	* Get the version
+	*/
+	public function getVersionType()
+	{
+		return $this->get('_versiontype');
 	}
 	
 	/**
 	 * Get the full version string
 	 */
-	public static function getFullVersion()
+	public function getFullVersion()
 	{
-		$version = self::$_version." ".JText::_( ucfirst(self::$_versiontype) )." ".self::$_build;
+		$version = $this->getVersion()." ".JText::_( ucfirst($this->getVersionType()) )." ".$this->getBuild();
 		return $version;
 	}
 
 	/**
 	* Get the copyright year
 	*/
-	public static function getBuild()
+	public function getBuild()
 	{
-		return self::$_build;
+		return $this->get('_build');
 	}
 	
 	/**
 	 * Get the copyright year
 	 */
-	public static function getCopyrightYear()
+	public function getCopyrightYear()
 	{
-		return self::$_copyrightyear;
+		return $this->get('_copyrightyear');	
 	}
 	
 	/**
