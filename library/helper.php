@@ -183,12 +183,12 @@ class DSCHelper extends JObject
 	 */
     public static function number($number, $options='' )
 	{
-		$config = SampleConfig::getInstance();
+		$config = DSC::getApp();
         $options = (array) $options;
         
-        $thousands = isset($options['thousands']) ? $options['thousands'] : $config->get('currency_thousands', ',');
-        $decimal = isset($options['decimal']) ? $options['decimal'] : $config->get('currency_decimal', '.');
-        $num_decimals = isset($options['num_decimals']) ? $options['num_decimals'] : $config->get('currency_num_decimals', '2');
+        $thousands = isset($options['thousands']) ? $options['thousands'] : $config->get('number_thousands', ',');
+        $decimal = isset($options['decimal']) ? $options['decimal'] : $config->get('number_decimal', '.');
+        $num_decimals = isset($options['num_decimals']) ? $options['num_decimals'] : $config->get('number_num_decimals', '0');
 		
 		$return = number_format($number, $num_decimals, $decimal, $thousands);
 		return $return;
@@ -432,7 +432,7 @@ class DSCHelper extends JObject
 	 * @param $date
 	 * @return unknown_type
 	 */
-	function getOffsetDate( $date )
+	public static function getOffsetDate( $date )
 	{
 		$config = JFactory::getConfig();
 		$offset = $config->getValue('config.offset');
