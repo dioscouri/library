@@ -718,7 +718,15 @@ class DSCController extends JController
 	}
 	
 	/**
+	 * Saves an item and redirects based on task.
+	 * Should be called from a public function in your controller.
 	 * 
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' ); 
+	 *  
+	 * @return boolean
 	 */
 	protected function doSave()
 	{
@@ -822,6 +830,17 @@ class DSCController extends JController
 	    return $return;
 	}
 	
+	/**
+	 * Deletes an item and redirects based on task
+	 * Should be called from a public function in your controller.
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
+	 */
 	protected function doDelete()
 	{
 	    $error = false;
@@ -866,7 +885,14 @@ class DSCController extends JController
 	
 	/**
 	 * Reorders a single item either up or down (based on arrow-click in list) and redirects to default layout
-	 * @return void
+	 * Should be called from a public function in your controller.
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
 	 */
 	protected function doOrder()
 	{
@@ -897,7 +923,14 @@ class DSCController extends JController
 	
 	/**
 	 * Reorders multiple items (based on form input from list) and redirects to default layout
-	 * @return void
+	 * Should be called from a public function in your controller.
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
 	 */
 	protected function doOrdering()
 	{
@@ -943,12 +976,19 @@ class DSCController extends JController
 	}
 	
 	/**
-	 * Changes the value of a boolean in the database
+     * Changes the value of a boolean in the database
 	 * Expects the task to be in the format: {field}.{action}
 	 * where {field} = the name of the field in the database
 	 * and {action} is either switch/enable/disable
 	 *
-	 * @return unknown_type
+	 * Should be called from a public function in your controller.
+	 * 
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
 	 */
 	protected function doBoolean()
 	{
@@ -1038,7 +1078,15 @@ class DSCController extends JController
 	}
 	
 	/**
-	 * Wrapper for boolean() for easy backwards compatability
+	 * Changes a boolean field, is a wrapper for boolean
+	 * Should be called from a public function in your controller.
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
 	 */
 	protected function doEnable()
 	{
@@ -1077,10 +1125,16 @@ class DSCController extends JController
 	    return $this->boolean();
 	}
 	
-	
 	/**
 	 * Checks in the current item and displays the previous/next one in the list
-	 * @return unknown_type
+	 * Should be called from a public function in your controller.
+	 *
+	 * It is the responsibility of each child controller to check the validity of the request using
+	 * (j1.6+) JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+	 * or
+	 * (j1.5) JRequest::checkToken() or die( 'Invalid Token' );
+	 *
+	 * @return boolean
 	 */
 	protected function doJump()
 	{
