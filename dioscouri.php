@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 class DSC extends JObject 
 {
     protected $_name 		= 'dsc';
-    static $_version 		= '1.0';
-	static $_build          = 'r100';
-	static $_versiontype    = 'community';
-	static $_copyrightyear 	= '2011';	
-	static $_min_php		= '5.2';
+    static $_version 		= '2.0';
+	static $_build          = '';
+	static $_versiontype    = '';
+	static $_copyrightyear 	= '2012';	
+	static $_min_php		= '5.3';
 
 	/**
 	* constructor
