@@ -606,6 +606,34 @@ class DSCController extends JController
 	}
 	
 	/**
+	 * Simple function for checking that a request is not being forged, and comes from the current user
+	 * 
+	 * @param unknown_type $raiseError
+	 */
+	protected function checkToken($raiseError=true)
+	{
+	    if (version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+	        $tokenValid = JSession::checkToken();
+	    } else {
+	        // Joomla! 1.5 code here
+	        $tokenValid = JRequest::checkToken();
+	    }
+
+	    if ($tokenValid) 
+	    {
+	        return true;
+	    }
+	    
+	    if ($raiseError) 
+	    {
+	        JError::raiseError( '500', 'Invalid Token' );
+	    }
+	    
+	    return false;
+	}
+	
+	/**
 	 * Method to check if you can add a new record.
 	 *
 	 * Extended classes can override this if necessary.
