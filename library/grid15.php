@@ -128,7 +128,7 @@ class DSCGrid extends JHTMLGrid
 		$action = $row->published ? JText::_( 'Unpublish Item' ) : JText::_( 'Publish item' );
 
 		$href = '
-		<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $prefix.$task .'\')" title="'. $action .'">
+		<a href="javascript:void(0);" onclick="return Dsc.listItemTask(\'cb'. $i .'\',\''. $prefix.$task .'\')" title="'. $action .'">
 		<img src="'. DSC::getURL('images').$img .'" border="0" alt="'. $alt .'" /></a>'
 		;
 
@@ -143,7 +143,7 @@ class DSCGrid extends JHTMLGrid
 		$action = $enable ? JText::_( 'Disable Item' ) : JText::_( 'Enable Item' );
 
 		$href = '
-		<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $prefix.$task .'\')" title="'. $action .'">
+		<a href="javascript:void(0);" onclick="return Dsc.listItemTask(\'cb'. $i .'\',\''. $prefix.$task .'\')" title="'. $action .'">
 		<img src="'. DSC::getURL('images').$img .'" border="0" alt="'. $alt .'" />
 		</a>'
 		;

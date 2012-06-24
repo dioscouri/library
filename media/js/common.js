@@ -323,7 +323,76 @@ Dsc.newModal = function(msg)
 }
 
 /**
- * Overriding core submitbutton task to perform our onsubmit function
+ * Submits form after clicking boolean item in lists,
+ * such as a tick mark or a red x un an enabled/disabled column
+ *
+ * @param id
+ * @param task
+ * @return
+ */
+Dsc.listItemTask = function (id, task, form) {
+    if (!form) {
+        var f = document.adminForm;
+    } else {
+        var f = form;
+    }
+    
+    var cb = f[id];
+    if (cb) {
+        for (var i = 0; true; i++) {
+            var cbx = f['cb'+i];
+            if (!cbx)
+                break;
+            cbx.checked = false;
+        } // for
+        cb.checked = true;
+        f.boxchecked.value = 1;
+        Dsc.submitbutton(task);
+    }
+    return false;
+}
+
+/**
+ * Overriding core submitbutton task to perform onsubmit function
+ * without submitting form afterwards
+ * 
+ * @param task
+ * @return
+ */
+Dsc.submitbutton = function(task, form) 
+{
+    if (typeof(form) === 'undefined') {
+        form = document.getElementById('adminForm');
+        /**
+         * Added to ensure Joomla 1.5 compatibility
+         */
+        if(!form){
+            form = document.adminForm;
+        }
+    }
+    
+    if (typeof(task) !== 'undefined' && '' !== task) {
+        form.task.value = task;
+    }
+
+    if (typeof form.onsubmit == "function") 
+    {
+        form.onsubmit();
+    }
+        else
+    {
+        if (typeof form.onsubmit == "function") {
+            form.onsubmit();
+        }
+        if (typeof form.fireEvent == "function") {
+            form.fireEvent('submit');
+        }
+        form.submit();
+    }
+}
+
+/**
+ * Overriding core submitbutton task to perform onsubmit function
  * without submitting form afterwards
  * 
  * @param task
@@ -331,17 +400,5 @@ Dsc.newModal = function(msg)
  */
 function submitbutton(task) 
 {
-    if (task) 
-    {
-        document.adminForm.task.value = task;
-    }
-
-    if (typeof document.adminForm.onsubmit == "function") 
-    {
-        document.adminForm.onsubmit();
-    }
-        else
-    {
-        submitform(task);
-    }
+    Dsc.submitbutton(task);
 }
