@@ -254,6 +254,32 @@ class DSC extends JObject
 	}
 	
 	/**
+	 * Loads JQuery
+	 *
+	 */
+	public static function loadJQuery($version='latest', $noConflict=true, $alias=null)
+	{
+	    switch($version)
+	    {
+	        case "latest":
+	        default:
+	            JHTML::_( 'script', 'jquery-1.7.2.min.js', 'media/dioscouri/jquery/core/' );
+	            break;
+	    }
+	    
+	    
+	    if ($noConflict)
+	    {
+	        $document = JFactory::getDocument();
+	        $script = "jQuery.noConflict();";
+	        if (!empty($alias)) {
+	            $script = "var $alias = jQuery.noConflict();";
+	        }
+	        $document->addScriptDeclaration( $script );
+	    }
+	}
+	
+	/**
 	 * 
 	 * Enter description here ...
 	 * @param unknown_type $data
