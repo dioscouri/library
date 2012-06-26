@@ -1,0 +1,9 @@
+div.toolbar-list ul li.button span {
+	float: none;
+width: 32px!important;
+height: 32px!important;
+background-position: 0px 0px;
+margin: 0 auto;
+display: block;
+}
+.input-tiny{width:50px;}

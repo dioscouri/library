@@ -21,7 +21,7 @@ class DSCHelperPathway extends DSCHelper
     function insertCategories( $items, $item_id='' )
     {
         $app = JFactory::getApplication();
-        $pathway =& $app->getPathway();
+        $pathway = $app->getPathway();
         $pathway_values = $pathway->getPathway();
 
         // find the array_key of the first item in items that is in pathway

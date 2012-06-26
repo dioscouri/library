@@ -285,6 +285,16 @@ class DSC extends JObject
 	        $document->addScriptDeclaration( $script );
 	    }
 	}
+
+	public static function loadBootstrap() {
+		
+		DSC::loadJQuery('');
+	
+		 JHTML::_( 'script', 'bootstrap.min.js', 'media/dioscouri/js/' );
+		 JHTML::_( 'stylesheet', 'bootstrap.min.css', 'media/dioscouri/css/' );
+		 JHTML::_( 'stylesheet', 'joomla.bootstrap.css', 'media/dioscouri/css/' );
+	}
+
 	
 	/**
 	 * 
