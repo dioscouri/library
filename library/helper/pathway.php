@@ -55,13 +55,14 @@ class DSCHelperPathway extends DSCHelper
         }
         
         // $new_pathway now has the pathway UP TO where we should inject the category pathway
-        foreach ($items as $item)
+      /*  foreach ($items as $item)
         {
             $category_itemid = (!empty($item_id)) ? $item_id : DSC::getClass( "DSCHelperRoute", 'helpers.route' )->category( $item->id, true );
             $item->link .= "&Itemid=".$category_itemid;
             $new_pathway[] = $item;
         }
-
+		*/
+		
         $pathway->setPathway( $new_pathway );
         
         return $new_pathway;
