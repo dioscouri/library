@@ -611,10 +611,18 @@ class DSC extends JObject
 	public function setVariables() 
 	{
 	    $success = false;
-
-	    if ( $data = $this->getData() )
+	    
+	    $classname = strtolower( get_class($this) );
+	    
+	    $cache = JFactory::getCache( 'com_' . $classname . '.defines' );
+	    $cache->setCaching(true);
+	    $cache->setLifeTime('3600');
+	    $data = $cache->call(array($this, 'getData'));
+	    
+	    if ( !empty($data) )
 	    {
-	        for ($i=0; $i<count($data); $i++)
+	    	$count = count($data);
+	        for ($i=0; $i<$count; $i++)
 	        {
 	            $title = $data[$i]->config_name;
 	            $value = $data[$i]->value;
