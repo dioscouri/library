@@ -612,12 +612,15 @@ class DSC extends JObject
 	{
 	    $success = false;
 	    
+	    /*
 	    $classname = strtolower( get_class($this) );
-	    
 	    $cache = JFactory::getCache( 'com_' . $classname . '.defines' );
 	    $cache->setCaching(true);
 	    $cache->setLifeTime('3600');
 	    $data = $cache->call(array($this, 'getData'));
+	    */
+	    
+	    $data = $this->getData();
 	    
 	    if ( !empty($data) )
 	    {
