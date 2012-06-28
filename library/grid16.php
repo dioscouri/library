@@ -202,10 +202,12 @@ class DSCGrid extends JHTMLGrid
 		
 		$constant = 'page_tooltip_'.$key;
 		$app = JRequest::getCmd( 'option' );
-		$disabled = DSC::getApp( $app )->get( $constant."_disabled", '0');
+		$defines = DSC::getApp( $app );
+		$disabled = $defines->get( $constant."_disabled", '0');
 		
+		$full_constant = strtoupper( $app . "_" . $constant );
 		$lang = JFactory::getLanguage();
-		if ($lang->hasKey($constant) && !$disabled)
+		if ($lang->hasKey($full_constant) && !$disabled)
 		{
 			$option = strtolower( $app );
 			$view = strtolower( JRequest::getVar('view') );
@@ -216,7 +218,7 @@ class DSCGrid extends JHTMLGrid
 			$href = '
 				<fieldset class="'.$id.'">
 					<legend class="'.$id.'">'.JText::_($title).'</legend>
-					'.JText::_($constant).'
+					'.JText::_($full_constant).'
 					<span class="'.$id.'" style="float: right;">'.$link.'</span>
 				</fieldset>
 			';			
