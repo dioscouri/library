@@ -1137,5 +1137,44 @@ if (!class_exists( 'DSCInstaller' )) {
 		    
 		    return $manifest;
 		}
+		
+		/**
+		 *
+		 * Enter description here ...
+		 * @return return_type
+		 */
+		public function fixAdminMenu( $extension_name )
+		{
+		    $return = null;
+		    if(version_compare(JVERSION,'1.6.0','ge')) {
+		        // Joomla! 1.6+ code here
+		        $return = $this->checkComponentIdIsCorrect( $extension_name );
+		    } else {
+		        // Joomla! 1.5 code here
+		        $return = true;
+		    }
+		    return $return;
+		}
+		
+		public function checkComponentIdIsCorrect( $extension_name )
+		{
+		    $extension_name = strtolower($extension_name);
+		    
+		    $db = JFactory::getDBO();
+		    $query = "SELECT * FROM #__menu WHERE `client_id` = '1' AND `parent_id` = '1' AND LOWER(`title`) = '$extension_name' LIMIT 1;";
+		    $db->setQuery( $query );
+		    $result = $db->loadObject();
+		    
+		    $query = "SELECT * FROM #__extensions WHERE `client_id` = '1' AND `type` = 'component' AND LOWER(`element`) = '$extension_name' LIMIT 1;";
+		    $db->setQuery( $query );
+		    $component = $db->loadObject();
+		    
+		    if (!empty($result->id) && empty($result->component_id) || $result->component_id != $component->extension_id) 
+		    {
+		        $query = "UPDATE #__menu SET `component_id` = $component->extension_id WHERE `client_id` = '1' AND `parent_id` = '1' AND LOWER(`title`) = '$extension_name' LIMIT 1;";
+		        $db->setQuery( $query );
+		        $db->query();		        
+		    }
+		}
 	}
 }

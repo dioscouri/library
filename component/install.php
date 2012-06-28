@@ -8,6 +8,7 @@ $dscinstaller = new dscInstaller();
 $dscinstaller->thisextension = $thisextension;
 $dscinstaller->manifest = $this->manifest;
 $dscinstaller->runInstallSQL();
+$dscinstaller->fixAdminMenu( $thisextension );
 
 // load the component language file
 $language = JFactory::getLanguage();
