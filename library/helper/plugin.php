@@ -49,7 +49,21 @@ class DSCHelperPlugin extends DSCHelper
 		$order_query = " ORDER BY ordering ASC ";
 		$folder = strtolower( $folder );
 		
-		$query = "
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+	      $query = "
+			SELECT 
+				* 
+			FROM 
+				#__extensions 
+			WHERE  enabled = '1'
+			AND 
+				LOWER(`folder`) = '{$folder}'
+		
+		";
+	    } else {
+	        // Joomla! 1.5 code here
+	      $query = "
 			SELECT 
 				* 
 			FROM 
@@ -59,6 +73,7 @@ class DSCHelperPlugin extends DSCHelper
 				LOWER(`folder`) = '{$folder}'
 			{$order_query}
 		";
+		}		
 			
 		$database->setQuery( $query );
 		$data = $database->loadObjectList();
