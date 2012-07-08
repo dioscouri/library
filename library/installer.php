@@ -1156,6 +1156,10 @@ if (!class_exists( 'DSCInstaller' )) {
 		    return $return;
 		}
 		
+		/**
+		 * 
+		 * @param unknown_type $extension_name
+		 */
 		public function checkComponentIdIsCorrect( $extension_name )
 		{
 		    $extension_name = strtolower($extension_name);
@@ -1167,13 +1171,14 @@ if (!class_exists( 'DSCInstaller' )) {
 		    
 		    $query = "SELECT * FROM #__extensions WHERE `client_id` = '1' AND `type` = 'component' AND LOWER(`element`) = '$extension_name' LIMIT 1;";
 		    $db->setQuery( $query );
-		    $component = $db->loadObject();
-		    
-		    if (!empty($result->id) && empty($result->component_id) || $result->component_id != $component->extension_id) 
+		    if ($component = $db->loadObject()) 
 		    {
-		        $query = "UPDATE #__menu SET `component_id` = $component->extension_id WHERE `client_id` = '1' AND `parent_id` = '1' AND LOWER(`title`) = '$extension_name' LIMIT 1;";
-		        $db->setQuery( $query );
-		        $db->query();		        
+		        if (!empty($result->id) && empty($result->component_id) || $result->component_id != $component->extension_id)
+		        {
+		            $query = "UPDATE #__menu SET `component_id` = '$component->extension_id' WHERE `client_id` = '1' AND `parent_id` = '1' AND LOWER(`title`) = '$extension_name' LIMIT 1;";
+		            $db->setQuery( $query );
+		            $db->query();
+		        }		        
 		    }
 		}
 	}
