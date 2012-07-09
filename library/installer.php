@@ -419,6 +419,18 @@ if (!class_exists( 'DSCInstaller' )) {
 	        $this->setError(JText::_( "ELEMENT NOT INSTALLED" ));
 	        return false;
 	    }
+
+      /**
+       * Gets name of the module from "module" attribute from manifest.xml
+       * 
+       *@param string $module
+       *@return string  Name of a module                     
+       */             
+      function getModuleName( $module )
+      {
+        $parts = explode( '/', $module );
+        return end( $parts );     
+      }
 	    
 	    /**
 	     * Attempts to find the manifest file stored on the server
@@ -435,18 +447,21 @@ if (!class_exists( 'DSCInstaller' )) {
 	            	{
 	            		case "1":
 	            		case "administrator":
-	            			$moduleBaseDir = JPATH_ADMINISTRATOR.DS."modules";
+	            			$moduleBaseDir = JPATH_ADMINISTRATOR."/modules";
 	            			break;
 	                    case "0":
 	                    case "site":
 	                    default:
-	                        $moduleBaseDir = JPATH_SITE.DS."modules";
+	                        $moduleBaseDir = JPATH_SITE."/modules";
 	                        break;
 	            			
 	            	}
 	
+                  // read only name of the module
+                  $mname = $this->getModuleName( $package['element'] );
+  
 	                // xml file for module
-	                $xmlfile = $moduleBaseDir . DS . $package['element'] .DS. $package['element'] .".xml";
+	                $xmlfile = $moduleBaseDir . '/' . $mname .'/'. $mname .".xml";
 	
 	                if (file_exists($xmlfile))
 	                {
@@ -458,10 +473,10 @@ if (!class_exists( 'DSCInstaller' )) {
 	                break;
 	            case "plugin":
 	                // Get the plugin base path
-	                $baseDir = JPATH_SITE.DS.'plugins';
+	                $baseDir = JPATH_SITE.'/plugins';
     	            if(version_compare(JVERSION,'1.6.0','ge')) {
     	                // Get the plugin xml file
-    	                $xmlfile = $baseDir.DS.$package['group'].DS.$package['element'].DS.$package['element'].".xml";
+    	                $xmlfile = $baseDir.'/'.$package['group'].'/'.$package['element'].'/'.$package['element'].".xml";
                     } else {
     	                // Get the plugin xml file
     	                $xmlfile = $baseDir.DS.$package['group'].DS.$package['element'].".xml";
@@ -506,12 +521,14 @@ if (!class_exists( 'DSCInstaller' )) {
                     }
 	                break;
 	            case "module":
-	        	    if(version_compare(JVERSION,'1.6.0','ge')) {
+                  $mname = $this->getModuleName( $manifestInformation["element"] );
+
+  	        	    if(version_compare(JVERSION,'1.6.0','ge')) {
                         // Joomla! 1.6+ code here
-                        $query = "SELECT `extension_id` AS id FROM #__extensions WHERE `type` = 'module' AND `element` = '".$manifestInformation["element"]."'";
+                        $query = "SELECT `extension_id` AS id FROM #__extensions WHERE `type` = 'module' AND `element` = '".$mname."'";
                     } else {
                         // Joomla! 1.5 code here
-                        $query = "SELECT `id` FROM #__modules WHERE `module` = '".$manifestInformation["element"]."'";
+                        $query = "SELECT `id` FROM #__modules WHERE `module` = '".$mname."'";
                     }	                
 	                break;
 	            case "plugin":

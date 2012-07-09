@@ -3,7 +3,7 @@
 //$thisextension = strtolower( "com_whatever" );
 //$thisextensionname = substr ( $thisextension, 4 );
 
-JLoader::import( 'dioscouri.library.installer', JPATH_SITE . DS . 'libraries' );
+JLoader::import( 'dioscouri.library.installer', JPATH_SITE . '/libraries' );
 $dscinstaller = new dscInstaller();
 $dscinstaller->thisextension = $thisextension;
 $dscinstaller->manifest = !empty($this->manifest) ? $this->manifest : $dscinstaller->getComponentManifestFile($thisextension);
