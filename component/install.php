@@ -100,10 +100,21 @@ if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && 
 			$dscInstaller->set( '_publishExtension', true );
 		}
 		$result = $dscInstaller->installExtension($pathToFolder, 'folder', $mname);
+//		$mname		= $dscinstaller->getModuleName( $mname );
 		
 		// track the message and status of installation from dscInstaller
 		if ($result) 
 		{
+			// update the module record if the position != left
+			if (isset($mposition))
+			{
+				// set the position of the module
+				$db = JFactory::getDBO();
+				$q = "UPDATE #__modules SET `position` = '{$mposition}' WHERE `module` = '{$result['element']}';";
+        $db->setQuery($q);
+				$db->query();
+			}
+
 			$alt = JText::_( "Installed" );
 			$mstatus = "<img src='" . DSC::getURL( 'images' ) . "tick.png' border='0' alt='{$alt}' />";
 		} else {

@@ -521,7 +521,7 @@ if (!class_exists( 'DSCInstaller' )) {
                     }
 	                break;
 	            case "module":
-                  $mname = $this->getModuleName( $manifestInformation["element"] );
+                  $mname = $manifestInformation["element"];
 
   	        	    if(version_compare(JVERSION,'1.6.0','ge')) {
                         // Joomla! 1.6+ code here
@@ -607,6 +607,9 @@ if (!class_exists( 'DSCInstaller' )) {
 						}
 					}
 				}
+        if (strcasecmp($type, "module") == 0 ) {
+          $element = $this->getModuleName( $element );
+        }
 			}
 	
 			//create the array of information to return
@@ -850,11 +853,11 @@ if (!class_exists( 'DSCInstaller' )) {
 						if(version_compare(JVERSION,'1.6.0','ge')) {
                             // Joomla! 1.6+ code here
                             $query = "UPDATE #__extensions SET `enabled` = '1' WHERE `type` = 'module' AND `element` = '".$manifestInformation["element"]."'";
-                        } else {
-                            // Joomla! 1.5 code here
-                            $query = "UPDATE #__modules SET `published` = '1' WHERE `module` = '".$manifestInformation["element"]."'";
-                        }
-						
+                    				$this->_db->setQuery($query);
+                    				$this->_db->query();
+                        } 
+            // Joomla! 1.5 code here
+            $query = "UPDATE #__modules SET `published` = '1' WHERE `module` = '".$manifestInformation["element"]."'";
 					}
 					break;
 				case "plugin":
