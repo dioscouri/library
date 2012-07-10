@@ -639,5 +639,32 @@ class DSC extends JObject
 
 	    return $success;
 	}
+
+  /**
+   * Finds out if a component is installed
+   *
+   * @param string $option
+   * 
+   * @return  True or False based on if the component exists or not     
+   */        
+  public function isComponentInstalled($option)
+  {
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+	        // Joomla! 1.6+ code here
+          $db = JFactory::getDBO();
+          $q = new DSCQuery();
+          $q->select( 'extension_id' );
+          $q->from( '#__extensions' );
+          $q->where( 'type = \'component\'' );
+          $q->where( 'enabled = 1' );
+          $q->where( 'element = '.$db->Quote( $option ) );
+          $db->setQuery( $q );
+          $res = $db->loadObject();
+          return $res !== null;
+	    } else {
+	        // Joomla! 1.5 code here
+          return JComponentHelper::getComponent( $option, true)->enabled;
+	    }    
+  }
 }
 ?>
