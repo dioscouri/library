@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ An ant build file for joomla install packages
+ 
+ @author    Dioscouri Design
+ @link  http://www.dioscouri.com
+ @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
+ @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+-->
+<project name="misc" default="build" basedir=".">
+    <description>Ant Build File for Joomla</description>
+
+    <!-- load variables from config file -->
+    <property name="cfg.configFile" location="antconfig.txt" />
+    <loadproperties srcfile="${cfg.configFile}" />
+
+    <!--config file values
+    cfg.name=sample
+    cfg.buildDir=packages
+    cfg.localhostRoot=c:/www
+    
+    ftp.server=
+    ftp.user=
+    ftp.password=
+    ftp.dir=    
+    -->
+
+    <!-- auto values but should be checked -->
+    <property name="cfg.comName" value="${cfg.name}" />
+    <property name="cfg.comDir" value="${basedir}/${cfg.comName}" />
+    <property name="cfg.buildVersionDir" value="${cfg.buildDir}" />
+    <property name="cfg.plgPrefix" value="sample_plugin_" />
+    <property name="cfg.modPrefix" value="mod_sample_" />
+    <property name="cfg.langPrefix" value="sample_translation_" />
+    <property name="cfg.langDir" value="${basedir}/language_packages" />
+    <property name="cfg.adminFilesDir" location="${cfg.comDir}/admin" />
+    <property name="cfg.siteFilesDir" location="${cfg.comDir}/site" />
+    <property name="cfg.extensionsDir" location="${basedir}/extensions" />
+    <property name="cfg.mediaFilesDir" location="${cfg.comDir}/media" />
+    <property name="cfg.adminLangDir" location="${cfg.comDir}/languages/admin" />
+    <property name="cfg.siteLangDir" location="${cfg.comDir}/languages/site" />
+    
+    <!-- some settings that are currently unused -->
+    <property name="cfg.addversion" value="true" />
+    <property name="cfg.versionprefix" value="v" />
+    <property name="cfg.adddate" value="true" />
+    <property name="cfg.datefmt" value="yyyy-MM-dd" />
+    <property name="cfg.dateloc" value="en,UK" />
+
+    <target name="update_localhost" description="attemps to update files on localhost server with files from working directory">
+        <!-- MAIN COMPONENT -->
+        <copy todir="${cfg.localhostRoot}/administrator/components/com_${cfg.comName}" overwrite="true">
+            <fileset dir="${cfg.adminFilesDir}" />
+        </copy>
+        <copy todir="${cfg.localhostRoot}/components/com_${cfg.comName}" overwrite="true">
+            <fileset dir="${cfg.siteFilesDir}" />
+        </copy>
+        <copy todir="${cfg.localhostRoot}/administrator/components/com_${cfg.comName}" overwrite="true">
+            <fileset file="${cfg.comDir}/manifest.xml" />
+        </copy>     
+        <!-- MEDIA FILES -->
+        <copy todir="${cfg.localhostRoot}/media/com_${cfg.comName}" overwrite="true">
+            <fileset dir="${cfg.mediaFilesDir}" />
+        </copy>
+        <!-- LANGUAGE FILES -->
+        <copy todir="${cfg.localhostRoot}/administrator/language/en-GB" overwrite="true">
+            <fileset dir="${cfg.adminLangDir}" />
+        </copy>
+        <copy todir="${cfg.localhostRoot}/language/en-GB" overwrite="true">
+            <fileset dir="${cfg.siteLangDir}" />
+        </copy>
+    </target>
+    
+    <target name="clean" description="Destroys all generated files and dirs">
+        <delete dir="${cfg.buildDir}/plugins" />
+        <delete dir="${cfg.buildDir}/modules" />
+        <delete dir="${cfg.buildDir}/components" />
+        <delete dir="${cfg.buildDir}/languages" />
+    </target>
+
+    <target name="init" description="creates necessary directory to build with">
+        <mkdir dir="${cfg.buildDir}" />
+        <mkdir dir="${cfg.buildDir}/plugins" />
+        <mkdir dir="${cfg.buildDir}/modules" />
+        <mkdir dir="${cfg.buildDir}/components" />
+        <mkdir dir="${cfg.buildDir}/languages" />
+    </target>
+
+    <target name="build" depends="build_packages" />
+    
+    <target name="build_packages" depends="clean, init, build_component, build_modules, build_plugins, build_languages" />
+    
+    <target name="build_component" depends="init" description="packages the final component file">
+        <zip destfile="${cfg.buildDir}/components/${cfg.name}.zip" basedir="${cfg.comDir}" />
+    </target>
+
+    <target name="build_plugins" description="packages any plugins">
+        <!-- add all plugin directories here -->
+        <!-- EX: <zip destfile="${cfg.buildDir}/plugins/${cfg.plgPrefix}report_ambrafields.zip" basedir="${cfg.comDir}/${cfg.plgPrefix}report_ambrafields" /> -->
+    </target>
+
+    <target name="build_modules" description="packages any modules">
+        <!-- add all module directories here -->
+    	<!-- EX: <zip destfile="${cfg.buildDir}/modules/${cfg.modPrefix}module.zip" basedir="${cfg.comDir}/${cfg.plgPrefix}module" /> -->
+    </target>
+    
+    <target name="build_languages" depends="init" description="packages any languages">
+    </target>   
+
+    <target name="build_system_plugin_for_j15" description="packages the system plugin and library for j15 installation">
+        <delete dir="${cfg.buildDir}/j15" />
+        <delete file="${cfg.buildDir}/dioscouri_plugin_system_j15x.zip"/>
+        <mkdir dir="${cfg.buildDir}/j15" />
+                
+        <!-- MAIN PLUGIN -->
+        <copy todir="${cfg.buildDir}/j15" preservelastmodified="true" overwrite="true">
+            <fileset dir="${basedir}/dioscouri_plugin_system" />
+        </copy>
+        <!-- LIBRARY -->
+        <copy todir="${cfg.buildDir}/j15/dioscouri" preservelastmodified="true" overwrite="true">
+            <fileset dir="${basedir}/dioscouri_library" />
+        </copy>
+        
+        <move file="${cfg.buildDir}/j15/dioscouri.xml.j15" tofile="${cfg.buildDir}/j15/dioscouri.xml" overwrite="true" />
+        
+        <delete file="${cfg.buildDir}/j15/dioscouri/dioscouri.xml"/>
+        
+        <zip destfile="${cfg.buildDir}/dioscouri_plugin_system_j15x.zip" basedir="${cfg.buildDir}/j15" />
+    </target>
+</project>
