@@ -321,7 +321,7 @@ if (!class_exists( 'DSCInstaller' )) {
 				{
 					$this->publishExtension($manifestInformation);	
 				}
-				
+								
 				//restore extension parameters if requested
 				if ($this->_saveParameters && isset($savedParameters->params)) {
 					$this->restoreParameters($manifestInformation, $savedParameters);
@@ -852,10 +852,17 @@ if (!class_exists( 'DSCInstaller' )) {
 					if (!in_array($manifestInformation["element"], $this->_doNotPublishList)) {
 						if(version_compare(JVERSION,'1.6.0','ge')) {
                             // Joomla! 1.6+ code here
+                            // publish the module
                             $query = "UPDATE #__extensions SET `enabled` = '1' WHERE `type` = 'module' AND `element` = '".$manifestInformation["element"]."'";
                     				$this->_db->setQuery($query);
                     				$this->_db->query();
-                        } 
+
+						
+                            // display it on all pages
+                            $query = "INSERT #__modules_menu (`moduleid`, `menuid`) SELECT `id`, 0 FROM `#__modules` WHERE `module` = '".$manifestInformation["element"]."'";
+                    				$this->_db->setQuery($query);
+                    				$this->_db->query();
+						} 
             // Joomla! 1.5 code here
             $query = "UPDATE #__modules SET `published` = '1' WHERE `module` = '".$manifestInformation["element"]."'";
 					}
