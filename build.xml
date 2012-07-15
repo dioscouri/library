@@ -27,22 +27,22 @@
 
     <target name="update_localhost_j15" description="attemps to update files on localhost server with files from working directory">
       <!-- MAIN COMPONENT -->
-      <copy todir="${cfg.localhostRoot_15}/library/dioscouri/component" overwrite="true">
+      <copy todir="${cfg.localhostRoot_15}/libraries/dioscouri/component" overwrite="true">
         <fileset dir="lib_dioscouri/component" />
       </copy>
-      <copy todir="${cfg.localhostRoot_15}/library/dioscouri/highroller" overwrite="true">
+      <copy todir="${cfg.localhostRoot_15}/libraries/dioscouri/highroller" overwrite="true">
         <fileset dir="lib_dioscouri/highroller" />
       </copy>
-      <copy todir="${cfg.localhostRoot_15}/library/dioscouri/library" overwrite="true">
+      <copy todir="${cfg.localhostRoot_15}/libraries/dioscouri/library" overwrite="true">
         <fileset dir="lib_dioscouri/library" />
       </copy>
-      <copy todir="${cfg.localhostRoot_15}/library/dioscouri/tools" overwrite="true">
+      <copy todir="${cfg.localhostRoot_15}/libraries/dioscouri/tools" overwrite="true">
         <fileset dir="lib_dioscouri/tools" />
       </copy>
-    	<copy todir="${cfg.localhostRoot_j15}/library/dioscouri" overwrite="true">
+    	<copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri" overwrite="true">
         <fileset file="lib_dioscouri/dioscouri.php" />
       </copy>
-    	<copy todir="${cfg.localhostRoot_j15}/library/dioscouri" overwrite="true">
+    	<copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri" overwrite="true">
         <fileset file="lib_dioscouri/loader.php" />
       </copy>
 
@@ -58,22 +58,22 @@
 
   <target name="update_localhost" description="attemps to update files on localhost server with files from working directory">
     <!-- MAIN COMPONENT -->
-    <copy todir="${cfg.localhostRoot}/library/dioscouri/component" overwrite="true">
+    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/component" overwrite="true">
       <fileset dir="lib_dioscouri/component" />
     </copy>
-    <copy todir="${cfg.localhostRoot}/library/dioscouri/highroller" overwrite="true">
+    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/highroller" overwrite="true">
       <fileset dir="lib_dioscouri/highroller" />
     </copy>
-    <copy todir="${cfg.localhostRoot}/library/dioscouri/library" overwrite="true">
+    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/library" overwrite="true">
       <fileset dir="lib_dioscouri/library" />
     </copy>
-    <copy todir="${cfg.localhostRoot}/library/dioscouri/tools" overwrite="true">
+    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/tools" overwrite="true">
       <fileset dir="lib_dioscouri/tools" />
     </copy>
-  	<copy todir="${cfg.localhostRoot}/library/dioscouri" overwrite="true">
+  	<copy todir="${cfg.localhostRoot}/libraries/dioscouri" overwrite="true">
       <fileset file="lib_dioscouri/dioscouri.php" />
     </copy>
-  	<copy todir="${cfg.localhostRoot}/library/dioscouri" overwrite="true">
+  	<copy todir="${cfg.localhostRoot}/libraries/dioscouri" overwrite="true">
       <fileset file="lib_dioscouri/loader.php" />
     </copy>
 
