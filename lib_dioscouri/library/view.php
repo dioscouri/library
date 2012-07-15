@@ -107,19 +107,19 @@ class DSCView extends JView {
 
         // set the model state
             $state = new JObject();
-            if (method_exists( $model, 'getState') ) {
+            if (empty($this->no_state) && method_exists( $model, 'getState') ) {
                 $state = $model->getState();
             }
             JFilterOutput::objectHTMLSafe( $state );
             $this->assign( 'state', $state );
 
         // page-navigation
-            if (method_exists( $model, 'getPagination') ) {
+            if (empty($this->no_pagination) && method_exists( $model, 'getPagination') ) {
                 $this->assign( 'pagination', $model->getPagination() );
             }
 
         // list of items
-            if (method_exists( $model, 'getList') ) {
+            if (empty($this->no_items) && method_exists( $model, 'getList') ) {
                 $this->assign('items', $model->getList());
             }
 

@@ -19,8 +19,13 @@ class DSCTable extends JTable
 	function __construct( $tbl_name, $tbl_key, &$db, $app=null )
 	{
 		parent::__construct( $tbl_name, $tbl_key, $db );
+
 		// set table properties based on table's fields
-		$this->setTableProperties();
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+		    // Joomla! 1.6+ does this in $this->getFields(), which is called by the constructor		    
+		} else {
+    		$this->setTableProperties();
+		}
 		
 		$prev = $this->get('_app');
 		if (empty($prev)) {
@@ -73,11 +78,16 @@ class DSCTable extends JTable
 	 */
 	function getColumns()
 	{
-		static $fields;
+	    $classname = strtolower( get_class($this) );
+	    $cache = JFactory::getCache( $classname . '.columns', '' );
+	    $cache->setCaching(true);
+	    $cache->setLifeTime('86400');
+	    $fields = $cache->get($classname);
 
 		if (empty($fields))
 		{
 			$fields = $this->_db->getTableFields($this->getTableName());
+			$cache->store($fields, $classname);
 		}
 
 		$return = @$fields[$this->getTableName()];

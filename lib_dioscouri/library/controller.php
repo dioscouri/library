@@ -487,6 +487,9 @@ class DSCController extends JController
 		$view->setModel( $model, true );
 		$view->setLayout('footer');
 		$view->setTask(true);
+		$view->no_state = true;
+		$view->no_pagination = true;
+		$view->no_items = true;		
 		$view->assign('extraHtml', $html);
 		$view->display();
 	}
