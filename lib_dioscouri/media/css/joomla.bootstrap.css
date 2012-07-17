@@ -6,4 +6,23 @@ background-position: 0px 0px;
 margin: 0 auto;
 display: block;
 }
-.input-tiny{width:50px;}
+.input-tiny{width:40px;}
+select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input{display:inline-block;height:18px;padding:4px;margin-bottom:0px;font-size:13px;line-height:18px;color:#555555;}
+
+div#submenu-box div.m {
+	border: none !important;
+	padding: 0 !important;
+	background-color: none !important;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	
+}
+table.table thead th {
+	text-align: center;
+	background: #f7f7f7;
+	color: #666;
+	border-bottom: 1px solid #CCC;
+	border-left: 1px solid #fff;
+
+}
