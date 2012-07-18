@@ -453,4 +453,25 @@ class DSCHelperUser extends DSCHelper {
 		return true;
 	}
 
+	
+	/**
+	 * Returns url for user login view in Joomla!
+	 * 
+	 * @param unknown_type $return	Return string
+	 * 
+	 * @return Correct url
+	 */
+	public static function getUserLoginUrl( $return = '' )
+	{
+		if (version_compare(JVERSION, '1.6.0', 'ge')) {
+			$result = "index.php?option=com_users&view=login";
+		}
+		else {
+			$result = "index.php?option=com_user&view=login";
+		}
+		if( !empty( $return ) ) {
+			$result .= '&return='.base64_encode( $return );
+		}
+		return $result;
+	}
 }
