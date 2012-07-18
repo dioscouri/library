@@ -128,8 +128,12 @@ class DSC extends JObject
 		if ( !class_exists($app) ) {
 			JLoader::register( $app, JPATH_ADMINISTRATOR.DS."components".DS."com_" . $app . DS ."defines.php" );
 		}
+		if ( class_exists($app) ) {
+			return $app::getInstance();
+		} else {
+			return null;
+		}
 		
-		return $app::getInstance();
 	}
 
 	/**
