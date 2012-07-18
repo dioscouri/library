@@ -92,10 +92,10 @@ h5{font-size:12px;}
 h6{font-size:11px;color:#999999;text-transform:uppercase;}
 .page-header{padding-bottom:17px;margin:18px 0;border-bottom:1px solid #eeeeee;}
 .page-header h1{line-height:1;}
-ul,ol{padding:0;margin:0 0 9px 25px;}
+ul,ol{padding:0;margin:0;}
 ul ul,ul ol,ol ol,ol ul{margin-bottom:0;}
-ul{list-style:disc;}
-ol{list-style:decimal;}
+ul{list-style:none;}
+ol{list-style:none;}
 li{line-height:18px;}
 ul.unstyled,ol.unstyled{margin-left:0;list-style:none;}
 dl{margin-bottom:18px;}
