@@ -26,3 +26,13 @@ table.table thead th {
 	border-left: 1px solid #fff;
 
 }
+.nav-tabs>.active>a,.nav-tabs>.active>a:hover{color:#555555;background-color: #F4F4F4;border:1px solid #ddd;border-bottom-color:transparent;cursor:default;}
+
+legend{display:block;width:auto;padding:0;margin-bottom:0px; padding-left:10px; padding-right:10px;font-size:19.5px;line-height:36px;color:#333333;border:0;border-bottom:0px;}
+
+legend small{font-size:13.5px;color:#999999;}
+
+.tabbable .nav{margin-left:0;margin-bottom:0px;list-style:none;}
+.tabbable .nav-tabs{border-bottom:0px;}
+.select {
+width: auto;
