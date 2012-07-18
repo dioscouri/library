@@ -63,7 +63,6 @@
     padding-right: 20px;
     padding-top: 7px;
     vertical-align: top;
-    width: 200px;
 }
 
 .dsc-table .dsc-row .dsc-cell.dsc-value {
@@ -73,6 +72,7 @@
 .dsc-key {
     font-size: 120%;
     font-weight: bold;
+    width: 200px;
 }
 
 p.dsc-tip {
