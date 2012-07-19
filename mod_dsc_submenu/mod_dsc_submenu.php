@@ -24,11 +24,27 @@ defined('_JEXEC') or die('Restricted access');
 	/*lets check and see if we are a DSC Option*/
 	$option = JRequest::getCmd('option');
  $extension = DSC::getApp($option);
+ 
+ //$extension::getInstance()->get('use_bootstrap'); ??
 if( is_subclass_of( $extension, 'DSC')) {
-	require JModuleHelper::getLayoutPath('mod_dsc_submenu', $params->get('layout', 'bootstrapped'));
-	DSC::loadBootstrap();
+	if( $params->get('layout') == 'bootstrapped'){
+		DSC::loadBootstrap();
+		JHTML::_('stylesheet', 'bootstrapped_submenu.css', 'administrator/modules/mod_dsc_submenu/css/');
+	}else {
+		JHTML::_('stylesheet', 'default.css', 'administrator/modules/mod_dsc_submenu/css/');
+	}
+	require JModuleHelper::getLayoutPath('mod_dsc_submenu', $params->get('layout', 'default'));
+	
 } else {
-	require (JModuleHelper::getLayoutPath('mod_dsc_submenu','default'));
+	$menu = JToolBar::getInstance('submenu');
+	$list = $menu->getItems();
+	$module = JModuleHelper::getModule('mod_submenu');
+	var_dump($module);
+	$params = new DSCParameter($module->params);
+	require JModuleHelper::getLayoutPath('mod_submenu', $params->get('layout', 'default'));
+
 }
+	
+	?>
 	
 

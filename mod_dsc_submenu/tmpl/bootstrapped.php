@@ -124,3 +124,5 @@ if (!empty($submenu))
       </div>
     </div><!-- /navbar-inner -->
   </div>
+
+<script> document.getElementById('dsc_submenu').getParent().getParent().style.display='block'; </script>

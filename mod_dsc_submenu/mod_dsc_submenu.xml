@@ -14,6 +14,7 @@
         <filename module="mod_dsc_submenu">mod_dsc_submenu.php</filename>
         <filename>index.html</filename>
         <folder>tmpl</folder>
+        <folder>css</folder>
     </files>
     
 	<languages folder="languages">
@@ -24,6 +25,7 @@
 			<fieldset name="basic">
 	
 				<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				
 				<field
 					name="layout"
 					type="modulelayout"
