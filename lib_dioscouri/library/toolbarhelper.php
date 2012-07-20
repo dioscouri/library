@@ -14,6 +14,14 @@ defined('_JEXEC') or die('Restricted access');
 class DSCToolBarHelper extends JToolBarHelper 
 {
 	/**
+	 * Button type
+	 *
+	 * @access	protected
+	 * @var		string
+	 */
+	var $_name = 'DSC';
+		
+	/**
 	 * Writes a custom option and task button for the button bar
 	 * @param string The task to perform (picked up by the switch($task) blocks
 	 * @param string The image to display
@@ -31,7 +39,7 @@ class DSCToolBarHelper extends JToolBarHelper
 		$icon	= preg_replace('#\.[^.]*$#', '', $icon);
 
 		// Add a standard button
-		$bar->appendButton( 'DSC', $icon, $alt, $task, $listSelect, $x, $taskName );
+		$bar->appendButton( $this->_name, $icon, $alt, $task, $listSelect, $x, $taskName );
 	}
 
 	/**
@@ -44,6 +52,6 @@ class DSCToolBarHelper extends JToolBarHelper
 	{
 		$bar = & JToolBar::getInstance('toolbar');
 		// Add a new button
-		$bar->appendButton( 'DSC', 'new', $alt, $task, false, false, $taskName );
+		$bar->appendButton( $this->_name, 'new', $alt, $task, false, false, $taskName );
 	}
 }

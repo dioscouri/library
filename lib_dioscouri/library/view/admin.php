@@ -208,17 +208,17 @@ class DSCViewAdmin extends DSCView
 	    $surrounding = (!empty($this->surrounding)) ? $this->surrounding : array();
 	    if (!empty($surrounding['prev'])) {
 	        $divider = true;
-	        JToolBarHelper::custom('prev', "prev", "prev", JText::_('Prev'), false);
+	        JToolBarHelper::custom('prev', "prev", "prev", 'Prev', false);
 	    }
 	    if (!empty($surrounding['next'])) {
 	        $divider = true;
-	        JToolBarHelper::custom('next', "next", "next", JText::_('Next'), false);
+	        JToolBarHelper::custom('next', "next", "next", 'Next', false);
 	    }
 	    if ($divider) {
 	        JToolBarHelper::divider();
 	    }
 	
-	    JToolBarHelper::cancel('close', JText::_('Close'));
+	    JToolBarHelper::cancel('close', 'Close' );
 	}
 
 }
