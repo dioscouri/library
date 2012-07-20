@@ -69,6 +69,10 @@
     vertical-align: bottom;
 }
 
+.dsc-table .dsc-order {
+    width: 200px;
+}
+
 .dsc-key {
     font-size: 120%;
     font-weight: bold;

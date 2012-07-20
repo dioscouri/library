@@ -1,9 +1,8 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('stylesheet', 'tienda_admin.css', 'media/com_tienda/css/');
 ?>
 
-<ul id="submenu" class="submenu">
+<ul id="dsc_submenu" class="submenu">
 
 <?php
 if(version_compare(JVERSION,'1.6.0','ge')) {
@@ -78,3 +77,5 @@ $subitems = $submenu->_menu->_bar;
 ?>
 
 </ul>
+
+
