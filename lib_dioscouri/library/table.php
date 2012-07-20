@@ -1,11 +1,10 @@
 <?php
-/**
- * @version	0.1
- * @package	DSC
- * @author 	Dioscouri Design
- * @link 	http://www.dioscouri.com
- * @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+/** * @version 0.1
+* @package	DSC
+* @author 	Dioscouri Design
+* @link 	http://www.dioscouri.com
+* @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 */
 
 /** ensure this file is being included by a parent file */
@@ -22,18 +21,18 @@ class DSCTable extends JTable
 
 		// set table properties based on table's fields
 		if(version_compare(JVERSION,'1.6.0','ge')) {
-		    // Joomla! 1.6+ does this in $this->getFields(), which is called by the constructor		    
+			// Joomla! 1.6+ does this in $this->getFields(), which is called by the constructor
 		} else {
-    		$this->setTableProperties();
+			$this->setTableProperties();
 		}
-		
+
 		$prev = $this->get('_app');
 		if (empty($prev)) {
 			$this->set('_app', $app);
 		}
 
 	}
-	
+
 	/**
 	 * Lock the DB tables
 	 * @return unknown_type
@@ -78,83 +77,99 @@ class DSCTable extends JTable
 	 */
 	function getColumns()
 	{
-	    $classname = strtolower( get_class($this) );
-	    $cache = JFactory::getCache( $classname . '.columns', '' );
-	    $cache->setCaching(true);
-	    $cache->setLifeTime('86400');
-	    $fields = $cache->get($classname);
-
+		$classname = strtolower( get_class($this) );
+		$cache = JFactory::getCache( $classname . '.columns', '' );
+		$cache->setCaching(true);
+		$cache->setLifeTime('86400');
+		$fields = $cache->get($classname);
 		if (empty($fields))
 		{
 			$fields = $this->_db->getTableFields($this->getTableName());
-			$cache->store($fields, $classname);
+			if(version_compare(JVERSION,'1.6.0','ge'))
+			{
+				// joomla! 1.6+ code here
+				$cache->store( $fields, $classname);
+			}
+			else
+			{
+				$cache->store(  serialize( $fields ), $classname);
+			}
+		}
+		else
+		{
+			if(version_compare(JVERSION,'1.6.0','ge'))
+			{
+				$fields = @$fields[$this->getTableName()];
+			}
+			else
+			{
+				$fields = unserialize( trim( $fields ) );
+			}
+		}
+		return $fields;
+	}
+
+	/**
+	 * Set properties of object based on table fields
+	 *
+	 * @acces   public
+	 * @return  object
+	 */
+	function setTableProperties()
+	{
+		static $fields;
+
+		if (empty($fields))
+		{
+			$fields = $this->getColumns();
 		}
 
-		$return = @$fields[$this->getTableName()];
-		return $return;
+		foreach (@$fields as $name=>$type)
+		{
+			$this->$name = null;
+		}
 	}
-	
-    /**
-     * Set properties of object based on table fields
-     *
-     * @acces   public
-     * @return  object
-     */
-    function setTableProperties()
-    {
-        static $fields;
 
-        if (empty($fields))
-        {
-            $fields = $this->getColumns();
-        }
+	/**
+	 * Gets the key names
+	 *
+	 * returned $keynames array typically looks like:
+	 * $keynames['product_id']  = 'product_id';
+	 * $keynames['category_id'] = 'category_id';
+	 *
+	 * @return array
+	 * @since 1.5
+	 */
+	public function getKeyNames()
+	{
+		$keynames = $this->_tbl_keys;
+		if (!is_array($keynames))
+		{
+			// set _tbl_keys using the primary keyname
+			$keynames = array();
+			$keyName = $this->getKeyName();
+			$keynames[$keyName] = $keyName;
+			$this->_tbl_keys = $keynames;
+		}
+		return $this->_tbl_keys;
+	}
 
-        foreach (@$fields as $name=>$type)
-        {
-            $this->$name = null;
-        }
-    }
-	
-    /**
-     * Gets the key names
-     * 
-     * returned $keynames array typically looks like:
-     * $keynames['product_id']  = 'product_id';
-     * $keynames['category_id'] = 'category_id';
-     * 
-     * @return array
-     * @since 1.5
-     */
-    public function getKeyNames()
-    {
-        $keynames = $this->_tbl_keys;
-        if (!is_array($keynames))
-        {
-            // set _tbl_keys using the primary keyname
-            $keynames = array();
-            $keyName = $this->getKeyName();
-            $keynames[$keyName] = $keyName;
-            $this->_tbl_keys = $keynames;
-        }
-        return $this->_tbl_keys;
-    }
-    
-    /**
-     * Sets the keynames
-     * 
-     * $keynames typically looks like:
-     * $keynames = array();
-     * $keynames['product_id']  = 'product_id';
-     * $keynames['category_id'] = 'category_id';
-     * 
-     * @param $keynames array
-     * @return unknown_type
-     */
-    public function setKeyNames( $keynames )
-    {
-        $this->_tbl_keys = $keynames;
-        return $this->_tbl_keys;
-    }
+	/**
+	 * Sets the keynames
+	 *
+	 * $keynames typically looks like:
+	 * $keynames = array();
+	 * $keynames['product_id']  = 'product_id';
+	 * $keynames['category_id'] = 'category_id';
+	 *
+	 * @param $keynames array
+	 * @return unknown_type
+	 */
+	public function setKeyNames( $keynames )
+	{
+		$this->_tbl_keys = $keynames;
+		return $this->_tbl_keys;
+	}
 
 	/**
 	 * Loads a row from the database and binds the fields to the object properties
@@ -171,7 +186,7 @@ class DSCTable extends JTable
 			$keyName = $this->getKeyName();
 			$oid = array( $keyName => $oid );
 		}
-		
+
 		if (empty($oid))
 		{
 			// if empty, use the value of the current key
@@ -181,57 +196,57 @@ class DSCTable extends JTable
 			{
 				// if still empty, fail
 				$this->setError( JText::_( "Cannot load with empty key" ) );
-                return false;
+				return false;
 			}
 		}
 
-        // allow $oid to be an array of key=>values to use when loading
-        $oid = (array) $oid;
-		
-        if (!empty($reset))
-        {
-            $this->reset();
-        }
+		// allow $oid to be an array of key=>values to use when loading
+		$oid = (array) $oid;
 
-        $db = $this->getDBO();
-        
-        // initialize the query
-        $query = new DSCQuery();
-        $query->select( '*' );
-        $query->from( $this->getTableName() );
-        
+		if (!empty($reset))
+		{
+			$this->reset();
+		}
+
+		$db = $this->getDBO();
+
+		// initialize the query
+		$query = new DSCQuery();
+		$query->select( '*' );
+		$query->from( $this->getTableName() );
+
 		foreach ($oid as $key=>$value)
 		{
-            // Check that $key is field in table
-            if ( !in_array( $key, array_keys( $this->getProperties() ) ) )
-            {
-                $this->setError( get_class( $this ).' does not have the field '.$key );
-                return false;
-            }
-            // add the key=>value pair to the query
-            $value = $db->Quote( $db->getEscaped( trim( strtolower( $value ) ) ) );
-            $query->where( $key.' = '.$value);
+			// Check that $key is field in table
+			if ( !in_array( $key, array_keys( $this->getProperties() ) ) )
+			{
+				$this->setError( get_class( $this ).' does not have the field '.$key );
+				return false;
+			}
+			// add the key=>value pair to the query
+			$value = $db->Quote( $db->getEscaped( trim( strtolower( $value ) ) ) );
+			$query->where( $key.' = '.$value);
 		}
-		
+
 		$db->setQuery( (string) $query );
-		
-	    if ( $result = $db->loadAssoc() )
-        {
-        	$result = $this->bind($result);
-        	
-        	if( $result )
-        	{
-        		$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger( 'onLoad'.$this->get('_suffix'), array( &$this ) );	
-        	}
-            
+
+		if ( $result = $db->loadAssoc() )
+		{
+			$result = $this->bind($result);
+			 
+			if( $result )
+			{
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger( 'onLoad'.$this->get('_suffix'), array( &$this ) );
+			}
+
 			return $result;
-        }
-        else
-        {
-            $this->setError( $db->getErrorMsg() );
-            return false;
-        }
+		}
+		else
+		{
+			$this->setError( $db->getErrorMsg() );
+			return false;
+		}
 	}
 
 	/**
@@ -242,23 +257,23 @@ class DSCTable extends JTable
 	 */
 	function save($src='', $orderingFilter = '', $ignore = '')
 	{
-	    $this->_isNew = false;
-	    $key = $this->getKeyName();
-	    if (empty($this->$key))
-        {
-            $this->_isNew = true;
-        }
-        
+		$this->_isNew = false;
+		$key = $this->getKeyName();
+		if (empty($this->$key))
+		{
+			$this->_isNew = true;
+		}
+
 		if ( !$this->check() )
 		{
 			return false;
 		}
-		
+
 		if ( !$this->store() )
 		{
 			return false;
 		}
-		
+
 		if ( !$this->checkin() )
 		{
 			$this->setError( $this->_db->stderr() );
@@ -270,17 +285,17 @@ class DSCTable extends JTable
 		{
 			$this->reorder();
 		}
-		
+
 		$this->setError('');
-		
+
 		// TODO Move ALL onAfterSave plugin events here as opposed to in the controllers, duh
-        //$dispatcher = JDispatcher::getInstance();
-        //$dispatcher->trigger( 'onAfterSave'.$this->get('_suffix'), array( $this ) );
+		//$dispatcher = JDispatcher::getInstance();
+		//$dispatcher->trigger( 'onAfterSave'.$this->get('_suffix'), array( $this ) );
 		return true;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param unknown_type $updateNulls
 	 * @return unknown_type
 	 */
@@ -302,19 +317,19 @@ class DSCTable extends JTable
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $oid
 	 * @return unknown_type
 	 */
 	function delete( $oid=null )
 	{
-	    $dispatcher = JDispatcher::getInstance();
-        $before = $dispatcher->trigger( 'onBeforeDelete'.$this->get('_suffix'), array( $this, $oid ) );
-        if (in_array(false, $before, true))
-        {
-            return false;
-        }
-        
+		$dispatcher = JDispatcher::getInstance();
+		$before = $dispatcher->trigger( 'onBeforeDelete'.$this->get('_suffix'), array( $this, $oid ) );
+		if (in_array(false, $before, true))
+		{
+			return false;
+		}
+
 		if ( $return = parent::delete( $oid ))
 		{
 			$dispatcher = JDispatcher::getInstance();
@@ -324,7 +339,7 @@ class DSCTable extends JTable
 	}
 
 	/**
-	 * 
+	 *
 	 * @param unknown_type $change
 	 * @param unknown_type $where
 	 * @return unknown_type
@@ -418,7 +433,7 @@ class DSCTable extends JTable
 			}
 			$this->$fieldname	= $filter->clean( $this->$fieldname );
 		}
-			elseif (empty($filterGroups))
+		elseif (empty($filterGroups))
 		{
 			$filter = new JFilterInput(array(), array(), 1, 1);
 			$this->$fieldname = $filter->clean( $this->$fieldname );
@@ -426,20 +441,20 @@ class DSCTable extends JTable
 	}
 
 	/**
-     * Retrieve row field value
-     *
-     * @param  	string 	The user-specified column name.
-     * @return 	string 	The corresponding column value.
-     */
-    public function __get($columnName)
-    {
-    	if ($columnName == 'id')
-    	{
-        	$columnName = $this->getKeyName();
-        }
-    	return $this->get($columnName);
-    }
-    
+	 * Retrieve row field value
+	 *
+	 * @param  	string 	The user-specified column name.
+	 * @return 	string 	The corresponding column value.
+	 */
+	public function __get($columnName)
+	{
+		if ($columnName == 'id')
+		{
+			$columnName = $this->getKeyName();
+		}
+		return $this->get($columnName);
+	}
+
 	/**
 	 * (non-PHPdoc)
 	 * @see JObject::getProperties()
@@ -448,7 +463,7 @@ class DSCTable extends JTable
 	{
 		$vars  = get_object_vars($this);
 
-        if($public)
+		if($public)
 		{
 			foreach ($vars as $key => $value)
 			{
@@ -458,7 +473,7 @@ class DSCTable extends JTable
 			}
 		}
 
-        return $this;
+		return $this;
 	}
 
 }
