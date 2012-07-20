@@ -97,15 +97,12 @@ class DSCTable extends JTable
 		}
 		else
 		{
-			if(version_compare(JVERSION,'1.6.0','ge'))
-			{
-				$fields = @$fields[$this->getTableName()];
-			}
-			else
+			if(!version_compare(JVERSION,'1.6.0','ge'))
 			{
 				$fields = unserialize( trim( $fields ) );
 			}
 		}
+    $fields = @$fields[$this->getTableName()];
 		return $fields;
 	}
 
