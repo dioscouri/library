@@ -105,13 +105,12 @@ if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && 
 		// track the message and status of installation from dscInstaller
 		if ($result) 
 		{
-			// update the module record if the position != left
-			if (isset($mposition))
+			// set the position of the module if it is a new install and if position value exists in manifest
+			if (!empty($mposition))
 			{
-				// set the position of the module
 				$db = JFactory::getDBO();
-				$q = "UPDATE #__modules SET `position` = '{$mposition}' WHERE `module` = '{$result['element']}';";
-        $db->setQuery($q);
+                $q = "UPDATE #__modules SET `position` = '{$mposition}' WHERE `module` = '{$result['element']}' AND `position` = '';";
+                $db->setQuery($q);
 				$db->query();
 			}
 
