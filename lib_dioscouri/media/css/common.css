@@ -93,6 +93,10 @@ p.dsc-tip {
     font-size: 125%;
 }
 
+.dsc-grid-sort {
+    padding-left: 3px;
+}
+
 /*-------------------------------------------
     Self-clearing Floats
 -------------------------------------------*/

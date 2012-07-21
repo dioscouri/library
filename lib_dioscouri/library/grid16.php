@@ -33,7 +33,7 @@ class DSCGrid extends JHTMLGrid
 		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
 		$html .= JText::_( $title );
 		if ($order == $selected ) {
-		    $html .= '<img src="'. DSC::getURL('images') . $images[$index] .'" border="0" alt="'. $alts[$index] .'" />';
+		    $html .= '<img src="'. DSC::getURL('images') . $images[$index] .'" border="0" alt="'. $alts[$index] .'" class="dsc-grid-sort" />';
 		}
 		$html .= '</a>';
 		return $html;
