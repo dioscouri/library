@@ -206,7 +206,7 @@ class DSCController extends JController
 			}
 			else
 			{
-				$model = new JModel();
+				$model = new DSCModel();
 			}
 			$this->_models[$fullname] = $model;
 		}
@@ -280,7 +280,7 @@ class DSCController extends JController
 		$modelName		= preg_replace('/[^A-Z0-9_]/i', '', $name);
 		$classPrefix	= preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 
-		$result = JModel::getInstance($modelName, $classPrefix, $config);
+		$result = DSCModel::getInstance($modelName, $classPrefix, $config);
 		return $result;
 	}
 

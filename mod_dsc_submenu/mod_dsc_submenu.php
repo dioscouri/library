@@ -12,39 +12,36 @@ defined('_JEXEC') or die('Restricted access');
 
 // Check the registry to see if our Tienda class has been overridden
 
-
-	$hide = JRequest::getInt('hidemainmenu');
-	if (class_exists('DSC')) {
+$hide = JRequest::getInt('hidemainmenu');
+if (class_exists('DSC')) {
 	$menu = DSCMenu::getInstance('submenu');
-	}else {
-	$menu = JToolBar::getInstance('submenu');
-	}
-	$app = JFactory::getApplication();
-	$document = JFactory::getDocument();
-	/*lets check and see if we are a DSC Option*/
-	$option = JRequest::getCmd('option');
- $extension = DSC::getApp($option);
- 
- //$extension::getInstance()->get('use_bootstrap'); ??
-if( is_subclass_of( $extension, 'DSC')) {
-	if( $params->get('layout') == 'bootstrapped'){
-		DSC::loadBootstrap();
-		JHTML::_('stylesheet', 'bootstrapped_submenu.css', 'administrator/modules/mod_dsc_submenu/css/');
-	}else {
-		JHTML::_('stylesheet', 'default.css', 'administrator/modules/mod_dsc_submenu/css/');
-	}
-	require JModuleHelper::getLayoutPath('mod_dsc_submenu', $params->get('layout', 'default'));
-	
 } else {
 	$menu = JToolBar::getInstance('submenu');
-	$list = $menu->getItems();
+}
+$app = JFactory::getApplication();
+$document = JFactory::getDocument();
+/*lets check and see if we are a DSC Option*/
+$option = JRequest::getCmd('option');
+$extension = DSC::getApp($option);
+
+if (is_subclass_of($extension, 'DSC')) {
+	//$extension::getInstance()->get('use_bootstrap'); ??
+	if ($params -> get('layout') == 'bootstrapped') {
+		DSC::loadBootstrap();
+		JHTML::_('stylesheet', 'bootstrapped_submenu.css', 'administrator/modules/mod_dsc_submenu/css/');
+	} else {
+		JHTML::_('stylesheet', 'default.css', 'administrator/modules/mod_dsc_submenu/css/');
+	}
+	require JModuleHelper::getLayoutPath('mod_dsc_submenu', $params -> get('layout', 'default'));
+
+} else {
+	$menu = JToolBar::getInstance('submenu');
+	$list = $menu -> getItems();
 	$module = JModuleHelper::getModule('mod_submenu');
 	var_dump($module);
-	$params = new DSCParameter($module->params);
-	require JModuleHelper::getLayoutPath('mod_submenu', $params->get('layout', 'default'));
+	$params = new DSCParameter($module -> params);
+	require JModuleHelper::getLayoutPath('mod_submenu', $params -> get('layout', 'default'));
 
 }
-	
-	?>
-	
+?>
 

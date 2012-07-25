@@ -107,8 +107,8 @@ class DSCPluginReport extends DSCPlugin
         $fullname = strtolower( $prefix.$name );
         if (empty($this->_models[$fullname]))
         {
-        	JModel::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'models' );
-            if ( !$model = JModel::getInstance($name, $prefix, $config) )
+        	DSCModel::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'models' );
+            if ( !$model = DSCModel::getInstance($name, $prefix, $config) )
             {
                 $model = new SampleModelBase();
             }

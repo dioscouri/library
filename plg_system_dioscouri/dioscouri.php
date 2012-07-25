@@ -10,7 +10,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-
 class plgSystemDioscouri extends JPlugin 
 {
     function onAfterInitialise() 
@@ -47,8 +46,8 @@ class plgSystemDioscouri extends JPlugin
         
         jimport('joomla.filesystem.folder');
         
-        $src = DS . 'plugins' . DS . 'system' . DS . 'dioscouri' . DS;
-        $dest = DS . 'libraries' . DS . 'dioscouri' . DS;
+        $src = '/plugins/system/dioscouri/';
+        $dest = '/libraries/dioscouri/';
         $src_folders = JFolder::folders(JPATH_SITE.'/plugins/system/dioscouri', '.', true, true);
         if (!empty($src_folders)) {
             foreach ($src_folders as $src_folder) {
@@ -61,8 +60,8 @@ class plgSystemDioscouri extends JPlugin
         }
                 
         // move files from plugins to libraries
-        $src = DS . 'plugins' . DS . 'system' . DS . 'dioscouri' . DS;
-        $dest = DS . 'libraries' . DS . 'dioscouri' . DS;        
+        $src = '/plugins/system/dioscouri/';
+        $dest = '/libraries/dioscouri/';        
         $src_files = JFolder::files(JPATH_SITE.'/plugins/system/dioscouri', '.', true, true);
         if (!empty($src_files)) {
             foreach ($src_files as $src_file) {
@@ -75,8 +74,8 @@ class plgSystemDioscouri extends JPlugin
         }
 
         // move the media files from libraries to media
-        $src = DS . 'libraries' . DS . 'dioscouri' . DS . 'media' . DS;
-        $dest = DS . 'media' . DS . 'dioscouri' . DS;
+        $src = '/libraries/dioscouri/media/';
+        $dest = '/media/dioscouri/';
         $src_files = JFolder::files(JPATH_SITE.'/libraries/dioscouri/media', '.', true, true);
         if (!empty($src_files)) {
             foreach ($src_files as $src_file) {
@@ -89,8 +88,8 @@ class plgSystemDioscouri extends JPlugin
 
         // move the lang files from libraries to language
         $src_files = JFolder::files(JPATH_SITE.'/libraries/dioscouri/language', '.', true, true);
-        $src = DS . 'libraries' . DS . 'dioscouri' . DS . 'language' . DS;
-        $dest = DS . 'language' . DS;
+        $src = '/libraries/dioscouri/language/';
+        $dest = '/language/';
         if (!empty($src_files)) {
             foreach ($src_files as $src_file) {
                 $src_filename = str_replace(JPATH_SITE, '', $src_file);
@@ -118,16 +117,7 @@ class plgSystemDioscouri extends JPlugin
 		if($value=$this->params->get('embedjquery')) {
 			DSC::loadJQuery('latest',$this->params->get('jquerynoconflict'));
 		}
-		if($value=$this->params->get('embedjqueryui')) {
-			if($value==1) $document->addScript(JURI::root( true ).'/media/dioscouri/jquery/ui/jquery-ui-1.8.6.custom.min.js');
-		}
-		if($value=$this->params->get('embedjqueryuicss')) {
-			if($value==1) $document->addStyleSheet($this->params->get('jqueryuicsspath'));
-		}
-		if($value=$this->params->get('embedjquerytools')) {
-			if($value==1) $document->addScript(JURI::root( true ).'/plugins/system/jqueryintegrator/jqueryintegrator/jquery.tools.min.js');
-			elseif($value==2) $document->addScript($this->params->get('jquerytoolscdnpath'));
-		}
+
 	}
 	
 	
