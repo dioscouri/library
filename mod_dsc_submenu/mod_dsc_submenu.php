@@ -25,20 +25,23 @@ $option = JRequest::getCmd('option');
 $extension = DSC::getApp($option);
 
 if (is_subclass_of($extension, 'DSC')) {
-	//$extension::getInstance()->get('use_bootstrap'); ??
-	if ($params -> get('layout') == 'bootstrapped') {
+	
+	//$params -> get('layout') == 'bootstrapped'
+	if ($extension::getInstance()->get('use_bootstrap') ) {
 		DSC::loadBootstrap();
 		JHTML::_('stylesheet', 'bootstrapped_submenu.css', 'administrator/modules/mod_dsc_submenu/css/');
+		require JModuleHelper::getLayoutPath('mod_dsc_submenu', 'bootstrapped');
 	} else {
 		JHTML::_('stylesheet', 'default.css', 'administrator/modules/mod_dsc_submenu/css/');
+		require JModuleHelper::getLayoutPath('mod_dsc_submenu', 'default');
 	}
-	require JModuleHelper::getLayoutPath('mod_dsc_submenu', $params -> get('layout', 'default'));
+	
 
 } else {
 	$menu = JToolBar::getInstance('submenu');
 	$list = $menu -> getItems();
 	$module = JModuleHelper::getModule('mod_submenu');
-	var_dump($module);
+	
 	$params = new DSCParameter($module -> params);
 	require JModuleHelper::getLayoutPath('mod_submenu', $params -> get('layout', 'default'));
 

@@ -105,21 +105,7 @@ if (!empty($submenu))
 
 </ul>
           
-          <ul class="nav pull-right">
-          	    <li class="divider-vertical"></li>
-          	<li>
-          		 <div class="pad-5" style="padding:5px;">
-          	<input name="filter" class="search-query" type="text" form="adminForm" placeholder="Search..." value="<?php echo @$state -> filter; ?>" />
-          </div>
-          	</li>
-        
-            <li >
-               <button class="btn btn-primary" onclick="document.adminForm.submit();"><?php echo JText::_('Search'); ?></button>
-            </li>
-            <li >
-               <button class="btn btn-danger" onclick="Dsc.resetFormFilters(document.adminForm);"><?php echo JText::_('Reset'); ?></button>
-            </li>
-          </ul>
+       
         </div><!-- /.nav-collapse -->
       </div>
     </div><!-- /navbar-inner -->
