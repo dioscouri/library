@@ -249,6 +249,11 @@ class DSC extends JObject
 	*/
 	public static function loadHighcharts()
 	{
+		static $loaded = false;
+		
+		if( $loaded )
+			return;
+		
 	    jimport('dioscouri.highroller.highroller.highroller');
 	    jimport('dioscouri.highroller.highroller.highrollerareachart');
 	    jimport('dioscouri.highroller.highroller.highrollerareasplinechart');
@@ -262,6 +267,7 @@ class DSC extends JObject
 	     
 	    DSC::loadJQuery();
 	    JHTML::_( 'script', 'highcharts.js', 'libraries/dioscouri/highroller/highcharts/' );
+		$load = false;
 	}
 	
 	/**
@@ -270,6 +276,11 @@ class DSC extends JObject
 	 */
 	public static function loadJQuery($version='latest', $noConflict=true, $alias=null)
 	{
+		static $loaded = false;
+		
+		if( $loaded )
+			return;
+		
 	    switch($version)
 	    {
 	        case "latest":
@@ -288,15 +299,22 @@ class DSC extends JObject
 	        }
 	        $document->addScriptDeclaration( $script );
 	    }
+	    $loaded = true;
 	}
 
 	public static function loadBootstrap() {
+		
+		static $loaded = false;
+		
+		if( $loaded )
+			return;
 		
 		DSC::loadJQuery('');
 	
 		 JHTML::_( 'script', 'bootstrap.min.js', 'media/dioscouri/js/' );
 		 JHTML::_( 'stylesheet', 'bootstrap.min.css', 'media/dioscouri/css/' );
 		 JHTML::_( 'stylesheet', 'joomla.bootstrap.css', 'media/dioscouri/css/' );
+		$loaded = true;
 	}
 
 	
