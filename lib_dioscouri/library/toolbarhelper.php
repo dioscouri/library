@@ -19,7 +19,7 @@ class DSCToolBarHelper extends JToolBarHelper
 	 * @access	protected
 	 * @var		string
 	 */
-	var $_name = 'DSC';
+	static protected $_name = 'custom';
 		
 	/**
 	 * Writes a custom option and task button for the button bar
@@ -31,15 +31,15 @@ class DSCToolBarHelper extends JToolBarHelper
 	 * @param boolean True if required to include callinh hideMainMenu()
 	 * @since 1.0
 	 */
-	function custom($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $x = false, $taskName = 'shippingTask')
+	public static function custom($task = '', $icon = '', $iconOver = '', $alt = '', $listSelect = true, $x = false, $taskName = 'shippingTask')
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar = JToolBar::getInstance('toolbar');
 
 		//strip extension
 		$icon	= preg_replace('#\.[^.]*$#', '', $icon);
 
 		// Add a standard button
-		$bar->appendButton( $this->_name, $icon, $alt, $task, $listSelect, $x, $taskName );
+		$bar->appendButton( static::$_name, $icon, $alt, $task, $listSelect, $x, $taskName );
 	}
 
 	/**
@@ -48,10 +48,10 @@ class DSCToolBarHelper extends JToolBarHelper
 	 * @param string An override for the alt text
 	 * @since 1.0
 	 */
-	function addNew($task = 'add', $alt = 'New', $taskName = 'shippingTask')
+	public static function addNew($task = 'add', $alt = 'New', $taskName = 'shippingTask')
 	{
-		$bar = & JToolBar::getInstance('toolbar');
+		$bar = JToolBar::getInstance('toolbar');
 		// Add a new button
-		$bar->appendButton( $this->_name, 'new', $alt, $task, false, false, $taskName );
+		$bar->appendButton( static::$_name, 'new', $alt, $task, false, false, $taskName );
 	}
 }

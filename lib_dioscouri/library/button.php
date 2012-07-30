@@ -21,7 +21,7 @@ class DSCButton extends JButton
 	 * @access	protected
 	 * @var		string
 	 */
-	var $_name = 'DSC';
+	protected $_name = 'DSC';
 
 	function fetchButton( $type='DSC', $name = '', $text = '', $task = '', $list = true, $hideMenu = false, $taskName = 'shippingTask' )
 	{
@@ -54,15 +54,25 @@ class DSCButton extends JButton
 		$todo		= JString::strtolower(JText::_( $name ));
 		$message	= JText::sprintf( 'Please make a selection from the list to', $todo );
 		$message	= addslashes($message);
-		$hidecode	= $hide ? 'hideMainMenu();' : '';
 
 		if ($list) {
-			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{ $hidecode submitDSCbutton('$task', '$taskName')}";
+			$cmd = "javascript:if(document.adminForm.boxchecked.value==0){alert('$message');}else{ submitDSCbutton('$task', '$taskName')}";
 		} else {
 			$cmd = "javascript:$hidecode submitDSCbutton('$task', '$taskName')";
 		}
 
 
 		return $cmd;
+	}
+
+	/**
+	 * Get the button CSS Id
+	 *
+	 * @access	public
+	 * @return	string	Button CSS Id
+	 */
+	function fetchId( $type='Confirm', $name = '', $text = '', $task = '', $list = true, $hideMenu = false )
+	{
+		return $this->_name.'-'.$name;
 	}
 }

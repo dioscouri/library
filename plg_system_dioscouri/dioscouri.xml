@@ -24,7 +24,7 @@
 			<fieldset name="basic">
 				<field type="spacer" default="jQuery Settings" />
 
-				<field name="embedjquery" type="list" default="0" label="Embed jQuery" description="Embeds jQuery through the whole site.">
+ 				<field name="embedjquery" type="list" default="0" label="Embed jQuery" description="Embeds jQuery through the whole site.">
 				  <option value="0">JNO</option>
 				  <option value="1">JYES</option>
 				</field>
@@ -56,9 +56,32 @@
 				  <option value="0">JNO</option>
 				  <option value="1">JYES</option>
 				</field>
+ 				<field name="embedbootstrap" type="list" default="0" label="Embed Bootstrap" description="Embeds Bootstrap through the whole site.">
+				  <option value="0">JNO</option>
+				  <option value="1">JYES</option>
+				  <option value="2">Force Loading</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
     
+
+	<params>
+		<param type="spacer" default="jQuery Settings" />
+
+		<param name="embedjquery" type="list" default="0" label="Embed jQuery" description="Embeds jQuery through the whole site.">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</param>
+
+		<param name="jquerynoconflict" type="radio" default="1" label="jQuery No Conflict mode" description="">
+		  <option value="1">JYES</option>
+		  <option value="0">JNO</option>
+		</param>
+		<param name="activeAdmin" type="radio" default="1" label="Active jQuery on the admin" description="">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</param>
+	</params>
                 
 </extension>
