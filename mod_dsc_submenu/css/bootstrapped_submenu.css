@@ -3,3 +3,10 @@ border:none;
 padding:0;
 background:none;	
 }
+
+div#submenu-box div.m, div#submenu-box div.t , div#submenu-box div.b {
+	border:none !important;
+padding:0 !important;
+background:none !important;
+}
+

@@ -24,8 +24,13 @@ foreach ($items as $item)
 	$names = explode( ' ', $item[0] );
     $name = strtolower( $names[0] );
     $submenu = DSCMenu::getInstance( 'submenu_' . $name, '1' );
-   
-	$subitems = $submenu->_menu->getItems();
+   if(version_compare(JVERSION,'1.6.0','ge')) {
+$subitems = $submenu->_menu->getItems();
+} else {
+	  //joomla 1.5 code
+$subitems = $submenu->_menu->_bar;
+}
+
 	
     ?>
     <li class="<?php
