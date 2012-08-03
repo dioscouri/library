@@ -117,7 +117,7 @@ Dsc.formValidation = function( url, container, task, form, doModal, msg, onCompl
                 } else {
                     if (document.id(container)) { document.id(container).set( 'html', resp.msg); }
                 }
-                if (doModal != false) { (function() { document.body.removeChild($('dscModal')); }).delay(500); }
+                if (doModal != false) { (function() { document.body.removeChild( document.getElementById('dscModal') ); }).delay(500); }
             }
         }).send();
         
@@ -242,7 +242,7 @@ Dsc.doTask = function( url, container, form, msg, doModal, onCompleteFunction )
             onSuccess: function(response){
                 var resp = JSON.decode(response, false);
                 if (document.id(container)) { document.id(container).set( 'html', resp.msg); }
-                if (doModal != false) { (function() { document.body.removeChild($('dscModal')); }).delay(500); }
+                if (doModal != false) { (function() { document.body.removeChild( document.getElementById('dscModal') ); }).delay(500); }
                 if (typeof onCompleteFunction == 'function') {
                     onCompleteFunction();
                 }
@@ -259,7 +259,7 @@ Dsc.doTask = function( url, container, form, msg, doModal, onCompleteFunction )
 	            onSuccess: function(response){
 	                var resp = JSON.decode(response, false);
 	                if (document.id(container)) { document.id(container).set( 'html', resp.msg); }
-	                if (doModal != false) { (function() { document.body.removeChild($('dscModal')); }).delay(500); }
+	                if (doModal != false) { (function() { document.body.removeChild( document.getElementById('dscModal') ); }).delay(500); }
 	                if (typeof onCompleteFunction == 'function') {
 	                    onCompleteFunction();
 	                }
