@@ -551,14 +551,16 @@ class DSCController extends JController
 		$element = JRequest::getVar( 'element', '', 'request', 'string' );
 		$elementTask = JRequest::getVar( 'elementTask', '', 'request', 'string' );
 
-		// get elements from post
-		// $elements = json_decode( preg_replace('/[\n\r]+/', '\n', JRequest::getVar( 'elements', '', 'post', 'string' ) ) );
-
-		// for debugging
-		// $msg->message = "element: $element, elementTask: $elementTask";
+		// allow $element to be in format file_name.group_name
+		$exploded = explode('.', $element);
+		$element = $exploded[0];
+		$elementGroup = empty($exploded[1]) ? $this->_name : $exploded[1];
+		
+		jimport('joomla.plugin.helper');
+		JPluginHelper::importPlugin( $elementGroup );
 
 		// gets the plugin named $element
-		$import 	= JPluginHelper::importPlugin( $this -> _name, $element );
+		$import 	= JPluginHelper::importPlugin( $elementGroup, $element );
 		$dispatcher	= JDispatcher::getInstance();
 
 		// executes the event $elementTask for the $element plugin
