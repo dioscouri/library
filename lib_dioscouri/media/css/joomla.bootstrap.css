@@ -91,3 +91,6 @@ table.table div.container div.pagination {
 	height: auto !important;
 	margin: 0 !important;
 }
+label.radiobtn {
+    display: inline-block;
+}
