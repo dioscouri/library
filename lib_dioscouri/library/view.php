@@ -14,17 +14,17 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filter.filteroutput');
 jimport('joomla.application.component.view');
 
-class DSCView extends JView {
-
+class DSCView extends JView 
+{
 	var $_option = NULL;
 	var $_name = NULL;
 	protected $_doTask = null;
 
-	function __construct() 
+	function __construct($config = array()) 
 	{
 		$app = DSC::getApp();
 		$this->_option = 'com_'.$app->getName();
-		parent::__construct();
+		parent::__construct($config);
 	}
 	
 	/**
