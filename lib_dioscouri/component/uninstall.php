@@ -78,7 +78,7 @@ if ( (is_a($modules, 'JSimpleXMLElement') || is_a( $modules, 'JXMLElement')) && 
         $package    = array();
         $package['type'] = 'module';
         $package['group'] = '';
-        $package['element'] = $mname;
+        $package['element'] = str_replace('modules/', '', $mname);
         $package['client'] = $dscinstaller->getAttribute('client', $module);
                 
         /*
