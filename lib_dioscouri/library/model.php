@@ -17,7 +17,7 @@ jimport( 'joomla.application.component.model' );
 class DSCModel extends JModel
 {
     var $_filterinput = null; // instance of JFilterInput
-    public $cache_lifetime = '86400';
+    public $cache_lifetime = '900';
     
     function __construct($config = array())
     {
