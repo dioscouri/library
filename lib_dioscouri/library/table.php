@@ -472,5 +472,33 @@ class DSCTable extends JTable
 
 		return $this;
 	}
+	
+	/**
+	 * Any errors set?  If so, check fails
+	 * 
+	 * @see JTable::check()
+	 */
+	public function check() 
+	{
+	    $errors = $this->getErrors();
+	    if (!empty($errors))
+	    {
+	        foreach ($errors as $key=>$error)
+	        {
+	            $error = trim( $error );
+	            if (empty($error))
+	            {
+	                unset($errors[$key]);
+	            }
+	        }
+	    
+	        if (!empty($errors))
+	        {
+	            return false;
+	        }
+	    }
+	    
+	    return true;
+	}
 
 }

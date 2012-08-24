@@ -17,6 +17,7 @@ jimport( 'joomla.application.component.model' );
 class DSCModel extends JModel
 {
     var $_filterinput = null; // instance of JFilterInput
+    public $cache_lifetime = '86400';
     
     function __construct($config = array())
     {
@@ -163,6 +164,18 @@ class DSCModel extends JModel
 	}
 
 	/**
+	 * Set basic properties for the item, whether in a list or a singleton
+	 * 
+	 * @param unknown_type $item
+	 * @param unknown_type $key
+	 * @param unknown_type $refresh
+	 */
+	protected function prepareItem( &$item, $key=0, $refresh=false )
+	{
+
+	}
+
+	/**
 	 * Retrieves the data for a paginated list
 	 * @return array Array of objects containing the data from the database
 	 */
@@ -170,8 +183,33 @@ class DSCModel extends JModel
 	{
 		if (empty( $this->_list ) || $refresh)
 		{
-			$query = $this->getQuery($refresh);
-			$this->_list = $this->_getList( (string) $query, $this->getState('limitstart'), $this->getState('limit') );
+		    $cache_key = base64_encode(serialize($this->getState())) . '.list';
+		     
+		    $classname = strtolower( get_class($this) );
+		    $cache = JFactory::getCache( $classname . '.list', '' );
+		    $cache->setCaching(true);
+		    $cache->setLifeTime($this->cache_lifetime);
+		    $list = $cache->get($cache_key);
+		    if (!$list || $refresh)
+		    {
+    			$query = $this->getQuery($refresh);
+    			$list = $this->_getList( (string) $query, $this->getState('limitstart'), $this->getState('limit') );
+
+		        if ( empty( $list ) )
+		        {
+		            $list = array( );
+		        }
+		    
+		        foreach ( $list as $key=>$item )
+		        {
+		            $this->prepareItem( $item, $key, $refresh );
+		        }
+		    
+		        $cache->store($list, $cache_key);
+		    }
+		     
+		    $this->_list = $list;
+
 		}
 		return $this->_list;
 	}
@@ -182,30 +220,51 @@ class DSCModel extends JModel
 	 *
 	 * @return database->loadObject() record
 	 */
-	public function getItem( $emptyState=true )
+	public function getItem( $pk=null, $refresh=false, $emptyState=true )
 	{
-		if (empty( $this->_item ))
-		{
-		    if ($emptyState)
-		    {
-		        $this->emptyState();
-		    }
-			$query = $this->getQuery();
-			// TODO Make this respond to the model's state, so other table keys can be used
-			// perhaps depend entirely on the _buildQueryWhere() clause?
-			$keyname = $this->getTable()->getKeyName();
-			$value	= $this->_db->Quote( $this->getId() );
-			$query->where( "tbl.$keyname = $value" );
-			$this->_db->setQuery( (string) $query );
-			$this->_item = $this->_db->loadObject();
-		}
-		
-		$overridden_methods = $this->getOverriddenMethods( get_class($this) );
-		if (!in_array('getItem', $overridden_methods))  
-		{
-			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger( 'onPrepare'.$this->getTable()->get('_suffix'), array( &$this->_item ) );
-		}
+	    if (empty($this->_item) || $refresh)
+	    {
+	        $cache_key = $pk ? $pk : $this->getID();
+	    
+	        $classname = strtolower( get_class($this) );
+	        $cache = JFactory::getCache( $classname . '.item', '' );
+	        $cache->setCaching(true);
+	        $cache->setLifeTime($this->cache_lifetime);
+	        $item = $cache->get($cache_key);
+	        if (!$item || $refresh)
+	        {
+	            if ($emptyState)
+	            {
+	                $this->emptyState();
+	            }
+	            
+    			$query = $this->getQuery( $refresh );
+
+    			$keyname = $this->getTable()->getKeyName();
+    			$value	= $this->_db->Quote( $cache_key );
+    			$query->where( "tbl.$keyname = $value" );
+    			$this->_db->setQuery( (string) $query );
+    			
+    			$item = $this->_db->loadObject();
+    			
+	            if (!empty($item))
+	            {
+	                $this->prepareItem( $item, 0, $refresh );
+	    
+	                $overridden_methods = $this->getOverriddenMethods( get_class($this) );
+	                if (!in_array('getItem', $overridden_methods))
+	                {
+	                    $dispatcher = JDispatcher::getInstance();
+	                    $dispatcher->trigger( 'onPrepare'.$this->getTable()->get('_suffix'), array( &$item ) );
+	                }
+	            }
+	    
+	            $cache->store($item, $cache_key);
+	        }
+	    
+	        $this->_item = $item;
+	    
+	    }
 		
 		return $this->_item;
 	}
@@ -321,12 +380,26 @@ class DSCModel extends JModel
 	 */
 	public function getTotal()
 	{
-		if (empty($this->_total))
-		{
-            $query = $this->getQuery();
-            $this->_total = $this->_getListCount( (string) $query);
-		}
-		return $this->_total;
+	    if (empty($this->_total))
+	    {
+	        $cache_key = base64_encode(serialize($this->getState())) . '.list-totals';
+	    
+	        $classname = strtolower( get_class($this) );
+	        $cache = JFactory::getCache( $classname . '.list-totals', '' );
+	        $cache->setCaching(true);
+	        $cache->setLifeTime($this->cache_lifetime);
+	        if (!$item = $cache->get($cache_key))
+	        {
+                $query = $this->getQuery();
+                $item = $this->_getListCount( (string) $query);
+	    
+	            $cache->store($item, $cache_key);
+	        }
+	    
+	        $this->_total = $item;
+	    
+	    }
+	    return $this->_total;
 	}
 	
 	/**
@@ -531,5 +604,20 @@ class DSCModel extends JModel
 		}
 
         return $this;
+	}
+	
+	/**
+	 * Clean the cache
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public function clearCache()
+	{
+	    $classname = strtolower( get_class($this) );
+	    parent::cleanCache($classname . '.item');
+	    parent::cleanCache($classname . '.list');
+	    parent::cleanCache($classname . '.list-totals');
 	}
 }

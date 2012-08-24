@@ -794,6 +794,8 @@ class DSCController extends JController
 	    if ( $row->save() )
 	    {
 	        $model->setId( $row->id );
+	        $model->clearCache();
+	        
 	        $this->messagetype 	= 'message';
 	        $this->message  	= JText::_( 'Saved' );
 	    
