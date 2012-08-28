@@ -285,7 +285,7 @@ class DSC extends JObject
 	    {
 	        case "latest":
 	        default:
-	            JHTML::_( 'script', 'jquery-1.7.2.min.js', 'media/dioscouri/jquery/core/' );
+	            JHTML::_( 'script', 'jquery-1.8.0.min.js', 'media/dioscouri/jquery/core/' );
 	            break;
 	    }
 	    
@@ -399,11 +399,18 @@ class DSC extends JObject
 	* @since	1.5
 	* @static
 	*/
-	public static function dump( $var, $ignore_underscore = true, $htmlSafe = true, $public_only=true )
+	public static function dump( $var, $public_only = true, $htmlSafe = true )
 	{
-	    if (!$ignore_underscore)
+	    $arg_list = func_get_args();
+	    $numargs = func_num_args();
+	    $ignore_underscore = true;
+	    if ($numargs == 4) {
+	        $ignore_underscore = $arg_list[3];
+	    }
+	    
+	    if (!$public_only)
 	    {
-	        $result = self::_dump( $var, $ignore_underscore, $public_only );
+	        $result = self::_dump( $var, $public_only, $ignore_underscore );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
 	     
