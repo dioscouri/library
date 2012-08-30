@@ -153,13 +153,13 @@ class DSCPlugin extends JPlugin
         $app = JFactory::getApplication();
 
         // get the template and default paths for the layout
-        $templatePath = JPATH_SITE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.'plugins'.DS.$group.DS.$plugin.DS.$layout.'.php';
+        $templatePath = JPATH_SITE.'/templates/'.$app->getTemplate().'/html/plugins/'.$group.'/'.$plugin.'/'.$layout.'.php';
 		if(version_compare(JVERSION,'1.6.0','ge')) {
             // Joomla! 1.6+ code here
-            $defaultPath = JPATH_SITE.DS.'plugins'.DS.$group.DS.$plugin.DS.$plugin.DS.'tmpl'.DS.$layout.'.php';
+            $defaultPath = JPATH_SITE.'/plugins/'.$group.'/'.$plugin.'/'.$plugin.'/tmpl/'.$layout.'.php';
         } else {
             // Joomla! 1.5 code here
-            $defaultPath = JPATH_SITE.DS.'plugins'.DS.$group.DS.$plugin.DS.'tmpl'.DS.$layout.'.php';
+            $defaultPath = JPATH_SITE.'/plugins/'.$group.'/'.$plugin.'/tmpl/'.$layout.'.php';
         }
 
         // if the site template has a layout override, use it
@@ -254,7 +254,7 @@ class DSCPlugin extends JPlugin
     {
         if (empty($this->_row))
         {
-            JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
+            JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
             $table = JTable::getInstance('Shipping', 'SampleTable');
             $table->load( array('element'=>$this->_element, 'folder'=>'sample') );
             $this->_row = $table;
@@ -268,7 +268,7 @@ class DSCPlugin extends JPlugin
     protected function includeSampleTables()
     {
         // Include Sample Tables Classes
-        JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
+        JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
     }
     
     /**
@@ -313,7 +313,7 @@ class DSCPlugin extends JPlugin
         }
         
         $this->includeSampleTables();
-        $customPath = JPATH_SITE.DS.'plugins'.DS.$group.DS.$plugin.DS.'tables';
+        $customPath = JPATH_SITE.'/plugins/'.$group.'/'.$plugin.'/tables';
         JTable::addIncludePath( $customPath );
     }
     

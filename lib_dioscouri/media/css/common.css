@@ -97,6 +97,13 @@ p.dsc-tip {
     padding-left: 3px;
 }
 
+.dsc-required {
+  display : inline;
+  width : 16px;
+  height : 16px;
+  background : url(../images/required_16.png);
+}
+
 /*-------------------------------------------
     Self-clearing Floats
 -------------------------------------------*/

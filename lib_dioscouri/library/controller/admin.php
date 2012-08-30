@@ -69,7 +69,7 @@ class DSCControllerAdmin extends DSCController
 	    $config_title = $constant."_disabled";
 	
 	    $database = JFactory::getDBO();
-	    JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'tables'.DS );
+	    JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/'.$option.'/tables/' );
 	    unset($table);
 	    $table = JTable::getInstance( 'config', $app.'Table' );
 	    $table->load( array('config_name'=>$config_title) );
