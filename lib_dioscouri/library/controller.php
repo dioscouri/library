@@ -541,7 +541,7 @@ class DSCController extends JController
 	 */
 	function doTaskAjax()
 	{
-		JLoader::import( 'dioscouri.tools.json', JPATH_SITE.DS.'libraries' );
+		JLoader::import( 'dioscouri.tools.json', JPATH_SITE.'/libraries' );
 
 		$success = true;
 		$msg = new stdClass();
@@ -591,7 +591,7 @@ class DSCController extends JController
 	{
 		$model	= $this->getModel( 'elementarticle' );
 		$view	= $this->getView( 'elementarticle' );
-		include_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helper.php' );
+		include_once( JPATH_ADMINISTRATOR.'/components/com_content/helper.php' );
 		$view->setModel( $model, true );
 		$view->setTask(true);
 		$view->display();

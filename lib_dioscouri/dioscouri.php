@@ -126,7 +126,7 @@ class DSC extends JObject
 		}
 		
 		if ( !class_exists($app) ) {
-			JLoader::register( $app, JPATH_ADMINISTRATOR.DS."components".DS."com_" . $app . DS ."defines.php" );
+			JLoader::register( $app, JPATH_ADMINISTRATOR."/components/com_" . $app . "/defines.php" );
 		}
 		if ( class_exists($app) ) {
 			return $app::getInstance();
@@ -224,7 +224,7 @@ class DSC extends JObject
 		{
 		    define('_DSC', 1);
 		    
-		    $parentPath = JPATH_SITE . DS . 'libraries' . DS . 'dioscouri' . DS . 'library';
+		    $parentPath = JPATH_SITE . '/libraries/dioscouri/library';
 		    DSCLoader::discover('DSC', $parentPath, true);
 		    
 		    $autoloader = new DSCLoader();
@@ -285,7 +285,7 @@ class DSC extends JObject
 	    {
 	        case "latest":
 	        default:
-	            JHTML::_( 'script', 'jquery-1.8.0.min.js', 'media/dioscouri/jquery/core/' );
+	            JHTML::_( 'script', 'jquery-1.7.2.min.js', 'media/dioscouri/jquery/core/' );
 	            break;
 	    }
 	    
@@ -399,18 +399,11 @@ class DSC extends JObject
 	* @since	1.5
 	* @static
 	*/
-	public static function dump( $var, $public_only = true, $htmlSafe = true )
+	public static function dump( $var, $ignore_underscore = true, $htmlSafe = true, $public_only=true )
 	{
-	    $arg_list = func_get_args();
-	    $numargs = func_num_args();
-	    $ignore_underscore = true;
-	    if ($numargs == 4) {
-	        $ignore_underscore = $arg_list[3];
-	    }
-	    
-	    if (!$public_only)
+	    if (!$ignore_underscore)
 	    {
-	        $result = self::_dump( $var, $public_only, $ignore_underscore );
+	        $result = self::_dump( $var, $ignore_underscore, $public_only );
 	        return '<pre>'.( $htmlSafe ? htmlspecialchars( $result ) : $result).'</pre>';
 	    }
 	     

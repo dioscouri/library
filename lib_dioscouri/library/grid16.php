@@ -30,7 +30,7 @@ class DSCGrid extends JHTMLGrid
 		$index		= intval( $direction == 'desc' );
 		$direction	= ($direction == 'desc') ? 'asc' : 'desc';
 
-		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'Click to sort by this column' ).'">';
+		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'LIB_DSC_CLICK_TO_SORT_BY_THIS_COLUMN' ).'">';
 		$html .= JText::_( $title );
 		if ($order == $selected ) {
 		    $html .= '<img src="'. DSC::getURL('images') . $images[$index] .'" border="0" alt="'. $alts[$index] .'" class="dsc-grid-sort" />';
@@ -279,5 +279,19 @@ class DSCGrid extends JHTMLGrid
 		$checked = $hover .'<img src="'. DSC::getURL('images') . 'checked_out.png"/></span>';
 
 		return $checked;
+	}
+
+	public static function required( $text ='', $css_suffix = '' )
+	{
+		$css_class = 'dsc-required';
+		if( strlen( $css_suffix ) )
+			$css_class .= $css_suffix;
+		
+		$txt = 'LIB_DSC_REQUIRED';
+		if( strlen( $text ) )
+			$txt = $text;
+		
+	    $html = '<div class="'.$css_class.'" title="'.JText::_( $txt ).'"></div>';
+        return $html;
 	}
 }

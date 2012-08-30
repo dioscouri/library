@@ -160,8 +160,8 @@ class DSCView extends JView
         // set the required image
         // TODO Fix this
             $required = new stdClass();
-            $required->text = JText::_( 'Required' );
-            $required->image = "<img src='".JURI::root()."/media/{$this->_option}/images/required_16.png' alt='{$required->text}'>";
+            $required->text = JText::_( 'LIB_DSC_REQUIRED' );
+            $required->image = DSCGrid::required( 'LIB_DSC_REQUIRED' );
             $this->assign('required', $required );
     }
 
