@@ -66,7 +66,7 @@ class DSCModel extends JModel
         	$prefix = str_replace('com_', '', $this->option) . 'Table';
         }
         
-        JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
+        JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
         if ($table = $this->_createTable( $name, $prefix, $options ))  {
             return $table;
         }
@@ -231,6 +231,10 @@ class DSCModel extends JModel
 	        $cache->setCaching(true);
 	        $cache->setLifeTime($this->cache_lifetime);
 	        $item = $cache->get($cache_key);
+			if(!version_compare(JVERSION,'1.6.0','ge'))
+			{
+				$item = unserialize( trim( $item ) );
+			}			
 	        if (!$item || $refresh)
 	        {
 	            if ($emptyState)
@@ -259,7 +263,16 @@ class DSCModel extends JModel
 	                }
 	            }
 	    
-	            $cache->store($item, $cache_key);
+				if(version_compare(JVERSION,'1.6.0','ge'))
+				{
+					// joomla! 1.6+ code here
+					$cache->store($item, $cache_key);
+				}
+				else
+				{
+					// Joomla! 1.5 code here
+					$cache->store(  serialize( $item ), $cache_key);
+				}
 	        }
 	    
 	        $this->_item = $item;
