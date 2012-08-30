@@ -824,6 +824,10 @@ class DSCController extends JController
 	    
 	    switch ($task)
 	    {
+	        case "save_as":
+	            $redirect .= '&view='.$this->get('suffix').'&task=edit&id='.$row->id;
+	            $this->message .= " - " . JText::_('You are now editing the new item');
+	            break;
 	        case "saveprev":
 	            $redirect .= '&view='.$this->get('suffix');
 	            // get prev in list
