@@ -391,6 +391,27 @@ Dsc.submitbutton = function(task, form)
     }
 }
 
+/*
+ * Method to get value from all form inputs and put it in an array which will be passed via AJAX request
+ *
+ * @param form		Form with inputs
+ *
+ * @return Array with all data from all inputs on the form
+ */
+Dsc.getFormInputData = function(form) {
+	var str = new Array();
+	for ( i = 0; i < form.elements.length; i++) {
+		postvar = {
+			name : form.elements[i].name,
+			value : form.elements[i].value,
+			checked : form.elements[i].checked,
+			id : form.elements[i].id
+		};
+		str[i] = postvar;
+	}
+	return str;
+}
+
 /**
  * Overriding core submitbutton task to perform onsubmit function
  * without submitting form afterwards
