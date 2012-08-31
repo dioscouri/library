@@ -215,10 +215,30 @@ defined('_JEXEC') or die('Restricted access');
          */
         public function getVersion() { return $this->_version; }
         /**
+         * Retrieve the current browser's major version.
+         *
+         * @return  integer  The current browser's major version
+         * @since   11.1.
+         */
+        public function getMajor()
+        {
+            return $this->_majorVersion;
+        }
+        /**
+         * Retrieve the current browser's minor version.
+         *
+         * @return  integer  The current browser's minor version.
+         * @since   11.1
+         */
+        public function getMinor()
+        {
+            return $this->_minorVersion;
+        }
+        /**
          * Set the version of the browser
          * @param $version The version of the Browser
          */
-        public function setVersion($version) { $this->_version = preg_replace('[^0-9,.,a-z,A-Z]','',$version); }
+        public function setVersion($version) { $this->_version = preg_replace('[^0-9,.,a-z,A-Z]','',$version); list($this->_majorVersion, $this->_minorVersion) = explode('.', $this->_version); }
         /**
          * The version of AOL.
          * @return string Version of AOL (will only contain alpha-numeric characters and a period)
