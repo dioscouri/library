@@ -224,6 +224,11 @@ class DSCModel extends JModel
 	{
 	    if (empty($this->_item) || $refresh)
 	    {
+	        if (is_bool($pk)) {
+	            // backwards compatibility
+	            $refresh = $pk;
+	            $pk = null;
+	        }
 	        $cache_key = $pk ? $pk : $this->getID();
 	    
 	        $classname = strtolower( get_class($this) );
