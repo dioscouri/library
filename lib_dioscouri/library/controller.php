@@ -47,15 +47,17 @@ class DSCController extends JController
 		if (!empty($config['com'])) {
 			$com = $config['com'];
 		}
+
 		//do we really need to get the whole app to get the name or should we strip it from the option??
 		$app = DSC::getApp();
 		$this -> _name = $app -> getName();
 		$this -> _Pluginname = ucfirst($this -> _name);
 		
-		
 		$this->set('com', $com);
 		$this->set('suffix', $this->get('default_view') );
 
+		$this->list_url = "index.php?option=" . $this->get('com') . "&view=" . $this->get('suffix');
+		
 		// Register Extra tasks
 		$this->registerTask( 'list', 'display' );
 		$this->registerTask( 'close', 'cancel' );
