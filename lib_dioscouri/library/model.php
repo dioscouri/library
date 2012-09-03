@@ -66,7 +66,7 @@ class DSCModel extends JModel
         	$prefix = str_replace('com_', '', $this->option) . 'Table';
         }
         
-        JTable::addIncludePath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sample'.DS.'tables' );
+        JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
         if ($table = $this->_createTable( $name, $prefix, $options ))  {
             return $table;
         }
@@ -83,11 +83,14 @@ class DSCModel extends JModel
 	 */
 	public function emptyState()
 	{
+		echo 'here';
 		$state = JArrayHelper::fromObject( $this->getState() );
+		echo DizzyClub::dump( $state );
 		foreach ($state as $key=>$value)
 		{
 			if (substr($key, '0', '1') != '_')
 			{
+        echo '!!!!'.$key.'####';
 				$this->setState( $key, '' );
 			}
 		}
@@ -190,6 +193,10 @@ class DSCModel extends JModel
 		    $cache->setCaching(true);
 		    $cache->setLifeTime($this->cache_lifetime);
 		    $list = $cache->get($cache_key);
+			if(!version_compare(JVERSION,'1.6.0','ge'))
+			{
+				$list = unserialize( trim( $list ) );
+			}			
 		    if (!$list || $refresh)
 		    {
     			$query = $this->getQuery($refresh);
@@ -205,7 +212,16 @@ class DSCModel extends JModel
 		            $this->prepareItem( $item, $key, $refresh );
 		        }
 		    
-		        $cache->store($list, $cache_key);
+				if(version_compare(JVERSION,'1.6.0','ge'))
+				{
+					// joomla! 1.6+ code here
+					$cache->store($list, $cache_key);
+				}
+				else
+				{
+					// Joomla! 1.5 code here
+					$cache->store(  serialize( $$list ), $cache_key);
+				}
 		    }
 		     
 		    $this->_list = $list;
@@ -236,6 +252,10 @@ class DSCModel extends JModel
 	        $cache->setCaching(true);
 	        $cache->setLifeTime($this->cache_lifetime);
 	        $item = $cache->get($cache_key);
+			if(!version_compare(JVERSION,'1.6.0','ge'))
+			{
+				$item = unserialize( trim( $item ) );
+			}			
 	        if (!$item || $refresh)
 	        {
 	            if ($emptyState)
@@ -264,7 +284,16 @@ class DSCModel extends JModel
 	                }
 	            }
 	    
-	            $cache->store($item, $cache_key);
+				if(version_compare(JVERSION,'1.6.0','ge'))
+				{
+					// joomla! 1.6+ code here
+					$cache->store($item, $cache_key);
+				}
+				else
+				{
+					// Joomla! 1.5 code here
+					$cache->store(  serialize( $item ), $cache_key);
+				}
 	        }
 	    
 	        $this->_item = $item;
@@ -393,12 +422,27 @@ class DSCModel extends JModel
 	        $cache = JFactory::getCache( $classname . '.list-totals', '' );
 	        $cache->setCaching(true);
 	        $cache->setLifeTime($this->cache_lifetime);
-	        if (!$item = $cache->get($cache_key))
+			$item = $cache->get($cache_key);
+			if(!version_compare(JVERSION,'1.6.0','ge'))
+			{
+				$item = unserialize( trim( $item ) );
+			}			
+
+	        if (!$item)
 	        {
                 $query = $this->getQuery();
                 $item = $this->_getListCount( (string) $query);
 	    
-	            $cache->store($item, $cache_key);
+				if(version_compare(JVERSION,'1.6.0','ge'))
+				{
+					// joomla! 1.6+ code here
+		            $cache->store($item, $cache_key);
+				}
+				else
+				{
+					// Joomla! 1.5 code here
+					$cache->store(  serialize( $item ), $cache_key);
+				}
 	        }
 	    
 	        $this->_total = $item;
