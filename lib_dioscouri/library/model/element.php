@@ -18,6 +18,31 @@ class DSCModelElement extends DSCModel
     var $select_constant = 'LIB_DSC_SELECT';
     var $clear_constant = 'LIB_DSC_CLEAR_SELECTION';
     
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+    
+        if (!empty($this->option))
+        {
+            $option = $this->option;
+        }
+        else
+        {
+            $r = null;
+    
+            if (!preg_match('/(.*)Model/i', get_class($this), $r))
+            {
+                JError::raiseError(500, JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'));
+            }
+    
+            $option = 'com_' . strtolower($r[1]);
+        }
+    
+        $lang = JFactory::getLanguage();
+        $lang->load($option);
+        $lang->load($option, JPATH_ADMINISTRATOR );
+    }
+    
     /**
     *
     * @return
