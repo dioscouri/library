@@ -83,14 +83,11 @@ class DSCModel extends JModel
 	 */
 	public function emptyState()
 	{
-		echo 'here';
 		$state = JArrayHelper::fromObject( $this->getState() );
-		echo DizzyClub::dump( $state );
 		foreach ($state as $key=>$value)
 		{
 			if (substr($key, '0', '1') != '_')
 			{
-        echo '!!!!'.$key.'####';
 				$this->setState( $key, '' );
 			}
 		}
