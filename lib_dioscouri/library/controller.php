@@ -42,12 +42,11 @@ class DSCController extends JController
 	{
 		parent::__construct($config);
 		
-		
 		$com = JRequest::getCmd('option');
 		if (!empty($config['com'])) {
 			$com = $config['com'];
 		}
-
+		
 		//do we really need to get the whole app to get the name or should we strip it from the option??
 		$app = DSC::getApp();
 		$this -> _name = $app -> getName();
@@ -141,10 +140,12 @@ class DSCController extends JController
 	 *
 	 * @return array()
 	 */
-	function _setModelState()
+	function _setModelState( &$model=null )
 	{
 		$app = JFactory::getApplication();
-		$model = $this->getModel( $this->get('suffix') );
+		if (empty($model)) {
+    		$model = $this->getModel( $this->get('suffix') );
+		}
 		$ns = $this->getNamespace();
 
 		$state = array();
@@ -353,7 +354,7 @@ class DSCController extends JController
 		}
 
 		$view->setModel( $model, true );
-		$row = $model->getItem();
+		$row = $model->getItem($row->id, true);
 		$view->assign( 'row', $row );
 
 		$model->emptyState();
