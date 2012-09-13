@@ -17,6 +17,7 @@ jimport( 'joomla.application.component.model' );
 class DSCModel extends JModel
 {
     var $_filterinput = null; // instance of JFilterInput
+    public $cache_enabled = true;
     public $cache_lifetime = '900';
     
     function __construct($config = array())
@@ -187,7 +188,7 @@ class DSCModel extends JModel
 		     
 		    $classname = strtolower( get_class($this) );
 		    $cache = JFactory::getCache( $classname . '.list', '' );
-		    $cache->setCaching(true);
+		    $cache->setCaching($this->cache_enabled);
 		    $cache->setLifeTime($this->cache_lifetime);
 		    $list = $cache->get($cache_key);
 			if(!version_compare(JVERSION,'1.6.0','ge'))
@@ -246,7 +247,7 @@ class DSCModel extends JModel
 	    
 	        $classname = strtolower( get_class($this) );
 	        $cache = JFactory::getCache( $classname . '.item', '' );
-	        $cache->setCaching(true);
+	        $cache->setCaching($this->cache_enabled);
 	        $cache->setLifeTime($this->cache_lifetime);
 	        $item = $cache->get($cache_key);
 			if(!version_compare(JVERSION,'1.6.0','ge'))
@@ -417,7 +418,7 @@ class DSCModel extends JModel
 	    
 	        $classname = strtolower( get_class($this) );
 	        $cache = JFactory::getCache( $classname . '.list-totals', '' );
-	        $cache->setCaching(true);
+	        $cache->setCaching($this->cache_enabled);
 	        $cache->setLifeTime($this->cache_lifetime);
 			$item = $cache->get($cache_key);
 			if(!version_compare(JVERSION,'1.6.0','ge'))
