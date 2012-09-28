@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.toolbar');
 jimport( 'joomla.utilities.simplexml' );
-require_once( JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php' );
+require_once( JPATH_ADMINISTRATOR.'/includes/toolbar.php' );
 
 class DSCMenu extends JObject
 {
@@ -28,50 +28,39 @@ class DSCMenu extends JObject
         $this->_menu = JToolBar::getInstance( $name );
         
         // Try to load initial values for the menu with a config file
-        $initialpath = 'media' . DS . $this->_option . DS . 'menus';
+        $initialpath = 'media/' . $this->_option . '/menus';
 		
         $admin = JFactory::getApplication()->isAdmin();
 	    if ($admin) {
-	        $path = '..' . DS . $initialpath . DS . 'admin';
+	        $path = '../'  . $initialpath . '/admin';
 	    } else {
-	        $path = $initialpath . DS . 'site';
+	        $path = $initialpath . '/site';
 	    }
 		    
-	    $xmlfile = $path . DS . "$name.xml";
+	    $xmlfile = $path . '/'. "$name.xml";
 
 	    // Does the file exist?
         if (file_exists($xmlfile)) 
         {
-            $xml = new JSimpleXML;
-            
+        	
+			// the NULL and TRUE, make it so we can load a file
+            $xml = new SimpleXMLElement($xmlfile, NULL, TRUE);
+       
             // Parse the file
-            if ($xml->loadFile($xmlfile)) 
+            if ($xml) 
             {
                 $items = array();
-                foreach ($xml->document->children() as $child) 
+                foreach ($xml->children() as $child) 
                 {
                     $name = $url = NULL;
                     
-                    // $child will be a single link with name and url sub elements
-                    foreach ($child->children() as $element) 
-                    {
-                        switch ($element->_name) {
-                            case 'name':
-                                $name = JText::_($element->_data);
-                                break;
-                            case 'url':
-                                $url = $element->_data;
-                                break;
-                        }
-                    }
-                    
                     // If we have both a URL and name, add a new link
-                    if (!empty($name) && !empty($url)) 
+                    if (!empty($child->name) && !empty($child->url)) 
                     {
                         $object = new JObject();
-                        $object->name = $name;
-                        $object->url = ($admin) ? $url : JRoute::_($url);
-                        $object->url_raw = $url;
+                        $object->name = JText::_($child->name);
+                        $object->url = ($admin) ? $child->url : JRoute::_($child->url);
+                        $object->url_raw = $child->url;
                         $object->active = false;
                         $items[] = $object; 
                     }
