@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.html.toolbar');
-jimport( 'joomla.utilities.simplexml' );
+
 require_once( JPATH_ADMINISTRATOR.'/includes/toolbar.php' );
 
 class DSCMenu extends JObject
