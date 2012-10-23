@@ -920,6 +920,7 @@ class DSCController extends JController
 	        $return = true;
 	    }
 	    
+	    $model->clearCache();
 	    $this->setRedirect( $this->redirect, $this->message, $this->messagetype );	
 	    
 	    return $return;
@@ -958,6 +959,7 @@ class DSCController extends JController
 	        $return = false;
 	    }
 	
+	    $model->clearCache();
 	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
 	    
 	    return $return;
@@ -1013,6 +1015,7 @@ class DSCController extends JController
 	        $return = true;
 	    }
 	
+	    $model->clearCache();
 	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
 	    return $return;
 	}
@@ -1115,6 +1118,7 @@ class DSCController extends JController
 	        $return = true;
 	    }
 	
+	    $model->clearCache();
 	    $this->setRedirect( $redirect, $this->message, $this->messagetype );
 	    return $return;
 	}

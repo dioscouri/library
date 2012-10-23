@@ -13,6 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class DSCModelElement extends DSCModel 
 {
+    public $cache_enabled = false;
+    
     var $title_key = 'title';
     var $select_title_constant = 'LIB_DSC_SELECT_ITEM';
     var $select_constant = 'LIB_DSC_SELECT';
