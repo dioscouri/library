@@ -65,7 +65,7 @@ class DSCPlugin extends JPlugin
      * 
      * @return string   HTML to display
      */
-    protected function _renderForm( $data)
+    protected function _renderForm()
     {
         $vars = new JObject();
         $html = $this->_getLayout('form', $vars);
