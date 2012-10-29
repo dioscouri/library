@@ -859,7 +859,7 @@ if (!class_exists( 'DSCInstaller' )) {
 
 						
                             // display it on all pages
-                            $query = "INSERT #__modules_menu (`moduleid`, `menuid`) SELECT `id`, 0 FROM `#__modules` WHERE `module` = '".$manifestInformation["element"]."'";
+                            $query = "REPLACE #__modules_menu (`moduleid`, `menuid`) SELECT `id`, 0 FROM `#__modules` WHERE `module` = '".$manifestInformation["element"]."'";
                     				$this->_db->setQuery($query);
                     				$this->_db->query();
 						} 
