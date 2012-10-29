@@ -140,12 +140,10 @@ class DSCController extends JController
 	 *
 	 * @return array()
 	 */
-	function _setModelState( &$model=null )
+	function _setModelState()
 	{
 		$app = JFactory::getApplication();
-		if (empty($model)) {
-    		$model = $this->getModel( $this->get('suffix') );
-		}
+		$model = $this->getModel( $this->get('suffix') );
 		$ns = $this->getNamespace();
 
 		$state = array();

@@ -9,7 +9,7 @@ div.toolbar-list ul li.button span {
 .input-tiny {
 	width: 40px;
 }
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
 	display: inline-block;
 	height: 30px;
 	padding: 4px;
@@ -18,6 +18,15 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	line-height: 20px;
 	color: #555555;
 }
+
+textarea {
+    display: inline-block;
+    padding: 4px;
+    margin-bottom: 0px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #555555;    
+} 
 
 table.table thead th {
 	text-align: center;
