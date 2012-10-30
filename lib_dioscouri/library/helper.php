@@ -230,7 +230,7 @@ class DSCHelper extends JObject
 	 * @param $elements is an array of objects with ->name and ->value properties, all posted from a form
 	 * @return array[name] = value
 	 */
-	function elementsToArray( $elements )
+	public function elementsToArray( $elements )
 	{
 		$return = array();
         $names = array();
