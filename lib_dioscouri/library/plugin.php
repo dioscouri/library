@@ -78,7 +78,7 @@ class DSCPlugin extends JPlugin
      * @param array
      * @return string   HTML to display
      */
-    protected function _renderView( $options='' )
+    protected function _renderView()
     {
         $vars = new JObject();
         $html = $this->_getLayout('view', $vars);
