@@ -218,7 +218,7 @@ class DSCModel extends JModel
 				else
 				{
 					// Joomla! 1.5 code here
-					$cache->store(  serialize( $$list ), $cache_key);
+					$cache->store(  serialize( $list ), $cache_key);
 				}
 		    }
 		     
