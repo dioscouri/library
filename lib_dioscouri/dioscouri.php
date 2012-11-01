@@ -302,7 +302,7 @@ class DSC extends JObject
 	    $loaded = true;
 	}
 
-	public static function loadBootstrap() {
+	public static function loadBootstrap($joomla = 1) {
 		
 		static $loaded = false;
 		
@@ -313,9 +313,12 @@ class DSC extends JObject
 	
 		 JHTML::_( 'script', 'bootstrap.min.js', 'media/dioscouri/js/' );
 		 JHTML::_( 'stylesheet', 'bootstrap.min.css', 'media/dioscouri/css/' );
+		 if($joomla) {
 		 JHTML::_( 'stylesheet', 'joomla.bootstrap.css', 'media/dioscouri/css/' );
+		 }
 		$loaded = true;
 	}
+
 
 	
 	/**
