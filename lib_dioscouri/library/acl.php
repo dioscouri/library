@@ -92,7 +92,7 @@ class DSCAcl {
 					AND u.gid = '25'
 			";
 			}	
-			if($returnQuery != NULl){
+			if($returnQuery != NULL){
 				return $query;
 				
 			}
@@ -103,6 +103,34 @@ class DSCAcl {
 		return $users;
 	}
 	
+	public function addGroup ($user_id, $group_id, $only = NULL) {
+		
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+    		// Joomla! 1.6+ code here
+   			$user		= JUser::getInstance($user_id);
+			
+			//if you want the user to in ONLY  the group you are adding  set only to true
+			if($only) {
+				foreach($user->groups as $group) {
+					unset($user->groups[$group]);
+				}
+				
+			}
+			$user->groups[] = $group_id; 
+			
+			// Bind the data.
+		$user->bind($user->groups);
+		$user->save();
+	
+		
+			} else {
+ 		   // Joomla! 1.5 code here
+ 		  		$user = new JUser();
+				$user->load( $order->user_id );
+				$user->gid = $core_user_new_gid;
+				$user->save();
+			}
+	}
 	
 	
 
