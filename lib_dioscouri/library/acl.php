@@ -68,19 +68,22 @@ class DSCAcl {
 	 * @param INT
 	 */
 	
-	public static function getAdminList($returnQuery = NULL) {
+	public static function getAdminList($returnQuery = NULL, $sendEmail = NULL) {
 		
 		if(version_compare(JVERSION,'1.6.0','ge')) {
     		// Joomla! 1.6+ code here
+   			//TODO should we be able to pass group_ids?
    			 $query = "
 				SELECT
 					u.*
 				FROM
 					#__users AS u
 					INNER JOIN #__user_usergroup_map AS ug ON u.id = ug.user_id
-				WHERE 1
+				WHERE u.block = '0'
 					AND ug.group_id = '8'
 			";
+			
+		
 			} else {
  		   // Joomla! 1.5 code here
  		   $query = "
@@ -92,6 +95,9 @@ class DSCAcl {
 					AND u.gid = '25'
 			";
 			}	
+			if($sendEmail) {
+				$query .= " AND u.sendEmail = '1' ";
+			}
 			if($returnQuery != NULL){
 				return $query;
 				
