@@ -92,7 +92,7 @@ class DSCGrid extends JHTMLGrid
 			 name="ordering['.$id.']" 
 			 size="5" 
 			 value="'.$value.'" 
-			 class="text_area" 
+			 class="text_area input-tiny" 
 			 style="text-align: center" 
 			 />
 			 ';
