@@ -302,19 +302,26 @@ class DSC extends JObject
 	    $loaded = true;
 	}
 
-	public static function loadBootstrap($joomla = 1) {
+	public static function loadBootstrap($joomla = 1, $version = 'default', $responsive = NULL) {
 		
 		static $loaded = false;
+		
+		$default = '2.0'; //libraries version of bootstrap
+		if($default == $version) {
+			$version = 'default'; // if the version you want is the now the default use default
+		}
 		
 		if( $loaded )
 			return;
 		
-		DSC::loadJQuery('');
-	
-		 JHTML::_( 'script', 'bootstrap.min.js', 'media/dioscouri/js/' );
-		 JHTML::_( 'stylesheet', 'bootstrap.min.css', 'media/dioscouri/css/' );
+		 DSC::loadJQuery('');
+		 JHTML::_( 'script', 'bootstrap.min.js', 'media/dioscouri/bootstrap/'.$version.'/js/' );
+		 JHTML::_( 'stylesheet', 'bootstrap.min.css', 'media/dioscouri/bootstrap/'.$version.'/css/' );
 		 if($joomla) {
 		 JHTML::_( 'stylesheet', 'joomla.bootstrap.css', 'media/dioscouri/css/' );
+		 }
+		 if($responsive) {
+		 JHTML::_( 'stylesheet', 'bootstrap-responsive.min.css', 'media/dioscouri/bootstrap/'.$version.'/css/' );
 		 }
 		$loaded = true;
 	}
