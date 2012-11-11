@@ -306,10 +306,6 @@ class DSC extends JObject
 		
 		static $loaded = false;
 		
-		$default = '2.0'; //libraries version of bootstrap
-		if($default == $version) {
-			$version = 'default'; // if the version you want is the now the default use default
-		}
 		
 		if( $loaded )
 			return;
