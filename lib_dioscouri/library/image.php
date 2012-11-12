@@ -322,7 +322,7 @@ class DSCImage extends DSCFile
 	    return $dest_path;
 	}
 	
-	public function loadUploadify(){
+	public static function loadUploadify(){
 		static $loaded = false;
 		
 		
@@ -335,7 +335,7 @@ class DSCImage extends DSCFile
 		 $loaded = true;
 	}
 	
-	public function uploadifyElement($id = "file_upload", $name = "file_upload", $queue = 'queue', $multiple="true" ) {
+	public static function uploadifyElement($id = "file_upload", $name = "file_upload", $queue = 'queue', $multiple="true" ) {
 		
 		$html = '<div id="'.$queue.'"></div>';
 		$html .= '<input id="'.$id.'" name="'.$name.'" type="file" multiple="'.$multiple.'">';
