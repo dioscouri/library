@@ -653,6 +653,8 @@ class DSCModel extends JModel
         return $this;
 	}
 	
+	
+	
 	/**
 	 * Clean the cache
 	 *
@@ -662,9 +664,17 @@ class DSCModel extends JModel
 	 */
 	public function clearCache()
 	{
-	    $classname = strtolower( get_class($this) );
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+    $classname = strtolower( get_class($this) );
 	    parent::cleanCache($classname . '.item');
 	    parent::cleanCache($classname . '.list');
 	    parent::cleanCache($classname . '.list-totals');
+} else {
+    // Joomla! 1.5 code here
+    return TRUE;
+	
+	//TODO #18  actually clear the cache
+}
+	   
 	}
 }

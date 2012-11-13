@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" group="system" method="upgrade" version="2.5">
+<install version="1.5" type="plugin" group="system" method="upgrade">
     <name>System - Dioscouri</name>
     <author>Dioscouri Design</author>
     <authorEmail>info@dioscouri.com</authorEmail>
@@ -15,73 +15,12 @@
         <folder>dioscouri</folder>   
     </files>
 
-    <updateservers>
-       <server type="extension" priority="1" name="Dioscouri System Plugin Updates">http://updates.dioscouri.com/plg_system_dioscouri/updates.xml</server>
-    </updateservers>
-    
-    <config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field type="spacer" default="jQuery Settings" />
-
- 				<field name="embedjquery" type="list" default="0" label="Embed jQuery" description="Embeds jQuery through the whole site.">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-				<field type="spacer" default="jQuery UI" />
-				<field type="spacer" default="Embed jQuery UI" />
-				<field name="embedjqueryui" type="list" default="0" label="Embed jQuery UI JS" description="">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-				
-				<field name="embedjqueryuicss" type="list" default="0" label="Embed jQuery UI CSS" description="">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-				
-				<field type="spacer" default="jQuery Tools" />
-				<field name="embedjquerytools" type="list" default="0" label="Embed jQuery Tools JS" description="Embed jQuery Tools">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-	
-				<field name="jquerynoconflict" type="radio" default="1" label="jQuery No Conflict mode" description="">
-				  <option value="1">JYES</option>
-				  <option value="0">JNO</option>
-				</field>
-			</fieldset>
-			<fieldset name="advanced">				
-				<field name="activeAdmin" type="radio" default="1" label="Active jQuery on the admin" description="">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
- 				<field name="embedbootstrap" type="list" default="0" label="Embed Bootstrap" description="Embeds Bootstrap through the whole site.">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				  <option value="2">Force Loading</option>
-				</field>
-			</fieldset>
-		</fields>
-	</config>
-    
-
-	<params>
-		<param type="spacer" default="jQuery Settings" />
-
-		<param name="embedjquery" type="list" default="0" label="Embed jQuery" description="Embeds jQuery through the whole site.">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</param>
-
-		<param name="jquerynoconflict" type="radio" default="1" label="jQuery No Conflict mode" description="">
-		  <option value="1">JYES</option>
-		  <option value="0">JNO</option>
-		</param>
-		<param name="activeAdmin" type="radio" default="1" label="Active jQuery on the admin" description="">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</param>
-	</params>
-                
-</extension>
+    <!-- Media -->
+    <media destination="dioscouri" folder="dioscouri/media">
+        <folder>css</folder>
+        <folder>images</folder>
+        <folder>js</folder>
+        <file>index.html</file>
+    </media>
+            
+</install>
