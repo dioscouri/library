@@ -137,8 +137,22 @@ class DSCAcl {
 				$user->save();
 			}
 	}
-	
-	
-
+	/*
+	 * Checks if a user is logged in and if not it redirections to login if not 
+	 * */
+	public function validUser() {
+		$user = JFactory::getUser();
+        $userId = $user->get('id');
+        if(!$userId)
+        {
+            $app = JFactory::getApplication();
+            $return = JFactory::getURI()->toString();
+            $url  = 'index.php?option=com_users&view=login';
+            $url .= '&return='.base64_encode($return);
+            $app->redirect($url, JText::_('You must login first') );
+            return false;
+        }
+        return $userId;
+	}
 }
 ?>
