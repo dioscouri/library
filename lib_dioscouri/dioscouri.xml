@@ -27,6 +27,7 @@
     <!-- Media -->
     <media destination="dioscouri" folder="media">
         <folder>css</folder>
+        <folder>bootstrap</folder>
         <folder>images</folder>
         <folder>js</folder>
         <folder>jquery</folder>

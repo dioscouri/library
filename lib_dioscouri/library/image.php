@@ -321,5 +321,44 @@ class DSCImage extends DSCFile
 	
 	    return $dest_path;
 	}
+	
+	public static function loadUploadify(){
+		static $loaded = false;
+		
+		
+		if( $loaded )
+			return;
+		
+		 DSC::loadJQuery('');
+		 JHTML::_( 'script', 'jquery.uploadifive.min.js', 'media/dioscouri/js/' );
+		 JHTML::_( 'stylesheet', 'uploadifive.css', 'media/dioscouri/css/' );
+		 $loaded = true;
+	}
+	
+	public static function uploadifyElement($id = "file_upload", $name = "file_upload", $queue = 'queue', $multiple="true" ) {
+		
+		$html = '<div id="'.$queue.'"></div>';
+		$html .= '<input id="'.$id.'" name="'.$name.'" type="file" multiple="'.$multiple.'">';
+		$html .= '<a style="position: relative; top: 8px;" href="javascript:jQuery(\'#'.$id.'\').uploadifive(\'upload\')">Upload Files</a>';
+		$timestamp = time();
+		$salt = md5('unique_salt' . $timestamp);
+		$js = "
+		$(function() {
+			$('#file_upload').uploadifive({
+				'auto'             : false,
+				'formData'         : {
+									   'timestamp' : '{$timestamp}',
+									   'token'     : '{$salt}'
+				                     },
+				'queueID'          : '{$queue}',
+				'uploadScript'     : 'uploadifive.php',
+				'onUploadComplete' : function(file, data) { console.log(data); }
+			});
+		});";
+		echo $html;
+		
+	}
+	
+
 }
 ?>

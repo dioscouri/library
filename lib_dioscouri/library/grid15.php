@@ -38,7 +38,28 @@ class DSCGrid extends JHTMLGrid
 		$html .= '</a>';
 		return $html;
 	}
-	
+	/**
+	 * @param   integer State Value
+	 * @param   string Search button value
+	 * @param   string Reset Button Vaue
+	 * @param   string The name of the form element
+	 *
+	 * @return  HTML
+	 */
+	public static function searchform($value = '', $search = "Search", $reset = "Reset", $class = "unstyled dsc-flat pad-left pull-right") {
+		$html = '<ul class="'.$class.'">
+        <li>
+            <input class="search-query" type="text" name="filter" value="'.$value.'" />
+        </li>
+        <li>
+            <button class="btn btn-primary" onclick="this.form.submit();">'.$search.'</button>
+        </li>
+        <li>
+            <button class="btn btn-danger" onclick="Dsc.resetFormFilters(this.form);">'.$reset.'</button>
+        </li>
+    </ul>';
+	return $html;
+	}
 	/**
 	 * @param   integer The row index
 	 * @param   integer The record id

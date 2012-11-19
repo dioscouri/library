@@ -1,3 +1,7 @@
+/*This file is used to convert html elements mosting in the joomla admin backend to work with  bootstrap. 
+ There is code from the joomla 3.0 core  backported here.
+ * */
+
 jQuery(document).ready(function($) {
  jQuery('.radio.btn-group label').addClass('btn')
 		    jQuery(".btn-group label:not(.active)").click(function(){
