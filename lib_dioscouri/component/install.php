@@ -18,6 +18,56 @@ $status = new JObject();
 $status->modules = array();
 $status->plugins = array();
 $status->templates = array();
+$status->libraries = array();
+
+/***********************************************************************************************
+ * ---------------------------------------------------------------------------------------------
+* // LIBRARIES INSTALLATION SECTION
+* ---------------------------------------------------------------------------------------------
+***********************************************************************************************/
+//$libraries = $dscinstaller->getElementByPath('libraries'); // TODO This isn't ready yet.  Finish this!  :-)  refs #16
+$libraries = array();
+if ( (is_a($libraries, 'JSimpleXMLElement') || is_a( $libraries, 'JXMLElement')) && !empty( $libraries ) && count($libraries->children())) {
+
+    foreach ($libraries->children() as $library)
+    {
+        $name		= $dscinstaller->getAttribute('library', $library);
+        $publish	= $dscinstaller->getAttribute('publish', $library);
+        $client	    = JApplicationHelper::getClientInfo($dscinstaller->getAttribute('client', $library), true);
+
+        // Set the installation path
+        if (!empty ($name)) {
+            $this->parent->setPath('extension_root', $client->path.DS.'libraries'.DS.$name);
+        } else {
+            $this->parent->abort(JText::_('Library').' '.JText::_('Install').': '.JText::_('Install Library File Missing'));
+            return false;
+        }
+
+        /*
+         * fire the dioscouriInstaller with the foldername and folder entryType
+        */
+        $pathToFolder = $this->parent->getPath('source').DS.$name;
+        $dscInstaller = new dscInstaller();
+        if (!empty($publish) && $publish == "true") {
+            $dscInstaller->set( '_publishExtension', true );
+        }
+        $result = $dscInstaller->installExtension($pathToFolder, 'folder');
+
+        // track the message and status of installation from dscInstaller
+        if ($result)
+        {
+            $alt = JText::_( "Installed" );
+            $status = "<img src='" . DSC::getURL( 'images' ) . "tick.png' border='0' alt='{$alt}' />";
+        } else {
+            $alt = JText::_( "Failed" );
+            $error = $dscInstaller->getError();
+            $status = "<img src='" . DSC::getURL( 'images' ) . "publish_x.png' border='0' alt='{$alt}' />";
+            $status .= " - ".$error;
+        }
+
+        $status->libraries[] = array('name'=>$name,'client'=>$client->name, 'status'=>$status );
+    }
+}
 
 /***********************************************************************************************
  * ---------------------------------------------------------------------------------------------
