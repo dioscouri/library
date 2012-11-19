@@ -173,7 +173,8 @@ class DSCModel extends JModel
 	 */
 	protected function prepareItem( &$item, $key=0, $refresh=false )
 	{
-
+	    $dispatcher = JDispatcher::getInstance( );
+	    $dispatcher->trigger( 'onPrepare' . $this->getTable( )->get( '_suffix' ), array( &$item ) );
 	}
 
 	/**
@@ -273,13 +274,6 @@ class DSCModel extends JModel
 	            if (!empty($item))
 	            {
 	                $this->prepareItem( $item, 0, $refresh );
-	    
-	                $overridden_methods = $this->getOverriddenMethods( get_class($this) );
-	                if (!in_array('getItem', $overridden_methods))
-	                {
-	                    $dispatcher = JDispatcher::getInstance();
-	                    $dispatcher->trigger( 'onPrepare'.$this->getTable()->get('_suffix'), array( &$item ) );
-	                }
 	            }
 	    
 				if(version_compare(JVERSION,'1.6.0','ge'))
