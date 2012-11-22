@@ -276,10 +276,15 @@ class DSC extends JObject
 	 */
 	public static function loadJQuery($version='latest', $noConflict=true, $alias=null)
 	{
-		static $loaded = false;
+		static $loaded;
+
+		if (empty($loaded)) {
+		    $loaded = array();
+		}
 		
-		if( $loaded )
-			return;
+		if ( !empty($loaded[$alias]) ) {
+			return true;
+		}
 		
 	    switch($version)
 	    {
@@ -299,7 +304,15 @@ class DSC extends JObject
 	        }
 	        $document->addScriptDeclaration( $script );
 	    }
-	    $loaded = true;
+	    
+	    $return = new JObject();
+	    $return->version = $version;
+	    $return->noConflict = $noConflict;
+	    $return->alias = $alias;
+	    
+	    $loaded[$alias] = $return;
+	    
+	    return $loaded[$alias];
 	}
 
 	public static function loadBootstrap($joomla = 1, $version = 'default', $responsive = NULL) {
