@@ -162,7 +162,7 @@ class DSCMenu extends JObject
 		    
 		    $view = new JView(array('name'=>'dashboard', 'template_path'=>$lib_path ));
 		    $view->set('items', $items);
-		    $view->set('name', 'dashboard');
+		    $view->set('name', $name);
 		    $view->set('layout', $layout);
 		    $view->set('hide', $hide);
     		$view->setLayout($layout);
