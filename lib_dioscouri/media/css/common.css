@@ -21,6 +21,10 @@
     width : 100%;
 }
 
+.dsc-half {
+    width: 48.5%;
+}
+
 .dsc-flat li {
     float : left;
 }
@@ -49,12 +53,12 @@
     display : table;
 }
 
-.dsc-table .dsc-row {
+.dsc-row {
     display : table-row;
     clear : both;
 }
 
-.dsc-table .dsc-row .dsc-cell {
+.dsc-cell {
     display : table-cell;
     padding: 2px;
 }
