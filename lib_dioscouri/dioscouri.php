@@ -315,8 +315,23 @@ class DSC extends JObject
 	    return $loaded[$alias];
 	}
 
-	public static function loadBootstrap($joomla = 1, $version = 'default', $responsive = NULL) {
-
+	/**
+	 * 
+	 * @param string $version
+	 * @param int $joomla
+	 * @param unknown_type $responsive
+	 */
+	public static function loadBootstrap($version='default', $joomla=true, $responsive=false ) 
+	{
+        // short term backwards compatibility.  Update your components
+        if ((is_int($version) && in_array($version, array(0,1))) || (strlen($joomla) > 1)) 
+        {
+            $org_version = $version;
+            $org_joomla = $joomla;
+            $version = $org_joomla;
+            $joomla = $org_version;
+        }
+	    
 	    static $loaded = false;
 
 	    if ( $loaded ) {
