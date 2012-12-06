@@ -315,6 +315,11 @@ class DSCModel extends JModel
     	$return["prev"] = '';
     	$return["next"] = '';
     	
+    	if (empty($id))
+    	{
+    	    return $return;
+    	}
+    	    	
         $prev = $this->getState('prev');
         $next = $this->getState('next');
         if (strlen($prev) || strlen($next)) 
