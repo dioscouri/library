@@ -40,6 +40,8 @@ class DSCViewAdmin extends DSCView
 		$modules = JModuleHelper::getModules($this->_name . "_left");
 		if ($modules && !JRequest::getInt('hidemainmenu') && empty($this->hidemenu) || !empty($this->leftMenu) && empty($this->hidemenu)) {	    
 		$this->displayWithLeftMenu($tpl = null, $this->leftMenu);
+			
+		
 		} else {
 		    parent::display($tpl);
 		}

@@ -11,10 +11,9 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+require_once( JPATH_SITE.'/libraries/joomla/grid/grid.php' );
 
-require_once( JPATH_SITE.'/libraries/joomla/html/html/grid.php' );
-
-class DSCGrid extends JHTMLGrid
+class DSCGrid extends JGrid
 {
 	/**
 	 * @param	string	The link title
@@ -23,7 +22,7 @@ class DSCGrid extends JHTMLGrid
 	 * @param	string	The selected ordering
 	 * @param	string	An optional task override
 	 */
-	public function sort( $title, $order, $direction = 'asc', $selected = 0, $form='document.adminForm' )
+	public static function sort( $title, $order, $direction = 'asc', $selected = 0, $form='document.adminForm', $task = null, $new_direction = 'asc')
 	{
 		$direction	= strtolower( $direction );
 		$images		= array( 'sort_asc.png', 'sort_desc.png' );
@@ -34,7 +33,7 @@ class DSCGrid extends JHTMLGrid
 		$html = '<a href="javascript:Dsc.gridOrdering(\''.$order.'\',\''.$direction.'\', '.$form.' );" title="'.JText::_( 'LIB_DSC_CLICK_TO_SORT_BY_THIS_COLUMN' ).'">';
 		$html .= JText::_( $title );
 		if ($order == $selected ) {
-		    $html .= '<img src="'. DSC::getURL('images'). $images[$index] .'" border="0" alt="'. $alts[$index] .'" class="dsc-grid-sort" />';
+		    $html .= '<img src="'. DSC::getURL('images') . $images[$index] .'" border="0" alt="'. $alts[$index] .'" class="dsc-grid-sort" />';
 		}
 		$html .= '</a>';
 		return $html;
@@ -64,6 +63,7 @@ class DSCGrid extends JHTMLGrid
 		
 	    return $html;
 	}
+
 	/**
 	 * @param   integer The row index
 	 * @param   integer The record id
@@ -72,7 +72,7 @@ class DSCGrid extends JHTMLGrid
 	 *
 	 * @return  string
 	 */
-	public function id($rowNum, $recId, $checkedOut=false, $name='cid')
+	public static function id($rowNum, $recId, $checkedOut=false, $name='cid')
 	{
 		if ($checkedOut) {
 			return '';
@@ -87,7 +87,7 @@ class DSCGrid extends JHTMLGrid
 	 * @param $id
 	 * @return unknown_type
 	 */
-	public function order($id, $image = 'filesave.png', $task = 'saveorder', $form='document.adminForm')
+	public static function order($id, $image = 'filesave.png', $task = 'saveorder', $form='document.adminForm')
 	{
 		$up   = 'uparrow.png'; $up_title = JText::_("Move Up");
 		$down = 'downarrow.png'; $down_title = JText::_("Move Down");
@@ -109,7 +109,7 @@ class DSCGrid extends JHTMLGrid
 	 * @param $value
 	 * @return unknown_type
 	 */
-	public function ordering( $id, $value)
+	public static function ordering( $id, $value)
 	{
 		$result =
 			 '
@@ -117,7 +117,7 @@ class DSCGrid extends JHTMLGrid
 			 name="ordering['.$id.']" 
 			 size="5" 
 			 value="'.$value.'" 
-			 class="text_area" 
+			 class="text_area input-tiny" 
 			 style="text-align: center" 
 			 />
 			 ';
@@ -135,7 +135,7 @@ class DSCGrid extends JHTMLGrid
 	 * @param 	string	Text for false
 	 * @return 	string	Html img
 	 */
-	public function boolean( $bool, $true_img = null, $false_img = null, $true_text = null, $false_text = null)
+	public static function boolean( $bool, $true_img = null, $false_img = null, $true_text = null, $false_text = null)
 	{
 		$true_img 	= $true_img 	? $true_img 	: 'tick.png';
 		$false_img 	= $false_img	? $false_img	: 'publish_x.png';
@@ -145,7 +145,7 @@ class DSCGrid extends JHTMLGrid
 		return '<img src="'. DSC::getURL('images'). ($bool ? $true_img : $false_img) .'" border="0" alt="'. JText::_($bool ? $true_text : $false_text) .'" />';
 	}
 	
-	public function published( $row, $i, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
+	public static function published( $row, $i, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
 	{
 		$img 	= $row->published ? $imgY : $imgX;
 		$task 	= $row->published ? 'unpublish' : 'publish';
@@ -160,7 +160,7 @@ class DSCGrid extends JHTMLGrid
 		return $href;
 	}
 	
-	public function enable( $enable, $i, $prefix = '', $imgY = 'tick.png', $imgX = 'publish_x.png' )
+	public static function enable( $enable, $i, $prefix = '', $imgY = 'tick.png', $imgX = 'publish_x.png' )
 	{
 		$img 	= $enable ? $imgY : $imgX;
 		$task 	= $enable ? 'disable' : 'enable';
@@ -176,7 +176,7 @@ class DSCGrid extends JHTMLGrid
 		return $href;
 	}
 	
-	public function checkedout( &$row, $i, $identifier = 'id' )
+	public static function checkedout( &$row, $i, $identifier = 'id' )
 	{
 		$user   = JFactory::getUser();
 		$userid = $user->get('id');
@@ -186,13 +186,14 @@ class DSCGrid extends JHTMLGrid
 		{
 			$result = false;	
 		}
-			elseif (is_a($row, 'JTable')) 
+			elseif (is_object($row) && method_exists($row, 'isCheckedOut')) 
 		{
 			$result = $row->isCheckedOut($userid);
 		} 
 			else 
 		{
-			$result = JTable::isCheckedOut($userid, $row->checked_out);
+		    $table = JTable::getInstance('Content', 'JTable');
+		    $table->isCheckedOut($userid, $row->checked_out);
 		}
 
 		$checked = '';
@@ -220,16 +221,18 @@ class DSCGrid extends JHTMLGrid
 		return $checked;
 	}
 	
-	public function pagetooltip( $key, $title='Tip', $id='page_tooltip', $app=null )
+	public static function pagetooltip( $key, $title='Tip', $id='page_tooltip', $app=null )
 	{
 		$href = '';
 		
 		$constant = 'page_tooltip_'.$key;
 		$app = JRequest::getCmd( 'option' );
-		$disabled = DSC::getApp( $app )->get( $constant."_disabled", '0');
+		$defines = DSC::getApp( $app );
+		$disabled = $defines->get( $constant."_disabled", '0');
 		
+		$full_constant = strtoupper( $app . "_" . $constant );
 		$lang = JFactory::getLanguage();
-		if ($lang->hasKey($constant) && !$disabled)
+		if ($lang->hasKey($full_constant) && !$disabled)
 		{
 			$option = strtolower( $app );
 			$view = strtolower( JRequest::getVar('view') );
@@ -240,7 +243,7 @@ class DSCGrid extends JHTMLGrid
 			$href = '
 				<fieldset class="'.$id.'">
 					<legend class="'.$id.'">'.JText::_($title).'</legend>
-					'.JText::_($constant).'
+					'.JText::_($full_constant).'
 					<span class="'.$id.'" style="float: right;">'.$link.'</span>
 				</fieldset>
 			';			
@@ -249,7 +252,7 @@ class DSCGrid extends JHTMLGrid
 		return $href;
 	}
 	
-	public function checkoutnotice( $row, $title='Item', $lock_task='edit' )
+	public static function checkoutnotice( $row, $title='Item', $lock_task='edit' )
 	{
 		if (!isset($row->checked_out))
 		{
@@ -286,7 +289,7 @@ class DSCGrid extends JHTMLGrid
 		return $html;
 	}
 	
-	public function _checkedOut( &$row, $overlib = 1 )
+	protected static function _checkedOut( &$row, $overlib = 1 )
 	{
 		$hover = '';
 		if ( $overlib )

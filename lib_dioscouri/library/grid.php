@@ -11,10 +11,19 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-if(version_compare(JVERSION,'1.6.0','ge')) {
-    // Joomla! 1.6+ code here
+
+if (version_compare(JVERSION, '3.0', 'ge'))
+{
+     require_once( JPATH_SITE . '/libraries/dioscouri/library/grid30.php' );
+
+}
+else if (version_compare(JVERSION, '2.5', 'ge'))
+{
     require_once( JPATH_SITE . '/libraries/dioscouri/library/grid16.php' );
-} else {
-    // Joomla! 1.5 code here
+
+}
+else
+{
     require_once( JPATH_SITE . '/libraries/dioscouri/library/grid15.php' );
+
 }

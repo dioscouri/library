@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filter.filteroutput');
 jimport('joomla.application.component.view');
 
-class DSCView extends JView 
+class DSCView extends DSCViewBase
 {
 	var $_option = NULL;
 	var $_name = NULL;
@@ -124,14 +124,16 @@ class DSCView extends JView
             }
 
         // form
-            $validate = JUtility::getToken();
+        	if(DSC_JVERSION == '30') { $validate = JSession::getFormToken();} else {$validate = JUtility::getToken();}
+            
             $form = array();
             $view = strtolower( JRequest::getVar('view') );
             $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$view}&view={$view}" );
             $form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
             $this->assign( 'form', $form );
     }
-
+	
+	
     /**
      * Basic methods for a form
      * @param $tpl
@@ -153,8 +155,11 @@ class DSCView extends JView
             $task = strtolower( $this->get( '_task', 'edit' ) );
             $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task={$task}&id=".$model->getId() );
             $form['validation'] = $this->get( '_validation', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task=validate&format=raw" );
-            $form['validate'] = "<input type='hidden' name='".JUtility::getToken()."' value='1' />";
-            $form['id'] = $model->getId();
+          
+			if(DSC_JVERSION == '30') { $validate = JSession::getFormToken();} else {$validate = JUtility::getToken();}		  
+		    $form['validate'] = "<input type='hidden' name='".$validate."' value='1' />";
+          
+		    $form['id'] = $model->getId();
             $this->assign( 'form', $form );
 
         // set the required image

@@ -11,9 +11,9 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
 
-class DSCController extends JController
+
+class DSCController extends DSCControllerBase
 {
     /**
      * default view
