@@ -16,6 +16,7 @@ jimport( 'joomla.application.component.model' );
 
 require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/model.php';
 
+
 class DSCModel extends DSCModelBase
 {
     var $_filterinput = null; // instance of JFilterInput
