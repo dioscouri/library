@@ -10,7 +10,7 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class DSCTable extends JTable
+class DSCTable extends DSCTableBase
 {
 	/**
 	 * constructor
