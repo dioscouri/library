@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filter.filteroutput');
 jimport('joomla.application.component.view');
 
+require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/view.php';
+
 class DSCView extends DSCViewBase
 {
 	var $_option = NULL;
