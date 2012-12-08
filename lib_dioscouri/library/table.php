@@ -10,6 +10,8 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/table.php';
+
 class DSCTable extends DSCTableBase
 {
 	/**
