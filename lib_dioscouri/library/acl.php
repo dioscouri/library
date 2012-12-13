@@ -139,20 +139,27 @@ class DSCAcl {
 	}
 	/*
 	 * Checks if a user is logged in and if not it redirections to login if not 
+	 * 
+	 * This is very simple on purpose you just do DSCAcl::validateUser(); at anytime and it  check for a valid user ID and redirect them to login. redirect back once logged in.
+	 * 
+	 * IF YOU WANT REAL ACL YOU SHOULD USE JOOMLAS canAccess methods
+	 * 
 	 * */
-	public function validUser() {
+	public static function validateUser($msg = null) {
+		if(empty($msg)) {
+			$msg = 'You must login first';
+		}
 		$user = JFactory::getUser();
-        $userId = $user->get('id');
-        if(!$userId)
-        {
-            $app = JFactory::getApplication();
-            $return = JFactory::getURI()->toString();
-            $url  = 'index.php?option=com_users&view=login';
-            $url .= '&return='.base64_encode($return);
-            $app->redirect($url, JText::_('You must login first') );
-            return false;
-        }
-        return $userId;
+		$userId = $user -> get('id');
+		if (!$userId) {
+			$app = JFactory::getApplication();
+			$return = JFactory::getURI() -> toString();
+			$url = 'index.php?option=com_users&view=login';
+			$url .= '&return=' . base64_encode($return);
+			$app -> redirect($url, $msg);
+			return false;
+		}
+		return $userId;
 	}
 }
 ?>
