@@ -17,6 +17,9 @@ jQuery(document).ready(function($) {
 		    jQuery(".btn-group input[checked=checked]").each(function(){
 		        jQuery("label[for=" + jQuery(this).attr('id') + "]").addClass('active btn-primary');
 		    });
+		    jQuery("img.calendar").each(function(){
+		        jQuery(this).addClass('add-on');
+		    });
 });
 
  // Turn radios into btn-group
