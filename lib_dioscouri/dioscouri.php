@@ -290,7 +290,7 @@ class DSC extends JObject
 	    {
 	        case "latest":
 	        default:
-	            JHTML::_( 'script', 'jquery-1.8.0.min.js', 'media/dioscouri/jquery/core/' );
+	            JHTML::_( 'script', 'jquery-1.8.3.min.js', 'media/dioscouri/jquery/core/' );
 	            break;
 	    }
 	    
