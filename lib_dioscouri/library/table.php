@@ -102,7 +102,13 @@ class DSCTable extends JTable
 				$fields = unserialize( trim( $fields ) );
 			}
 		}
-    $fields = @$fields[$this->getTableName()];
+		
+	    $fields = @$fields[$this->getTableName()];
+        
+        if (empty($fields)) {
+            $fields = array();
+        }
+        
 		return $fields;
 	}
 

@@ -206,7 +206,7 @@ class DSCModel extends JModel
 		            $list = array( );
 		        }
 		    
-		        foreach ( $list as $key=>$item )
+		        foreach ( $list as $key=>&$item )
 		        {
 		            $this->prepareItem( $item, $key, $refresh );
 		        }
