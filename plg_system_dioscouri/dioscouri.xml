@@ -28,38 +28,25 @@
 				  <option value="0">JNO</option>
 				  <option value="1">JYES</option>
 				</field>
-				<field type="spacer" default="jQuery UI" />
-				<field type="spacer" default="Embed jQuery UI" />
-				<field name="embedjqueryui" type="list" default="0" label="Embed jQuery UI JS" description="">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-				
-				<field name="embedjqueryuicss" type="list" default="0" label="Embed jQuery UI CSS" description="">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-				
-				<field type="spacer" default="jQuery Tools" />
-				<field name="embedjquerytools" type="list" default="0" label="Embed jQuery Tools JS" description="Embed jQuery Tools">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				</field>
-	
 				<field name="jquerynoconflict" type="radio" default="1" label="jQuery No Conflict mode" description="">
 				  <option value="1">JYES</option>
 				  <option value="0">JNO</option>
+				</field>
+				<field type="spacer" default="Bootstrap" />
+				<field name="embedbootstrap" type="list" default="0" label="Embed Bootstrap" description="Embeds Bootstrap through the front site.">
+				  <option value="0">JNO</option>
+				  <option value="1">JYES</option>
+				</field>
+				<field name="bootstrapversion" type="text" default="default" label="Bootstrap Version" description=""/>
+				<field name="bootstrapjoomla" type="list" default="0" label="Load Bootstrap Joomla file" description="Adds a CSS file to over ride joomla classes">
+				  <option value="0">JNO</option>
+				  <option value="1">JYES</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">				
 				<field name="activeAdmin" type="radio" default="1" label="Active jQuery on the admin" description="">
 				  <option value="0">JNO</option>
 				  <option value="1">JYES</option>
-				</field>
- 				<field name="embedbootstrap" type="list" default="0" label="Embed Bootstrap" description="Embeds Bootstrap through the whole site.">
-				  <option value="0">JNO</option>
-				  <option value="1">JYES</option>
-				  <option value="2">Force Loading</option>
 				</field>
 			</fieldset>
 		</fields>
