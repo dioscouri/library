@@ -173,6 +173,15 @@ class DSCModel extends JModel
 	 */
 	protected function prepareItem( &$item, $key=0, $refresh=false )
 	{
+	    if (!empty($this->_objectClass) && !is_a($item, $this->_objectClass)) {
+	        $clone = $item;
+	        $item = $this->getTable();
+	        foreach (get_object_vars($clone) as $prop=>$def)
+	        {
+	            $item->$prop = $clone->$prop;
+	        }
+	    }
+	    	    
 	    $dispatcher = JDispatcher::getInstance( );
 	    $dispatcher->trigger( 'onPrepare' . $this->getTable( )->get( '_suffix' ), array( &$item ) );
 	}
