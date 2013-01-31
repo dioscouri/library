@@ -163,6 +163,20 @@ class DSCModel extends JModel
 		$this->_resultQuery = $query;
 		return $this->_resultQuery;
 	}
+	
+	/**
+	 * Before individual items in a list are processed, this method allows you to modify the entire list.
+	 * You could remove items from the list before they are individually processed, etc.
+	 *
+	 * @param unknown_type $item
+	 * @param unknown_type $key
+	 * @param unknown_type $refresh
+	 */
+	protected function prepareList( &$list, $refresh=false )
+	{
+	    $dispatcher = JDispatcher::getInstance( );
+	    $dispatcher->trigger( 'onPrepareList' . $this->getTable( )->get( '_suffix' ), array( &$list ) );
+	}
 
 	/**
 	 * Set basic properties for the item, whether in a list or a singleton
@@ -215,6 +229,8 @@ class DSCModel extends JModel
 		            $list = array( );
 		        }
 		    
+		        $this->prepareList( $list, $refresh );
+		        
 		        foreach ( $list as $key=>&$item )
 		        {
 		            $this->prepareItem( $item, $key, $refresh );
@@ -672,17 +688,17 @@ class DSCModel extends JModel
 	 */
 	public function clearCache()
 	{
-		if(version_compare(JVERSION,'1.6.0','ge')) {
-    $classname = strtolower( get_class($this) );
-	    parent::cleanCache($classname . '.item');
-	    parent::cleanCache($classname . '.list');
-	    parent::cleanCache($classname . '.list-totals');
-} else {
-    // Joomla! 1.5 code here
-    return TRUE;
-	
-	//TODO #18  actually clear the cache
-}
-	   
+	    if(version_compare(JVERSION,'1.6.0','ge')) {
+	        $classname = strtolower( get_class($this) );
+	        parent::cleanCache($classname . '.item');
+	        parent::cleanCache($classname . '.list');
+	        parent::cleanCache($classname . '.list-totals');
+	    } else {
+	        // Joomla! 1.5 code here
+	        return TRUE;
+
+	        //TODO #18  actually clear the cache
+	    }
+
 	}
 }
