@@ -74,7 +74,7 @@ class DSCFile extends JObject
 	function handleUpload ($fieldname='userfile') 
 	{
 		$success = false;
-		$config = DSC::getApp();
+		//$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -154,7 +154,7 @@ class DSCFile extends JObject
 	function handleMultipleUpload ($fieldname='userfile', $num = 0) 
 	{
 		$success = false;
-		$config = DSC::getApp();
+		//$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -190,11 +190,11 @@ class DSCFile extends JObject
 		
 		$this->size = $userfile['size'][$num]/1024;		
 		// check size of upload against max set in config
-		if($this->size > $config->get( 'files_maxsize', '10000' ) ) 
+		/*if($this->size > $config->get( 'files_maxsize', '10000' ) ) 
 		{
 			$this->setError( JText::_( 'Invalid File Size' ) );
 			return $success;
-	    }
+	    }*/
 	    $this->size = number_format( $this->size, 2 ).' Kb';
 		
 		if (!is_uploaded_file($userfile['tmp_name'][$num])) 
