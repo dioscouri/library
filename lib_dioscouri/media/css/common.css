@@ -65,6 +65,7 @@
 .dsc-cell {
     display : table-cell;
     padding: 2px;
+    vertical-align: top;
 }
 
 .dsc-table .dsc-row .dsc-cell.dsc-key {
