@@ -282,19 +282,7 @@ class DSCModel extends JModel
 			}			
 	        if (!$item || $refresh)
 	        {
-	            if ($emptyState)
-	            {
-	                $this->emptyState();
-	            }
-	            
-    			$query = $this->getQuery( $refresh );
-
-    			$keyname = $this->getTable()->getKeyName();
-    			$value	= $this->_db->Quote( $cache_key );
-    			$query->where( "tbl.$keyname = $value" );
-    			$this->_db->setQuery( (string) $query );
-    			
-    			$item = $this->_db->loadObject();
+	            $item = $this->_getItem( $pk, $refresh, $emptyState );
     			
 	            if (!empty($item))
 	            {
@@ -318,6 +306,27 @@ class DSCModel extends JModel
 	    }
 		
 		return $this->_item;
+	}
+	
+	protected function _getItem( $pk=null, $refresh=false, $emptyState=true )
+	{
+	    $cache_key = $pk ? $pk : $this->getID();
+	    
+	    if ($emptyState)
+	    {
+	        $this->emptyState();
+	    }
+	     
+	    $query = $this->getQuery( $refresh );
+	
+	    $keyname = $this->getTable()->getKeyName();
+	    $value	= $this->_db->Quote( $cache_key );
+	    $query->where( "tbl.$keyname = $value" );
+	    $this->_db->setQuery( (string) $query );
+	     
+	    $item = $this->_db->loadObject();
+	
+	    return $item;
 	}
 
 	/**
