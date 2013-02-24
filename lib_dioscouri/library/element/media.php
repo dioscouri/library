@@ -199,7 +199,13 @@ class DSCElementMedia extends DSCElement
                     'class' => $this->preview_class,
                     'style' => $this->preview_style
             );
-            $img = JHtml::image($src, JText::_('JLIB_FORM_MEDIA_PREVIEW_ALT'), $attr);
+
+            if ($src) {
+                $img = JHtml::image($src, JText::_('JLIB_FORM_MEDIA_PREVIEW_ALT'), $attr);
+            } else {
+                $img = '';
+            }
+            
             $previewImg = '<div id="' . $this->id . '_preview_img"' . ($src ? '' : ' style="display:none"') . '>' . $img . '</div>';
             $previewImgEmpty = '<div id="' . $this->id . '_preview_empty"' . ($src ? ' style="display:none"' : '') . '>'
             . JText::_('JLIB_FORM_MEDIA_PREVIEW_EMPTY') . '</div>';
