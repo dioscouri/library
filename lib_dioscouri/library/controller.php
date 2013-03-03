@@ -474,7 +474,14 @@ class DSCController extends JController
 	 * @return unknown_type
 	 */
 	function footer()
-	{
+	{	
+		$doc = JFactory::getDocument();
+		$type = $doc->getType();
+		
+		if($type != 'html') {
+			return;
+		}
+		
 		$model	= $this->getModel( 'dashboard' );
 		$view	= $this->getView( 'dashboard', 'html' );
 
