@@ -113,16 +113,16 @@ class DSCView extends JView
             JFilterOutput::objectHTMLSafe( $state );
             $this->assign( 'state', $state );
 
-        // list of items
-            if (empty($this->no_items) && method_exists( $model, 'getList') ) {
-                $this->assign('items', $model->getList());
-            }
-            
         // page-navigation
             if (empty($this->no_pagination) && method_exists( $model, 'getPagination') ) {
                 $this->assign( 'pagination', $model->getPagination() );
             }
-            
+
+        // list of items
+            if (empty($this->no_items) && method_exists( $model, 'getList') ) {
+                $this->assign('items', $model->getList());
+            }
+
         // form
             $validate = JUtility::getToken();
             $form = array();

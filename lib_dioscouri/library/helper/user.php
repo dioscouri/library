@@ -80,20 +80,12 @@ class DSCHelperUser extends DSCHelper {
 	 * @param mixed Boolean
 	 * @return array
 	 */
-	/**
-	 * Returns yes/no
-	 * @param mixed Boolean
-	 * @param mixed Boolean
-	 * @return array
-	 */
-	public function createNewUser($details, $guest = false) {
-		
-
+	public static function createNewUser($details, $guest = false) {
 		$success = false;
 		// Get required system objects
-		$user = new JUser;
+		$user = clone(JFactory::getUser());
 		$config = JFactory::getConfig();
-		
+		$authorize = JFactory::getACL();
 
 		$usersConfig = JComponentHelper::getParams('com_users');
 
@@ -101,7 +93,6 @@ class DSCHelperUser extends DSCHelper {
 		if (!$user -> bind($details)) {
 			$this -> setError($user -> getError());
 			return false;
-
 		}
 
 		if (empty($user -> password)) {
@@ -113,28 +104,35 @@ class DSCHelperUser extends DSCHelper {
 		$user -> set('id', 0);
 		$user -> set('usertype', '');
 
-		$newUsertype = $usersConfig -> get('new_usertype', '2');
-	
-		$user -> set('usertype', 'deprecated');
-		$user -> set('groups', array($newUsertype));
+		if (version_compare(JVERSION, '1.6.0', 'ge')) {
+			$newUsertype = $usersConfig -> get('new_usertype', '2');
 
+			// Joomla! 1.6+ code here
+			$user -> set('usertype', 'deprecated');
+			$user -> set('groups', array($newUsertype));
+		} else {
+			// Joomla! 1.5 code here
+			$newUsertype = $usersConfig -> get('new_usertype');
+			if (!$newUsertype) {
+				$newUsertype = 'Registered';
+			}
+			$user -> set('gid', $authorize -> get_group_id('', $newUsertype, 'ARO'));
+		}
 
 		$date = JFactory::getDate();
 		$user -> set('registerDate', $date -> toMySQL());
 
-
-		$useractivation = $usersConfig->get('useractivation');
-		$sendpassword = $usersConfig->get('sendpassword', 1);
-
-		// Check if the user needs to activate their account.
-		if (($useractivation == 1) || ($useractivation == 2)) {
-			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
-			$data['block'] = 1;
-		} 
+		// we disable useractivation for auto-created users
+		$useractivation = '0';
+		if ($useractivation == '1') {
+			jimport('joomla.user.helper');
+			$user -> set('activation', md5(JUserHelper::genRandomPassword()));
+			$user -> set('block', '0');
+		}
 
 		// If there was an error with registration, set the message and display form
 		if (!$user -> save()) {
-			
+			$msg -> message = $user -> getError();
 			return $success;
 		}
 
