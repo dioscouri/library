@@ -21,7 +21,7 @@ class DSCFile extends JObject
 	 * @param mixed Boolean
 	 * @return array
 	 */
-	function setDirectory( $dir=null ) 
+	function setDirectory( $dir=null , $protect = true) 
 	{
 		$success = false;
 
@@ -31,23 +31,23 @@ class DSCFile extends JObject
 		{
 			$dir = $this->getDirectory();	
 		}		
-		
-		$helper = new DSCHelper();
-		$helper->checkDirectory($dir);
+		if($protect) {
+			$helper = new DSCHelper();
+			$helper->checkDirectory($dir);
 
-		// then confirms existence of htaccess file
-		$htaccess = $dir.DS.'.htaccess';
-		if (!$fileexists = JFile::exists( $htaccess ) ) 
-		{
-			$destination = $htaccess;
-			$text = "deny from all";
-		    if ( !JFile::write( $destination, $text )) 
-		    {
-                $this->setError( JText::_('STORAGE DIRECTORY IS UNPROTECTED') );
-                return $success;
-            }			
+			// then confirms existence of htaccess file
+			$htaccess = $dir.DS.'.htaccess';
+			if (!$fileexists = JFile::exists( $htaccess ) ) 
+			{
+				$destination = $htaccess;
+				$text = "deny from all";
+			    if ( !JFile::write( $destination, $text )) 
+			    {
+	                $this->setError( JText::_('STORAGE DIRECTORY IS UNPROTECTED') );
+	                return $success;
+	            }			
+			}
 		}
-
 		$this->_directory = $dir;
 		return $this->_directory;
 	}
@@ -74,7 +74,7 @@ class DSCFile extends JObject
 	function handleUpload ($fieldname='userfile') 
 	{
 		$success = false;
-		//$config = DSC::getApp();
+		$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -125,6 +125,68 @@ class DSCFile extends JObject
 		return $success;
 	}
 	
+	/**
+	 * Returns 
+	 * @param mixed Boolean
+	 * @param mixed Boolean
+	 * @return object
+	 */
+	function handleArrayUpload($array , $fieldname='logo', $key = 'userdata') 
+	{
+		$success = false;
+		$config = DSC::getApp();
+		
+
+		// Check if file uploads are enabled
+		if (!(bool)ini_get('file_uploads')) {
+			$this->setError( JText::_( 'Uploads Disabled' ) );
+			return $success;
+		}
+	
+		// Check that the zlib is available
+		if(!extension_loaded('zlib')) {
+			$this->setError( JText::_( 'ZLib Unavailable' ) );
+			return $success;
+		}
+
+		if (!$array[$key]['name'][$fieldname]) 
+		{
+			$this->setError( JText::_( 'No File' ) );
+			return $success;
+		}
+		
+		//$this->proper_name = basename($userfile['name']);
+		$userFileName = basename($array[$key]['name'][$fieldname]);
+		$this->proper_name = $this->getProperName($userFileName);
+		
+		if ($array[$key]['size'][$fieldname] == 0) {
+			$this->setError( JText::_( 'Invalid File' ) );
+			return $success;
+		}
+		
+		$this->size = $array[$key]['size'][$fieldname]/1024;		
+	    $this->size = number_format( $this->size, 2 ).' Kb';
+		
+		if (!is_uploaded_file($array[$key]['tmp_name'][$fieldname])) 
+		{	
+			
+
+			$this->setError( JText::_( 'Invalid File' ) );
+			return $success;
+	    } 
+	    	else 
+	    {
+	    	$this->file_path = $array[$key]['tmp_name'][$fieldname];
+		}
+		
+		
+		$this->getExtension();
+		$this->uploaded = true;
+		$success = true;		
+		return $success;
+	}
+
+
 	/*
 	 * Return the name after repalcing the . into -
 	 * @param  String
@@ -154,7 +216,7 @@ class DSCFile extends JObject
 	function handleMultipleUpload ($fieldname='userfile', $num = 0) 
 	{
 		$success = false;
-		//$config = DSC::getApp();
+		$config = DSC::getApp();
 		
 		// Check if file uploads are enabled
 		if (!(bool)ini_get('file_uploads')) {
@@ -190,11 +252,11 @@ class DSCFile extends JObject
 		
 		$this->size = $userfile['size'][$num]/1024;		
 		// check size of upload against max set in config
-		/*if($this->size > $config->get( 'files_maxsize', '10000' ) ) 
+		if($this->size > $config->get( 'files_maxsize', '10000' ) ) 
 		{
 			$this->setError( JText::_( 'Invalid File Size' ) );
 			return $success;
-	    }*/
+	    }
 	    $this->size = number_format( $this->size, 2 ).' Kb';
 		
 		if (!is_uploaded_file($userfile['tmp_name'][$num])) 
@@ -218,9 +280,11 @@ class DSCFile extends JObject
 	 * Do the real upload
 	 */
 	function upload()
-	{
+	{	
+
 		// path
 		$dest = $this->getDirectory().DS.$this->getPhysicalName();
+	
 		// delete the file if dest exists
 		if ($fileexists = JFile::exists( $dest ))
 		{
