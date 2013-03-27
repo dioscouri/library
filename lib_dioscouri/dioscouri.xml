@@ -18,6 +18,8 @@
         <folder>highroller</folder>
         <folder>library</folder>
         <folder>tools</folder>
+        <folder>template</folder>
+        <folder>social</folder>
 	</files>
     
 	<languages folder="language">

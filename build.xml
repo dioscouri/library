@@ -25,36 +25,6 @@
     ftp.dir=    
     -->
 
-    <target name="update_localhost_j15" description="attemps to update files on localhost server with files from working directory">
-      <!-- MAIN COMPONENT -->
-      <copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri/component" overwrite="true">
-        <fileset dir="lib_dioscouri/component" />
-      </copy>
-      <copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri/highroller" overwrite="true">
-        <fileset dir="lib_dioscouri/highroller" />
-      </copy>
-      <copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri/library" overwrite="true">
-        <fileset dir="lib_dioscouri/library" />
-      </copy>
-      <copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri/tools" overwrite="true">
-        <fileset dir="lib_dioscouri/tools" />
-      </copy>
-    	<copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri" overwrite="true">
-        <fileset file="lib_dioscouri/dioscouri.php" />
-      </copy>
-    	<copy todir="${cfg.localhostRoot_j15}/libraries/dioscouri" overwrite="true">
-        <fileset file="lib_dioscouri/loader.php" />
-      </copy>
-
-      <!-- MEDIA FILES -->
-      <copy todir="${cfg.localhostRoot_j15}/media/dioscouri" overwrite="true">
-          <fileset dir="lib_dioscouri/media" />
-      </copy>
-      <!-- LANGUAGE FILES -->
-      <copy todir="${cfg.localhostRoot_j15}/language/en-GB" overwrite="true">
-          <fileset dir="lib_dioscouri/language/en-GB" />
-      </copy>
-    </target>
 
   <target name="update_localhost" description="attemps to update files on localhost server with files from working directory">
     <!-- MAIN COMPONENT -->
@@ -69,6 +39,9 @@
     </copy>
     <copy todir="${cfg.localhostRoot}/libraries/dioscouri/tools" overwrite="true">
       <fileset dir="lib_dioscouri/tools" />
+    </copy>
+    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/social" overwrite="true">
+      <fileset dir="lib_dioscouri/social" />
     </copy>
   	<copy todir="${cfg.localhostRoot}/libraries/dioscouri" overwrite="true">
       <fileset file="lib_dioscouri/dioscouri.php" />
