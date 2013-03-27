@@ -285,11 +285,12 @@ class DSCTable extends DSCTableBase
 			return false;
 		}
 
-		$app = $this->get('_app');
-		if ( empty($app) || DSC::getApp( $app )->get('enable_reorder_table', '1') )
-		{
+		/*$app = $this->get('_app');
+		if ( empty($app) || DSC::getApp( $app )->get('enable_reorder_table', '0') ||  )
+		{	
 			$this->reorder();
-		}
+
+		}*/
 
 		$this->setError('');
 
