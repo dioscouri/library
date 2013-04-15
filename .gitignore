@@ -4,3 +4,5 @@ antconfig.txt
 packages/dsc_library/dioscouri_library.zip
 
 packages/dsc_library/dioscouri_plugin_system.zip
+
+*.prefs

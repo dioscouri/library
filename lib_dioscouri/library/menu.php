@@ -11,12 +11,12 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.html.toolbar');
 
-require_once( JPATH_ADMINISTRATOR.'/includes/toolbar.php' );
+ JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
 
-class DSCMenu extends JObject
-{
+
+
+class DSCMenu {
     public $_name = array();
     public $_menu;
     
@@ -27,6 +27,7 @@ class DSCMenu extends JObject
 		
         $this->_menu = JToolBar::getInstance( $name );
         
+
         // Try to load initial values for the menu with a config file
         $initialpath = 'media/' . $this->_option . '/menus';
 		
@@ -89,6 +90,7 @@ class DSCMenu extends JObject
                     }
                     $this->_menu->appendButton($item->name, $item->url, $item->active);
                 }
+                
             }
         }
     }
@@ -142,6 +144,7 @@ class DSCMenu extends JObject
 		if(version_compare(JVERSION,'1.6.0','ge')) {
 			// Joomla! 1.6+ code here
 			$items = $this->_menu->getItems();
+
 			$name = $this->_name;
 		} else {
 			// Joomla! 1.5 code here
@@ -155,12 +158,13 @@ class DSCMenu extends JObject
 		    $base = JFactory::getApplication()->isAdmin() ? JPATH_ADMINISTRATOR : JPATH_SITE;
 		    $app = DSC::getApp();
 		    $template = JFactory::getApplication()->getTemplate();
-		    
+		 
 		    $lib_path = JPATH_SITE . '/libraries/dioscouri/component/view/dashboard';		    
 		    $com_template_path = $base . '/components/com_' . $app->getName() . '/views/dashboard/tmpl';
 		    $template_path = $base . '/templates/'.$template.'/html/com_' . $app->getName() . '/dashboard';
 		    
-		    $view = new JView(array('name'=>'dashboard', 'template_path'=>$lib_path ));
+		    $view = new DSCViewBase(array('name'=>'dashboard', 'template_path'=>$lib_path ));
+		 
 		    $view->set('items', $items);
 		    $view->set('name', $name);
 		    $view->set('layout', $layout);
@@ -168,7 +172,9 @@ class DSCMenu extends JObject
     		$view->setLayout($layout);
     		$view->addTemplatePath($com_template_path);
     		$view->addTemplatePath($template_path);
-    		$view->display();		    
+    		$view->display();		
+
+    		
 		}
 	}
 	
