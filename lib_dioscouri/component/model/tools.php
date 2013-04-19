@@ -24,7 +24,7 @@ class SampleModelTools extends SampleModelBase
        	
        	if ($filter) 
        	{
-			$key	= $this->_db->Quote('%'.$this->_db->getEscaped( trim( strtolower( $filter ) ) ).'%');
+			$key	= $this->_db->Quote('%'.$this->_db->escape( trim( strtolower( $filter ) ) ).'%');
 
 			$where = array();
 			$where[] = 'LOWER(tbl.id) LIKE '.$key;
@@ -52,7 +52,7 @@ class SampleModelTools extends SampleModelBase
         }
         if ($filter_name) 
         {
-            $key    = $this->_db->Quote('%'.$this->_db->getEscaped( trim( strtolower( $filter_name ) ) ).'%');
+            $key    = $this->_db->Quote('%'.$this->_db->escape( trim( strtolower( $filter_name ) ) ).'%');
             $where = array();
             $where[] = 'LOWER(tbl.name) LIKE '.$key;
             $query->where('('.implode(' OR ', $where).')');

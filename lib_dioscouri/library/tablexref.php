@@ -112,7 +112,7 @@ class DSCTableXref extends DSCTable
                 return false;
             }
             // add the key=>value pair to the query
-            $value = $db->Quote( $db->getEscaped( trim( strtolower( $value ) ) ) );
+            $value = $db->Quote( $db->escape( trim( strtolower( $value ) ) ) );
             $query->where( $key.' = '.$value);
         }
 

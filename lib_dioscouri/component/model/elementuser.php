@@ -73,10 +73,10 @@ class SampleModelElementUser extends JModel
 
 		// Keyword filter
 		if ($search) {
-			$where[] = 'LOWER( c.id ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-			$where[] = 'LOWER( c.name ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-			$where[] = 'LOWER( c.username ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
-			$where[] = 'LOWER( c.email ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] = 'LOWER( c.id ) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
+			$where[] = 'LOWER( c.name ) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
+			$where[] = 'LOWER( c.username ) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
+			$where[] = 'LOWER( c.email ) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
 		}
 		// Build the where clause of the query
 		$where = (count($where) ? ' WHERE '.implode(' OR ', $where) : '');

@@ -614,8 +614,8 @@ class DSCModel extends DSCModelBase
      */
     protected function _buildQueryOrder(&$query)
     {
-		$order      = $this->_db->getEscaped( $this->getState('order') );
-       	$direction  = $this->_db->getEscaped( strtoupper( $this->getState('direction') ) );
+		$order      = $this->_db->escape( $this->getState('order') );
+       	$direction  = $this->_db->escape( strtoupper( $this->getState('direction') ) );
 
         if ($order)
         {

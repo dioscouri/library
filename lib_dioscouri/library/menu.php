@@ -11,8 +11,14 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	jimport('joomla.html.toolbar');
+require_once( JPATH_ADMINISTRATOR.'/includes/toolbar.php' );
+} else {
+	//3.0 code
+	 JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
+}
 
- JLoader::register('JToolBar', JPATH_PLATFORM . '/cms/toolbar/toolbar.php');
 
 
 
