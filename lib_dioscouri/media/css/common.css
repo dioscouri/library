@@ -126,7 +126,7 @@ p.dsc-tip {
 -------------------------------------------*/
 .dsc-clear:after, .dsc-wrap:after, .dsc-flat:after {
     clear      : both;
-    content    : '.';
+    content    : '';
     height     : 0;
     width      : 0;
     visibility : hidden;
