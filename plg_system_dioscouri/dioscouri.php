@@ -55,10 +55,10 @@ class plgSystemDioscouri extends JPlugin
 		$mainframe = JFactory::getApplication();
 
 		// Load the Base classes
-		JLoader::register('DSCTableBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.phptable.php');
-		JLoader::register('DSCControllerBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.phpcontroller.php');
-		JLoader::register('DSCModelBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.phpmodel.php');
-		JLoader::register('DSCViewBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.phpview.php');
+		JLoader::register('DSCTableBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/table.php');
+		JLoader::register('DSCControllerBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.php');
+		JLoader::register('DSCModelBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/model.php');
+		JLoader::register('DSCViewBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/view.php');
 		
 		if (!class_exists('DSC')) 
 		{
