@@ -403,9 +403,9 @@ class DSCHelper extends JObject
 		if (empty($today))
 		{
 			$config = JFactory::getConfig();
-			$offset = $config->getValue('config.offset');
+			$offset = $config->get('config.offset');
 			$date = JFactory::getDate();
-			$today = $date->toFormat( "%Y-%m-%d 00:00:00" );
+			$today = $date->format( "%Y-%m-%d 00:00:00" );
 
 			if ($offset > 0) {
 				$command = 'DATE_ADD';
@@ -435,7 +435,7 @@ class DSCHelper extends JObject
 	public static function getOffsetDate( $date )
 	{
 		$config = JFactory::getConfig();
-		$offset = $config->getValue('config.offset');
+		$offset = $config->get('config.offset');
 		if ($offset > 0) {
 			$command = 'DATE_ADD';
 		} elseif ($offset < 0) {

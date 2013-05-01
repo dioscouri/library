@@ -10,7 +10,9 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class DSCTable extends JTable
+require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/table.php';
+
+class DSCTable extends DSCTableBase
 {
 	/**
 	 * constructor
@@ -227,7 +229,7 @@ class DSCTable extends JTable
 				return false;
 			}
 			// add the key=>value pair to the query
-			$value = $db->Quote( $db->getEscaped( trim( strtolower( $value ) ) ) );
+			$value = $db->Quote( $db->escape( trim( strtolower( $value ) ) ) );
 			$query->where( $key.' = '.$value);
 		}
 
@@ -283,11 +285,12 @@ class DSCTable extends JTable
 			return false;
 		}
 
-		$app = $this->get('_app');
-		if ( empty($app) || DSC::getApp( $app )->get('enable_reorder_table', '1') )
-		{
+		/*$app = $this->get('_app');
+		if ( empty($app) || DSC::getApp( $app )->get('enable_reorder_table', '0') ||  )
+		{	
 			$this->reorder();
-		}
+
+		}*/
 
 		$this->setError('');
 

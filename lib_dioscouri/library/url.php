@@ -93,8 +93,9 @@ class DSCUrl
 
 		$id = (!empty($options['id'])) ? $options['id'] : '';
 		$class = (!empty($options['class'])) ? $options['class'] : '';
-		
-		$html	= "<a class=\"modal\" href=\"$url\" rel=\"$handler\" >\n";
+		$linkclass = (!empty($options['linkclass'])) ? $options['linkclass'] : '';
+		$linkclass = $linkclass . ' modal';
+		$html	= "<a class=\"".$linkclass."\" href=\"$url\" rel=\"$handler\" >\n";
 		$html 	.= "<span class=\"".$class."\" id=\"".$id."\" >\n";
         $html   .= "$text\n";
 		$html 	.= "</span>\n";

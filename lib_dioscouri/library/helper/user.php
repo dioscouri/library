@@ -22,7 +22,7 @@ class DSCHelperUser extends DSCHelper {
 
 		$success = false;
 		$database = JFactory::getDBO();
-		$string = $database -> getEscaped($string);
+		$string = $database -> escape($string);
 		$query = "
             SELECT 
                 *
@@ -55,7 +55,7 @@ class DSCHelperUser extends DSCHelper {
 
 		$success = false;
 		$database = JFactory::getDBO();
-		$string = $database -> getEscaped($string);
+		$string = $database -> escape($string);
 		$query = "
             SELECT 
                 *

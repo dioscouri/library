@@ -24,6 +24,42 @@ class plgSystemDioscouri extends JPlugin
             }
         }
         
+		// Determine Joomla! version
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			define('DSC_JVERSION', '30');
+		}
+		else
+		if (version_compare(JVERSION, '2.5', 'ge'))
+		{
+			define('DSC_JVERSION', '25');
+		}
+		else
+		{
+			define('DSC_JVERSION', '15');
+		}
+
+		//TODO Clear out all DS in components, Define the DS constant under Joomla! 3.0
+		if (!defined('DS'))
+		{
+			define('DS', DIRECTORY_SEPARATOR);
+		}
+		
+		// Import Joomla! classes
+		
+		jimport('joomla.application.component.controller');
+		jimport('joomla.application.component.model');
+		jimport('joomla.application.component.view');
+
+		// Get application
+		$mainframe = JFactory::getApplication();
+
+		// Load the Base classes
+		JLoader::register('DSCTableBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/table.php');
+		JLoader::register('DSCControllerBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/controller.php');
+		JLoader::register('DSCModelBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/model.php');
+		JLoader::register('DSCViewBase', JPATH_SITE.'/libraries/dioscouri/library/compatibility/view.php');
+		
 		if (!class_exists('DSC')) 
 		{
 			if (!JFile::exists(JPATH_SITE.'/libraries/dioscouri/dioscouri.php')) {
