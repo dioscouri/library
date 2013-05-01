@@ -6,30 +6,26 @@
  * @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *
- * Base in part of the Gavick, and the Gantry Templating libraries for Joomla!
+ * Based in part on Gavick and the Gantry Templating libraries for Joomla!
 */
 
-require_once(dirname(__file__) .  '/helpers/less/less.php');
-require_once(dirname(__file__) .  '/helpers/bootstrap/bootstrap.php');
-require_once(dirname(__file__) .  '/helpers/api/api.php');
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
-Class DSCTemplateBase {
+class DSCTemplateBase 
+{
 
-	 // template name
     public $name = 'template';
-    // access to the standard Joomla! template API
-    public $API;
-    // access to the helper classes
-    public $bootstrap;
-
     public $layout;
+    
+    // access to the helper classes
+    public $API;
+    public $bootstrap;
     public $less;
     
     public $page_suffix;
     public $pageclass = '';
     public $doc;
     public $footerScripts = array();
-
 
 	function __construct($template) {
         
@@ -38,7 +34,6 @@ Class DSCTemplateBase {
         $this->bootstrap = new DSCTemplateBootstrap($this);
         $this->layout = $this->API->get('layout', 'default.php');
         $this->pageclass = $this->API->get('pageclass', '');
-
 
 	}
 

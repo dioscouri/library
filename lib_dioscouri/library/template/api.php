@@ -1,11 +1,16 @@
 <?php
+/**
+ * @package Dioscouri
+ * @author  Dioscouri Design
+ * @link    http://www.dioscouri.com
+ * @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+*/
 
-//
-// Override of the Joomla API functions
-//
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
-class DSCTemplateAPI {
-
+class DSCTemplateAPI extends JObject 
+{
 	private $API;
 
 	function __construct($parentTpl) {

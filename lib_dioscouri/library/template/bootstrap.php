@@ -1,10 +1,13 @@
 <?php
+/**
+ * @package Dioscouri
+ * @author  Dioscouri Design
+ * @link    http://www.dioscouri.com
+ * @copyright Copyright (C) 2007 Dioscouri Design. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+*/
 
-//
-// Bootstrap LESS parser
-//
-
-
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
 class DSCTemplateBootstrap {
 
@@ -19,7 +22,7 @@ class DSCTemplateBootstrap {
 			JFile::delete($parent->API->URLtemplatepath().'/css/responsive.css');
 			// generate new Bootstrap CSS files
 			try {
-				$less = new lessc;
+				$less = new DSCTemplateHelperLessc;
 				// normal Bootstrap code
 			    $less->checkedCompile(
 			    	$parent->API->URLtemplatepath().'/framework/'.$framework.'/less/bootstrap.less', 

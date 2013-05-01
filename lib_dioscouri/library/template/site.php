@@ -7,8 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 */
 
-require_once('../template.php');
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
-Class DSCTemplateAdmin extends DSCTemplateBase {
+class DSCTemplateSite extends DSCTemplateBase {
 	
 }
