@@ -14,7 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.filter.filterinput' );
 jimport( 'joomla.application.component.model' );
 
-class DSCModel extends JModel
+require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/model.php';
+
+class DSCModel extends DSCModelBase
 {
     var $_filterinput = null; // instance of JFilterInput
     public $cache_enabled = true;
@@ -67,7 +69,7 @@ class DSCModel extends JModel
         	$prefix = str_replace('com_', '', $this->option) . 'Table';
         }
         
-        JTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
+        DSCTable::addIncludePath( JPATH_ADMINISTRATOR.'/components/com_sample/tables' );
         if ($table = $this->_createTable( $name, $prefix, $options ))  {
             return $table;
         }
@@ -255,7 +257,7 @@ class DSCModel extends JModel
 	}
 
 	/**
-	 * Gets an item for displaying (as opposed to saving, which requires a JTable object)
+	 * Gets an item for displaying (as opposed to saving, which requires a DSCTable object)
 	 * using the query from the model and the tbl's unique identifier
 	 *
 	 * @return database->loadObject() record
@@ -612,8 +614,8 @@ class DSCModel extends JModel
      */
     protected function _buildQueryOrder(&$query)
     {
-		$order      = $this->_db->getEscaped( $this->getState('order') );
-       	$direction  = $this->_db->getEscaped( strtoupper( $this->getState('direction') ) );
+		$order      = $this->_db->escape( $this->getState('order') );
+       	$direction  = $this->_db->escape( strtoupper( $this->getState('direction') ) );
 
         if ($order)
         {
@@ -623,7 +625,10 @@ class DSCModel extends JModel
        	// TODO Find an abstract way to determine if order is a valid field in query
     	// if (in_array($order, $this->getTable()->getColumns())) does not work
     	// because you could be ordering by a field from one of the JOINed tables
-		if (in_array('ordering', $this->getTable()->getColumns()))
+    	
+		
+		if(DSC_JVERSION == '30') { $cols  = $this->getTable()->getFields();} else {$cols  = $this->getTable()->getColumns();}
+		if (in_array('ordering', $cols))
 		{
     		$query->order('ordering ASC');
     	}

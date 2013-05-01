@@ -11,9 +11,10 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
 
-class DSCController extends JController
+require_once JPATH_SITE . '/libraries/dioscouri/library/compatibility/controller.php';
+
+class DSCController extends DSCControllerBase
 {
     /**
      * default view
