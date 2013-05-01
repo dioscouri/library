@@ -640,7 +640,7 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $query = "SELECT `enabled`,`params` FROM `#__components`".
-                            " WHERE `option` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                            " WHERE `option` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 case "module":
@@ -650,7 +650,7 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $query = "SELECT `access`,`published`,`params` FROM `#__modules`".
-                                " WHERE `module` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                " WHERE `module` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 case "plugin":
@@ -660,8 +660,8 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $query = "SELECT `access`,`published`,`params` FROM `#__plugins`".
-                                " WHERE `folder` = '".$this->_db->getEscaped($manifestInformation["group"])."' &&  ".
-                                "`element` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                " WHERE `folder` = '".$this->_db->escape($manifestInformation["group"])."' &&  ".
+                                "`element` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 default:
@@ -695,7 +695,7 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $qry_load = "SELECT * FROM `#__components`".
-                                    " WHERE `name` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                    " WHERE `name` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 case "module":
@@ -705,7 +705,7 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $qry_load = "SELECT * FROM `#__modules`".
-                                    " WHERE `module` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                    " WHERE `module` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 case "plugin":
@@ -715,8 +715,8 @@ if (!class_exists( 'DSCInstaller' )) {
                     } else {
                         // Joomla! 1.5 code here
                         $qry_load = "SELECT * FROM `#__plugins`".
-                                    " WHERE `folder` = '".$this->_db->getEscaped($manifestInformation["group"])."' && ".
-                                    "`element` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                    " WHERE `folder` = '".$this->_db->escape($manifestInformation["group"])."' && ".
+                                    "`element` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 default:
@@ -750,14 +750,14 @@ if (!class_exists( 'DSCInstaller' )) {
                         // Joomla! 1.6+ code here
                         $qry_save = "UPDATE `#__extensions` SET ".
                                     "`enabled` = ".intval($savedParameters->enabled).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
                                     " WHERE `element` = '".$manifestInformation["element"]."'" .
                         			" AND `type` = 'component'";
                     } else {
                         // Joomla! 1.5 code here
                         $qry_save = "UPDATE `#__components` SET ".
                                     "`enabled`=".intval($savedParameters->enabled).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
                                     " WHERE `option` = '".$manifestInformation["element"]."'";
                     }
                     break;
@@ -768,7 +768,7 @@ if (!class_exists( 'DSCInstaller' )) {
                         $qry_save = "UPDATE `#__extensions` SET ".
                                     "`access` = ".intval($savedParameters->access).", ".
                         			"`enabled` = ".intval($savedParameters->enabled).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
                                     " WHERE `element` = '".$manifestInformation["element"]."'" .
                         			" AND `type` = 'module'";
                     } else {
@@ -776,8 +776,8 @@ if (!class_exists( 'DSCInstaller' )) {
                         $qry_save = "UPDATE `#__modules` SET ".
                                     "`access` = ".intval($savedParameters->access).", ".
                                     "`published` = ".intval($savedParameters->published).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
-                                    " WHERE `module` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
+                                    " WHERE `module` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                     
@@ -787,18 +787,18 @@ if (!class_exists( 'DSCInstaller' )) {
                         $qry_save = "UPDATE `#__extensions` SET ".
                                     "`access` = ".intval($savedParameters->access).", ".
                         			"`enabled` = ".intval($savedParameters->enabled).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
                                     " WHERE `element` = '".$manifestInformation["element"]."'" .
-                        			" AND `folder` = '".$this->_db->getEscaped($manifestInformation["group"])."'".
+                        			" AND `folder` = '".$this->_db->escape($manifestInformation["group"])."'".
                         			" AND `type` = 'plugin'";
                     } else {
                         // Joomla! 1.5 code here
                         $qry_save = "UPDATE `#__plugins` SET ".
                                     "`access` = ".intval($savedParameters->access).", ".
                                     "`published` = ".intval($savedParameters->published).", ".
-                                    "`params` = '".$this->_db->getEscaped($savedParameters->params)."'".
-                                    " WHERE `folder` = '".$this->_db->getEscaped($manifestInformation["group"])."' && ".
-                                    "`element` = '".$this->_db->getEscaped($manifestInformation["element"])."'";
+                                    "`params` = '".$this->_db->escape($savedParameters->params)."'".
+                                    " WHERE `folder` = '".$this->_db->escape($manifestInformation["group"])."' && ".
+                                    "`element` = '".$this->_db->escape($manifestInformation["element"])."'";
                     }
                     break;
                 default:

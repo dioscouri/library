@@ -103,7 +103,7 @@ class SampleModelElementArticle extends JModel
 
 		// Keyword filter
 		if ($search) {
-			$where[] = 'LOWER( c.title ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] = 'LOWER( c.title ) LIKE '.$db->Quote( '%'.$db->escape( $search, true ).'%', false );
 		}
 
 		// Build the where clause of the content record query

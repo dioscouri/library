@@ -9,7 +9,7 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-require_once( JPATH_SITE.'/libraries/joomla/html/html/select.php' );
+require_once( JPATH_SITE.'/libraries/joomla/html/select.php' );
 
 class DSCSelect extends JHTMLSelect
 {
@@ -21,7 +21,7 @@ class DSCSelect extends JHTMLSelect
     * @param mixed The key that is selected
     * @returns string HTML for the radio list
     */
-    public function booleanlist( $selected, $name='', $attribs = null, $yes = 'yes', $no = 'no', $id = false )
+    public static function booleanlist( $selected, $name='', $attribs = null, $yes = 'yes', $no = 'no', $id = false )
     {
         return parent::booleanlist( $name, $attribs, $selected, $yes, $no, $id );
     }
@@ -34,7 +34,7 @@ class DSCSelect extends JHTMLSelect
 	* @param mixed The key that is selected
 	* @returns string HTML for the radio list
 	*/
-	public static function booleans( $selected, $name = 'filter_enabled', $attribs = array('class' => 'inputbox', 'size' => '1'), $idtag = null, $allowAny = false, $title='Select State', $yes = 'Enabled', $no = 'Disabled' )
+	public static function booleans( $selected, $name = 'filter_enabled', $attribs = array('class' => 'chzn-single chzn-single-with-drop'), $idtag = null, $allowAny = false, $title='Select State', $yes = 'Enabled', $no = 'Disabled' )
 	{
 	    $list = array();
 		if($allowAny) {
@@ -55,7 +55,7 @@ class DSCSelect extends JHTMLSelect
 	* @param mixed The key that is selected
 	* @returns string HTML for the radio list
 	*/
-	public static function range( $selected, $name = 'filter_range', $attribs = array('class' => 'inputbox', 'size' => '1'), $idtag = null, $allowAny = false, $title = 'Select Range' )
+	public static function range( $selected, $name = 'filter_range', $attribs = array('class' => 'chzn-single chzn-single-with-drop'), $idtag = null, $allowAny = false, $title = 'Select Range' )
 	{
 	    $list = array();
 		if($allowAny) {
@@ -79,7 +79,7 @@ class DSCSelect extends JHTMLSelect
     * @param mixed The key that is selected
     * @returns string HTML for the radio list
     */
-    public static function reportrange( $selected, $name = 'filter_range', $attribs = array('class' => 'inputbox', 'size' => '1'), $idtag = null, $allowAny = false, $title = 'Select Range' )
+    public static function reportrange( $selected, $name = 'filter_range', $attribs = array('class' => 'chzn-single chzn-single-with-drop'), $idtag = null, $allowAny = false, $title = 'Select Range' )
     {
         $list = array();
         if($allowAny) {
@@ -104,7 +104,7 @@ class DSCSelect extends JHTMLSelect
     * @param mixed The key that is selected
     * @returns string HTML for the radio list
     */
-    public static function datetype( $selected, $name = 'filter_datetype', $attribs = array('class' => 'inputbox', 'size' => '1'), $idtag = null, $allowAny = false, $title='Select Type' )
+    public static function datetype( $selected, $name = 'filter_datetype', $attribs = array('class' => 'chzn-single chzn-single-with-drop'), $idtag = null, $allowAny = false, $title='Select Type' )
     {
         $list = array();
         if($allowAny) {
@@ -126,7 +126,7 @@ class DSCSelect extends JHTMLSelect
     * @param mixed The key that is selected
     * @returns string HTML for the radio list
     */
-    public static function periodUnit( $selected, $name = 'filter_periodunit', $attribs = array('class' => 'inputbox', 'size' => '1'), $idtag = null, $allowAny = false, $title='Select Period Unit' )
+    public static function periodUnit( $selected, $name = 'filter_periodunit', $attribs = array('class' => 'chzn-single chzn-single-with-drop'), $idtag = null, $allowAny = false, $title='Select Period Unit' )
     {
         $list = array();
         if($allowAny) {
