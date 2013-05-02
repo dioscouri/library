@@ -11,6 +11,8 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.filesystem.folder');
+
 class DSCHelper extends JObject
 {   
 	/**
