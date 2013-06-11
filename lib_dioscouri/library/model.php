@@ -284,20 +284,8 @@ class DSCModel extends DSCModelBase
 			}			
 	        if (!$item || $refresh)
 	        {
-	            if ($emptyState)
-	            {
-	                $this->emptyState();
-	            }
-	            
-    			$query = $this->getQuery( $refresh );
+	            $item = $this->_getItem( $pk, $refresh, $emptyState );
 
-    			$keyname = $this->getTable()->getKeyName();
-    			$value	= $this->_db->Quote( $cache_key );
-    			$query->where( "tbl.$keyname = $value" );
-    			$this->_db->setQuery( (string) $query );
-    			
-    			$item = $this->_db->loadObject();
-    			
 	            if (!empty($item))
 	            {
 	                $this->prepareItem( $item, 0, $refresh );
@@ -320,6 +308,27 @@ class DSCModel extends DSCModelBase
 	    }
 		
 		return $this->_item;
+	}
+	
+	
+	protected function _getItem( $pk=null, $refresh=false, $emptyState=true )
+	{
+	    $cache_key = $pk ? $pk : $this->getID();
+
+	    if ($emptyState)
+	    {
+	        $this->emptyState();
+	    }
+
+	    $query = $this->getQuery( $refresh );
+	    $keyname = $this->getTable()->getKeyName();
+	    $value  = $this->_db->Quote( $cache_key );
+	    $query->where( "tbl.$keyname = $value" );
+	    $this->_db->setQuery( (string) $query );
+
+	    $item = $this->_db->loadObject();
+
+	    return $item;
 	}
 
 	/**
