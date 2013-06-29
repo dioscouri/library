@@ -29,11 +29,11 @@ class DSCElementMedia extends DSCElement
     protected static $initialised = false;
     
     public $link = null;
-    public $class = null;
+    public $class = "input";
     public $size = null;
     public $onchange = null;
     public $directory = null;
-    public $readonly = null;
+    public $readonly = true;
     public $preview = null;
     public $preview_tooltip_class = null;
     public $preview_class = 'media-preview';
@@ -117,8 +117,11 @@ class DSCElementMedia extends DSCElement
     
         // The text field.
         $html[] = '<div class="fltlft">';
-        $html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-        . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . ' readonly="readonly"' . $attr . ' />';
+        $html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"'; 
+        if ($this->readonly) {
+            $html[] = ' readonly="readonly"';
+        } 
+        $html[] = $attr . ' />';
         $html[] = '</div>';
     
         $directory = (string) $this->directory;
