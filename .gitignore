@@ -1,6 +1,6 @@
 .project
 antconfig.txt
-
+.DS_Store
 packages/dsc_library/dioscouri_library.zip
 
 packages/dsc_library/dioscouri_plugin_system.zip
