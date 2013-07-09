@@ -17,13 +17,8 @@ if (version_compare(JVERSION, '3.0', 'ge'))
      require_once( JPATH_SITE . '/libraries/dioscouri/library/grid30.php' );
 
 }
-else if (version_compare(JVERSION, '2.5', 'ge'))
+else 
 {
     require_once( JPATH_SITE . '/libraries/dioscouri/library/grid16.php' );
-
-}
-else
-{
-    require_once( JPATH_SITE . '/libraries/dioscouri/library/grid15.php' );
 
 }

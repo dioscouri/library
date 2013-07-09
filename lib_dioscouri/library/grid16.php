@@ -316,7 +316,7 @@ class DSCGrid extends JHTMLGrid
 		$href = '';
 		
 		$constant = 'page_tooltip_'.$key;
-		$app = JRequest::getCmd( 'option' );
+		$app = JFactory::getApplication()->input->get( 'option' );
 		$defines = DSC::getApp( $app );
 		$disabled = $defines->get( $constant."_disabled", '0');
 		
