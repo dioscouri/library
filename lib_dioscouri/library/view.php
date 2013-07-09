@@ -26,7 +26,7 @@ class DSCView extends DSCViewBase
 	function __construct($config = array()) 
 	{
 		$app = DSC::getApp();
-		$this->_option = !empty($app) ? 'com_'.$app->getName() : JRequest::getCmd('option');
+		$this->_option = !empty($app) ? 'com_'.$app->getName() : JFactory::getApplication()->input->get('option');
 		parent::__construct($config);
 	}
 	

@@ -118,7 +118,7 @@ class DSC extends JObject
 		
 		if (empty($app) && !empty($find)) 
 		{
-			$app = JRequest::getCmd('option');
+			$app = JFactory::getApplication()->input->get('option');
 		}
 		
 		if (strpos($app, 'com_') !== false) {

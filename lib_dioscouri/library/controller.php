@@ -43,7 +43,7 @@ class DSCController extends DSCControllerBase
 	{
 		parent::__construct($config);
 		
-		$com = JRequest::getCmd('option');
+		$com = JFactory::getApplication()->input->get('option');
 		if (!empty($config['com'])) {
 			$com = $config['com'];
 		}
@@ -74,8 +74,8 @@ class DSCController extends DSCControllerBase
 		$document = JFactory::getDocument();
 
 		$viewType	= $document->getType();
-		$viewName	= JRequest::getCmd( 'view', $this->getName() );
-		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
+		$viewName	= JFactory::getApplication()->input->get( 'view', $this->getName() );
+		$viewLayout	= JFactory::getApplication()->input->get( 'layout', 'default' );
 
 		$view = $this->getView( $viewName, $viewType, '', array( 'base_path'=>$this->_basePath));
 

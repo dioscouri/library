@@ -27,7 +27,7 @@ class DSCViewCSV extends DSCView
 
      
         if(empty($this->csvFilename)) {
-            $view = JRequest::getCmd('view');
+            $view = JFactory::getApplication()->input->get('view');
           
             $this->csvFilename = strtolower($view);
         }

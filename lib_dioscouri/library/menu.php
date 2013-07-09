@@ -25,7 +25,7 @@ class DSCMenu
     
     function __construct($name = 'submenu')
     {
-        $this->_option = JRequest::getCmd('option');
+        $this->_option = JFactory::getApplication()->input->get('option');
         $this->_name   = $name;
         
         $this->_menu = JToolBar::getInstance($name);

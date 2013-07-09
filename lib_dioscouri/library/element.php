@@ -24,7 +24,7 @@ abstract class DSCElement extends JObject
         
         if (empty($this->asset))
         {
-            $this->asset = JRequest::getCmd('option');
+            $this->asset = JFactory::getApplication()->input->get('option');
         }
     }
     
