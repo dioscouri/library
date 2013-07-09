@@ -11,9 +11,6 @@ defined('_JEXEC') or die('Restricted access');
 
 if (version_compare(JVERSION, '3.0', 'ge')) {
 	require_once (JPATH_SITE . '/libraries/dioscouri/library/select30.php');
-
-} else if (version_compare(JVERSION, '2.5', 'ge')) {
-	require_once (JPATH_SITE . '/libraries/dioscouri/library/select16.php');
 } else {
-	require_once (JPATH_SITE . '/libraries/dioscouri/library/select15.php');
+	require_once (JPATH_SITE . '/libraries/dioscouri/library/select16.php');
 }
