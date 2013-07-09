@@ -69,7 +69,7 @@ class DSCController extends DSCControllerBase
 	function display($cachable=false, $urlparams = false)
 	{
 		// this sets the default view
-		JRequest::setVar( 'view', JRequest::getVar( 'view', $this->get('default_view') ) );
+		JRequest::setVar( 'view', JFactory::getApplication()->input->get( 'view', $this->get('default_view') ) );
 
 		$document = JFactory::getDocument();
 
@@ -158,7 +158,7 @@ class DSCController extends DSCControllerBase
         $state['filter_id_from']    = $app->getUserStateFromRequest($ns.'filter_id_from', 'filter_id_from', '', '');
         $state['filter_id_to']      = $app->getUserStateFromRequest($ns.'filter_id_to', 'filter_id_to', '', '');
         $state['filter_name']         = $app->getUserStateFromRequest($ns.'filter_name', 'filter_name', '', '');
-		$state['id']        = JRequest::getVar('id', JRequest::getVar('id', '', 'get', 'int'), 'post', 'int');
+		$state['id']        = JFactory::getApplication()->input->get('id', JFactory::getApplication()->input->get('id', '', 'get', 'int'), 'post', 'int');
 
 		// TODO santize the filter
 		// $state['filter']   	=
@@ -403,7 +403,7 @@ class DSCController extends DSCControllerBase
 			$this->redirect = 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
 		}
 
-		$task = JRequest::getVar( 'task' );
+		$task = JFactory::getApplication()->input->get( 'task' );
 		switch (strtolower($task))
 		{
 			case "cancel":
@@ -440,7 +440,7 @@ class DSCController extends DSCControllerBase
 		$response['error'] = '';
 			
 		// get elements from post
-		$elements = json_decode( preg_replace('/[\n\r]+/', '\n', JRequest::getVar( 'elements', '', 'post', 'string' ) ) );
+		$elements = json_decode( preg_replace('/[\n\r]+/', '\n', JFactory::getApplication()->input->get( 'elements', '', 'post', 'string' ) ) );
 
 		// convert elements to array that can be binded
 		$helper = new DSCHelper(); 			
@@ -510,8 +510,8 @@ class DSCController extends DSCControllerBase
 		$msg->error = '';
 
 		// expects $element in URL and $elementTask
-		$element = JRequest::getVar( 'element', '', 'request', 'string' );
-		$elementTask = JRequest::getVar( 'elementTask', '', 'request', 'string' );
+		$element = JFactory::getApplication()->input->get( 'element', '', 'request', 'string' );
+		$elementTask = JFactory::getApplication()->input->get( 'elementTask', '', 'request', 'string' );
 
 		$msg->error = '1';
 		// $msg->message = "element: $element, elementTask: $elementTask";
@@ -550,8 +550,8 @@ class DSCController extends DSCControllerBase
 		$msg->message = '';
 
 		// get elements $element and $elementTask in URL
-		$element = JRequest::getVar( 'element', '', 'request', 'string' );
-		$elementTask = JRequest::getVar( 'elementTask', '', 'request', 'string' );
+		$element = JFactory::getApplication()->input->get( 'element', '', 'request', 'string' );
+		$elementTask = JFactory::getApplication()->input->get( 'elementTask', '', 'request', 'string' );
 
 		// allow $element to be in format file_name.group_name
 		$exploded = explode('.', $element);
@@ -770,7 +770,7 @@ class DSCController extends DSCControllerBase
 	    $row->load( $model->getId() );
 	    $post = JRequest::get('post', '4');
 	    $row->bind( $post );
-	    $task = JRequest::getVar('task');
+	    $task = JFactory::getApplication()->input->get('task');
 	    
 	    if ($task=="save_as")
 	    {
@@ -888,8 +888,8 @@ class DSCController extends DSCControllerBase
 	    $this->messagetype	= '';
 	    $this->message 		= '';
 	    if (!isset($this->redirect)) {
-	        $this->redirect = JRequest::getVar( 'return' )
-	        ? base64_decode( JRequest::getVar( 'return' ) )
+	        $this->redirect = JFactory::getApplication()->input->get( 'return' )
+	        ? base64_decode( JFactory::getApplication()->input->get( 'return' ) )
 	        : 'index.php?option='.$this->get('com').'&view='.$this->get('suffix');
 	        $this->redirect = JRoute::_( $this->redirect, false );
 	    }
@@ -897,7 +897,7 @@ class DSCController extends DSCControllerBase
 	    $model = $this->getModel($this->get('suffix'));
 	    $row = $model->getTable();
 	    
-	    $cids = JRequest::getVar('cid', array (0), 'request', 'array');
+	    $cids = JFactory::getApplication()->input->get('cid', array (0), 'request', 'array');
 	    foreach (@$cids as $cid)
 	    {
 	        if (!$row->delete($cid))
@@ -948,7 +948,7 @@ class DSCController extends DSCControllerBase
 	    $row = $model->getTable();
 	    $row->load( $model->getId() );
 	
-	    $change	= JRequest::getVar('order_change', '0', 'post', 'int');
+	    $change	= JFactory::getApplication()->input->get('order_change', '0', 'post', 'int');
 	
 	    $return = true;
 	    if ( !$row->move( $change ) )
@@ -986,8 +986,8 @@ class DSCController extends DSCControllerBase
 	    $model = $this->getModel($this->get('suffix'));
 	    $row = $model->getTable();
 	
-	    $ordering = JRequest::getVar('ordering', array(0), 'post', 'array');
-	    $cids = JRequest::getVar('cid', array (0), 'post', 'array');
+	    $ordering = JFactory::getApplication()->input->get('ordering', array(0), 'post', 'array');
+	    $cids = JFactory::getApplication()->input->get('cid', array (0), 'post', 'array');
 	    foreach (@$cids as $cid)
 	    {
 	        $row->load( $cid );
@@ -1045,8 +1045,8 @@ class DSCController extends DSCControllerBase
 	    $model = $this->getModel($this->get('suffix'));
 	    $row = $model->getTable();
 	
-	    $cids = JRequest::getVar('cid', array (0), 'post', 'array');
-	    $task = JRequest::getVar( 'task' );
+	    $cids = JFactory::getApplication()->input->get('cid', array (0), 'post', 'array');
+	    $task = JFactory::getApplication()->input->get( 'task' );
 	    $vals = explode('.', $task);
 	
 	    $field = $vals['0'];
@@ -1135,7 +1135,7 @@ class DSCController extends DSCControllerBase
 	 */
 	protected function doEnable()
 	{
-	    $task = JRequest::getVar( 'task' );
+	    $task = JFactory::getApplication()->input->get( 'task' );
 	    switch (strtolower($task))
 	    {
 	        case "switch_publish":
@@ -1191,7 +1191,7 @@ class DSCController extends DSCControllerBase
 	    {
 	        $row->checkin();
 	    }
-	    $task = JRequest::getVar( "task" );
+	    $task = JFactory::getApplication()->input->get( "task" );
 	    $redirect = "index.php?option=".$this->get('com')."&view=".$this->get('suffix');
 	
 	    $model->emptyState();

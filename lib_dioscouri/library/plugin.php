@@ -204,7 +204,7 @@ class DSCPlugin extends JPlugin
     {
         $token  = JUtility::getToken();
         $token .= ".".strtolower($suffix);
-        if (JRequest::getVar( $token, '', $method, 'alnum' ))
+        if (JFactory::getApplication()->input->get( $token, '', $method, 'alnum' ))
         {
             return true;
         }
@@ -236,7 +236,7 @@ class DSCPlugin extends JPlugin
      */
     protected function _getTokenSuffix( $method='post' )
     {
-        $suffix = JRequest::getVar( 'tokenSuffix', '', $method );
+        $suffix = JFactory::getApplication()->input->get( 'tokenSuffix', '', $method );
         if (!$this->_checkToken($suffix, $method))
         {
             // what to do if there isn't this suffix's token in the request?

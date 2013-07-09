@@ -55,7 +55,7 @@ class SampleModelElementUser extends JModel
 		$filter	= null;
 
 		// Get some variables from the request
-		$sectionid			= JRequest::getVar( 'sectionid', -1, '', 'int' );
+		$sectionid			= JFactory::getApplication()->input->get( 'sectionid', -1, '', 'int' );
 		$redirect			= $sectionid;
 		$option				= JRequest::getCmd( 'option' );
 		$filter_order		= $mainframe->getUserStateFromRequest('userelement.filter_order',		'filter_order',		'',	'cmd');

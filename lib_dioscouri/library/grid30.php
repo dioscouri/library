@@ -235,7 +235,7 @@ class DSCGrid extends JGrid
 		if ($lang->hasKey($full_constant) && !$disabled)
 		{
 			$option = strtolower( $app );
-			$view = strtolower( JRequest::getVar('view') );
+			$view = strtolower( JFactory::getApplication()->input->get('view') );
 			$task = "page_tooltip_disable";
 			$url = JRoute::_("index.php?option={$option}&controller={$view}&view={$view}&task={$task}&key={$key}");
 			$link = "<a href='{$url}'>".JText::_("Hide This")."</a>";

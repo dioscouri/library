@@ -130,7 +130,7 @@ class DSCView extends DSCViewBase
         	if(DSC_JVERSION == '30') { $validate = JSession::getFormToken();} else {$validate = JUtility::getToken();}
             
             $form = array();
-            $view = strtolower( JRequest::getVar('view') );
+            $view = strtolower( JFactory::getApplication()->input->get('view') );
             $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$view}&view={$view}" );
             $form['validate'] = "<input type='hidden' name='{$validate}' value='1' />";
             $this->assign( 'form', $form );
@@ -153,8 +153,8 @@ class DSCView extends DSCViewBase
 
         // form
             $form = array();
-            $controller = strtolower( $this->get( '_controller', JRequest::getVar('controller', JRequest::getVar('view') ) ) );
-            $view = strtolower( $this->get( '_view', JRequest::getVar('view') ) );
+            $controller = strtolower( $this->get( '_controller', JFactory::getApplication()->input->get('controller', JFactory::getApplication()->input->get('view') ) ) );
+            $view = strtolower( $this->get( '_view', JFactory::getApplication()->input->get('view') ) );
             $task = strtolower( $this->get( '_task', 'edit' ) );
             $form['action'] = $this->get( '_action', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task={$task}&id=".$model->getId() );
             $form['validation'] = $this->get( '_validation', "index.php?option={$this->_option}&controller={$controller}&view={$view}&task=validate&format=raw" );

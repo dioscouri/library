@@ -69,7 +69,7 @@ class DSCViewAdmin extends DSCView
             case "default":
             default:
                 $app = DSC::getApp();
-                $title = $text ? JText::_($text) : JText::_(ucfirst(JRequest::getVar('view')));
+                $title = $text ? JText::_($text) : JText::_(ucfirst(JFactory::getApplication()->input->get('view')));
                 JToolBarHelper::title($title, $app->getName());
                 break;
         }
@@ -144,7 +144,7 @@ class DSCViewAdmin extends DSCView
 	        // set toolbar
 	        $layout = $this->getLayout();
 	        $isNew = ($table->id < 1);
-	        $view = ucwords( strtolower( JRequest::getVar('view') ) );
+	        $view = ucwords( strtolower( JFactory::getApplication()->input->get('view') ) );
 	        switch(strtolower($layout)) 
 	        {
 	            case "view" :

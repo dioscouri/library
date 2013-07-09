@@ -523,8 +523,8 @@ class DSCModel extends DSCModelBase
 	{
 		if (empty($this->_id))
 		{
-			$id = JRequest::getVar( 'id', JRequest::getVar( 'id', '0', 'post', 'int' ), 'get', 'int' );
-			$array = JRequest::getVar('cid', array( $id ), 'post', 'array');
+			$id = JFactory::getApplication()->input->get( 'id', JFactory::getApplication()->input->get( 'id', '0', 'post', 'int' ), 'get', 'int' );
+			$array = JFactory::getApplication()->input->get('cid', array( $id ), 'post', 'array');
 			$this->setId( (int) $array[0] );
 		}
 

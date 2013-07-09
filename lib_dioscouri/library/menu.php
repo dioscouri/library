@@ -81,7 +81,7 @@ class DSCMenu
                 // if no exact match, then match on view
                 foreach ($items as $item) {
                     parse_str($item->url_raw, $urlvars);
-                    $active = (strtolower(JRequest::getVar('view')) == strtolower($urlvars['view']));
+                    $active = (strtolower(JFactory::getApplication()->input->get('view')) == strtolower($urlvars['view']));
                     if ($exact_match == $item->url_raw || (empty($exact_match) && $active)) {
                         $item->active = true;
                     }

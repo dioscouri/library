@@ -52,7 +52,7 @@ class DSCControllerSite extends DSCController
         $app->load( $model_name, "models.dashboard" );
         $model  = new $model_name();
         
-        $format = JRequest::getVar('format');
+        $format = JFactory::getApplication()->input->get('format');
         if ($show_linkback == '1' && $format != 'raw') 
         {
             $view   = $this->getView( 'dashboard', 'html' );

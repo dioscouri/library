@@ -85,7 +85,7 @@ class DSCArticle extends JObject
 		}
 		$article->text = $article->introtext . chr(13).chr(13) . $article->fulltext;
 
-		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+		$limitstart	= JFactory::getApplication()->input->get('limitstart', 0, '', 'int');
 		$params		= $mainframe->getParams('com_content');
 		$aparams	= $article->attribs;
 		$params->merge($aparams);

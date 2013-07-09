@@ -160,7 +160,7 @@ class DSCHelperUser extends DSCHelper {
 		}
 
 		// $credentials = array();
-		// $credentials['username'] = JRequest::getVar('username', '', 'method', 'username');
+		// $credentials['username'] = JFactory::getApplication()->input->get('username', '', 'method', 'username');
 		// $credentials['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
 		$options = array();

@@ -89,7 +89,7 @@ class DSCFile extends JObject
 		}
 
 		// check that upload exists
-		$userfile = JRequest::getVar( $fieldname, '', 'files', 'array' );
+		$userfile = JFactory::getApplication()->input->get( $fieldname, '', 'files', 'array' );
 		
 		if (!$userfile) 
 		{
@@ -231,7 +231,7 @@ class DSCFile extends JObject
 		}
 
 		// check that upload exists
-		$userfile = JRequest::getVar( $fieldname, '', 'files', 'array' );
+		$userfile = JFactory::getApplication()->input->get( $fieldname, '', 'files', 'array' );
 		
 		if (!$userfile) 
 		{

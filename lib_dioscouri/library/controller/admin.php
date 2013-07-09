@@ -60,11 +60,11 @@ class DSCControllerAdmin extends DSCController
 	    $msg->type 		= '';
 	    $msg->message 	= '';
 	    $option = $this->get('com');
-	    $view = JRequest::getVar('view');
+	    $view = JFactory::getApplication()->input->get('view');
 	    $msg->link 		= 'index.php?option='.$option.'&view='.$view;
 	    $app = str_replace("com_", "", $option);
 	
-	    $key = JRequest::getVar('key');
+	    $key = JFactory::getApplication()->input->get('key');
 	    $constant = 'page_tooltip_'.$key;
 	    $config_title = $constant."_disabled";
 	

@@ -39,7 +39,7 @@ class DSCControllerConfig extends DSCController
         {
             unset($row);
             $row = $model->getTable( 'config' );
-            $newvalue = JRequest::getVar( $key );
+            $newvalue = JFactory::getApplication()->input->get( $key );
             $value_exists = array_key_exists( $key, $_POST );
             if ( $value_exists && !empty($key) ) 
             { 
@@ -71,7 +71,7 @@ class DSCControllerConfig extends DSCController
         }
         
         $redirect = "index.php?option=com_sample";
-        $task = JRequest::getVar('task');
+        $task = JFactory::getApplication()->input->get('task');
         switch ($task)
         {
             default:

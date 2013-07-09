@@ -67,7 +67,7 @@ class DSCViewSite extends DSCView
         {
             jimport('joomla.html.toolbar');
             require_once( JPATH_ADMINISTRATOR.'/includes/toolbar.php' );
-            $view = strtolower( JRequest::getVar('view') );
+            $view = strtolower( JFactory::getApplication()->input->get('view') );
 
             $menu = DSCMenu::getInstance();
         }
