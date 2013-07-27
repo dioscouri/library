@@ -156,8 +156,8 @@ class SampleModelElementUser extends JModel
 		$link = 'index.php?option=com_sample&task=elementUser&tmpl=component&object='.$name;
 
 		JHTML::_('behavior.modal', 'a.modal');
-		$html = "\n".'<div style="float: left;"><input style="background: #ffffff;" type="text" id="'.$name.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
-		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('Select a User').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">'.JText::_('Select').'</a></div></div>'."\n";
+		$html = "\n".'<input type="text" id="'.$name.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" />';
+		$html .= '<a class="btn btn-primary modal" style="color : white; margin-left : 2px;" title="'.JText::_('Select a User').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">'.JText::_('Select').'</a>'."\n";
 		$html .= "\n".'<input type="hidden" id="'.$name.'_id" name="'.$fieldName.'" value="'.(int)$value.'" />';
 
 		return $html;
@@ -188,11 +188,7 @@ class SampleModelElementUser extends JModel
 		}";
 		$doc->addScriptDeclaration($js);
 		
-		$html = '<div class="button2-left">
-		<div class="blank">
-		
-		<a href="javascript::void();" onclick="resetElement( \''.$value.'\', \''.JText::_( 'Select a User' ).'\', \''.$name.'\' )">'.JText::_( 'Clear Selection' ).'</span>
-		</div></div>'."\n";
+		$html = '<a class="btn btn-danger" style="color : white;" href="javascript::void();" onclick="resetElement( \''.$value.'\', \''.JText::_( 'Select a User' ).'\', \''.$name.'\' )">'.JText::_( 'Clear Selection' ).'</à>'."\n";
 
 		return $html;
 	}
