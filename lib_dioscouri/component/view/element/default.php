@@ -18,14 +18,14 @@ $javascript = 'onchange="document.adminForm.submit();"';
             <td align="left" width="100%">
             </td>
             <td nowrap="nowrap">
-                <input name="filter" value="<?php echo @$state->filter; ?>" />
-                <button onclick="this.form.submit();"><?php echo JText::_('Search'); ?></button>
-                <button onclick="Dsc.formReset(this.form);"><?php echo JText::_('Reset'); ?></button>
+                <input  type="text" name="filter" value="<?php echo @$state->filter; ?>" />
+                <button class="btn btn-primary" onclick="this.form.submit();"><?php echo JText::_('Search'); ?></button>
+                <button class="btn btn-danger" onclick="Dsc.formReset(this.form);"><?php echo JText::_('Reset'); ?></button>
             </td>
         </tr>
     </table>
 
-    <table class="adminlist" cellspacing="1">
+    <table class="table table-striped table-bordered" cellspacing="1">
         <thead>
             <tr>
                 <th style="width: 5px;">
@@ -47,12 +47,10 @@ $javascript = 'onchange="document.adminForm.submit();"';
         </tr>
         </tfoot>
         <tbody>
-        <?php $i=0; $k=0; ?>
+        <?php $i = 1; ?>
         <?php foreach (@$items as $item) : ?>
-            <tr class='row<?php echo $k; ?>'>
-                <td align="center">
-                    <?php echo $i + 1; ?>
-                </td>
+            <tr>
+                <td style="text-align: center;"><?php echo $i++; ?></td>
                 <td style="text-align: center;">
                     <a style="cursor: pointer;" onclick="window.parent.Dsc.select<?php echo $model->getName(); ?>('<?php echo $item->$keyname; ?>', '<?php echo str_replace(array("'", "\""), array("\\'", ""), $item->$title_key); ?>', '<?php echo $this->object; ?>');">
                         <?php echo $item->$keyname; ?>
@@ -64,7 +62,6 @@ $javascript = 'onchange="document.adminForm.submit();"';
                     </a>
                 </td>
             </tr>
-            <?php $i=$i+1; $k = (1 - $k); ?>
             <?php endforeach; ?>
             
             <?php if (!count(@$items)) : ?>

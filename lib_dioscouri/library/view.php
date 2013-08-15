@@ -108,13 +108,7 @@ class DSCView extends DSCViewBase
     {
         $model = $this->getModel();
 
-        // set the model state
-            $state = new JObject();
-            if (empty($this->no_state) && method_exists( $model, 'getState') ) {
-                $state = $model->getState();
-            }
-            JFilterOutput::objectHTMLSafe( $state );
-            $this->assign( 'state', $state );
+       
 
         // page-navigation
             if (empty($this->no_pagination) && method_exists( $model, 'getPagination') ) {
@@ -125,7 +119,14 @@ class DSCView extends DSCViewBase
             if (empty($this->no_items) && method_exists( $model, 'getList') ) {
                 $this->assign('items', $model->getList());
             }
-
+         // set the model state
+            $state = new JObject();
+            if (empty($this->no_state) && method_exists( $model, 'getState') ) {
+                $state = $model->getState();
+            }
+            JFilterOutput::objectHTMLSafe( $state );
+            $this->assign( 'state', $state );    
+            
         // form
         	if(DSC_JVERSION == '30') { $validate = JSession::getFormToken();} else {$validate = JUtility::getToken();}
             

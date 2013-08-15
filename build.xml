@@ -40,9 +40,6 @@
     <copy todir="${cfg.localhostRoot}/libraries/dioscouri/tools" overwrite="true">
       <fileset dir="lib_dioscouri/tools" />
     </copy>
-    <copy todir="${cfg.localhostRoot}/libraries/dioscouri/social" overwrite="true">
-      <fileset dir="lib_dioscouri/social" />
-    </copy>
   	<copy todir="${cfg.localhostRoot}/libraries/dioscouri" overwrite="true">
       <fileset file="lib_dioscouri/dioscouri.php" />
     </copy>
