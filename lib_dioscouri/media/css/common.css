@@ -113,6 +113,7 @@ p.dsc-tip {
   background : url(../images/required_16.png);
 }
 
+.dsc-hidden,
 .dsc-content-left {
     position: absolute;
     left: -100000em;

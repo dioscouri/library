@@ -52,7 +52,7 @@ class DSCImage extends DSCFile
      * @param mixed Boolean
      * @return array
      */
-    function setDirectory( $dir=null ) 
+    function setDirectory( $dir=null , $protect = true ) 
     {
         $success = false;
 

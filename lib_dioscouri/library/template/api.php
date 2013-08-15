@@ -33,7 +33,7 @@ class DSCTemplateAPI extends JObject
     	$this->API->addScriptDeclaration($code); 
     }
 
-    public function get($key, $default) {
+    public function get($key, $default=null) {
         return $this->API->params->get($key, $default);
     }
     
