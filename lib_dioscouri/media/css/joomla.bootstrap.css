@@ -108,3 +108,11 @@ label.radiobtn {
     height: auto;
     width: auto;
 }
+
+.modal {
+    margin-left: auto;
+    position: static;
+    top: auto;
+    left: auto;
+    width: auto;
+}
