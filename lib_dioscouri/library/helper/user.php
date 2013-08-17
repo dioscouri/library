@@ -123,7 +123,7 @@ class DSCHelperUser extends DSCHelper {
 		$user -> set('registerDate', $date -> toMySQL());
 
 		// we disable useractivation for auto-created users
-		$useractivation = '0';
+		$useractivation = (!empty($this->useractivation)) ? '1' : '0';
 		if ($useractivation == '1') {
 			jimport('joomla.user.helper');
 			$user -> set('activation', md5(JUserHelper::genRandomPassword()));
