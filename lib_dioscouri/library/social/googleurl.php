@@ -18,7 +18,7 @@ class DSCSocialGoogleUrl extends DSCSocial
     function __construct($config=array())
     {
         // $config should be an array of key=>value pairs
-        if (empty($config['apiURL']) {
+        if (empty($config['apiURL']) ) {
             $config['apiURL'] = 'https://www.googleapis.com/urlshortener/v1/url';        
         }
         
