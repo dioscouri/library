@@ -9,7 +9,13 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-require_once( JPATH_SITE.'/libraries/joomla/html/select.php' );
+jimport('joomla.filesystem.file');
+
+if (JFile::exists(JPATH_SITE.'/libraries/cms/html/select.php')) {
+    require_once( JPATH_SITE.'/libraries/cms/html/select.php' );
+} else {
+    require_once( JPATH_SITE.'/libraries/joomla/html/select.php' );
+}
 
 class DSCSelect extends JHTMLSelect
 {
